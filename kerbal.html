@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Kerbal Space Program</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="data:,">
+
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: #000;
+        color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      /* Force perfect viewport centering and prevent offset drift */
+      canvas {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain;
+        margin: 0 !important;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      #top-bar {
+        position: fixed;
+        top: 10px;
+        right: 14px;
+        display: flex;
+        gap: 8px;
+        z-index: 100000;
+        opacity: 0.85;
+      }
+      .hud-btn {
+        background: rgba(18, 18, 18, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #ddd;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        user-select: none;
+      }
+      .hud-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
+      #toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(20, 20, 20, 0.9);
+        border: 1px solid #444;
+        color: #eee;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        display: none;
+        z-index: 200000;
+      }
+
+      /* Loading Screen */
+      #boot-overlay {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #0a0a0a;
+        z-index: 99999;
+      }
+      #boot-title {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+      }
+      #progress-box {
+        width: 360px;
+        max-width: 85vw;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        overflow: hidden;
+        margin-top: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      #progress-bar {
+        width: 0%;
+        height: 100%;
+        background: #00bcd4;
+        border-radius: 6px;
+        transition: width 0.15s ease;
+      }
+      #boot-chunk {
+        font-size: 13px;
+        color: #eee;
+        margin-top: 12px;
+        max-width: 85vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: monospace;
+      }
+    </style>
+</head>
+<body>
+    <div id="top-bar">
+      <button class="hud-btn" id="ab-btn" title="Open cloaked in about:blank">About:Blank</button>
+      <button class="hud-btn" id="fs-btn" title="Toggle Fullscreen">Fullscreen</button>
+    </div>
+
+    <div id="toast"></div>
+
+    <div id="boot-overlay">
+      <div id="boot-title">Kerbal Space Program</div>
+      <div id="progress-box"><div id="progress-bar"></div></div>
+      <div id="boot-chunk">Initializing boot sequence...</div>
+    </div>
+
+    <canvas id="unityCanvas" tabindex="-1"></canvas>
+
+    <script>
+      function showToast(msg, duration = 3000) {
+        const el = document.getElementById("toast");
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = "block";
+        setTimeout(() => { el.style.display = "none"; }, duration);
+      }
+
+      const abBtn = document.getElementById("ab-btn");
+      if (window.location.href === "about:blank" || window.origin === "null") {
+        abBtn.style.display = "none";
+      }
+
+      abBtn.addEventListener("click", function() {
+        try {
+          const win = window.open("about:blank", "_blank");
+          if (!win || win.closed) {
+            showToast("Pop-up blocked! Please allow pop-ups for this site.");
+            return;
+          }
+          // Hide button immediately upon successful opening
+          abBtn.style.display = "none";
+          
+          const doc = win.document;
+          doc.open();
+          doc.write("<!DOCTYPE html>\n" + document.documentElement.outerHTML);
+          doc.close();
+        } catch (e) {
+          showToast("Failed to open about:blank: " + e.message);
+        }
+      });
+
+      document.getElementById("fs-btn").addEventListener("click", function() {
+        if (!document.fullscreenElement) {
+          (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen).call(document.documentElement);
+        } else {
+          (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        }
+      });
+
+      (function () {
+        "use strict";
+
+        const GITHUB_RAW = "https://raw.githubusercontent.com/AlexBoops/ksp-port/main/";
+        const JSDELIVR = "https://cdn.jsdelivr.net/gh/AlexBoops/ksp-port@main/";
+
+        const loadStatus = document.getElementById("boot-chunk");
+        const progFill = document.getElementById("progress-bar");
+        const canvas = document.getElementById("unityCanvas");
+
+        async function fetchChunkWithFallback(path) {
+          const urls = [
+            GITHUB_RAW + path + "?t=" + Date.now(),
+            JSDELIVR + path + "?t=" + Date.now()
+          ];
+
+          for (const url of urls) {
+            try {
+              const res = await fetch(url, { cache: "no-store" });
+              if (res.ok) {
+                const buf = await res.arrayBuffer();
+                const headerText = new TextDecoder().decode(buf.slice(0, 30));
+                if (headerText.startsWith("version https://git-lfs")) {
+                  throw new Error("File is still a Git LFS pointer: " + path);
+                }
+                return buf;
+              }
+            } catch (e) {}
+          }
+          throw new Error("Could not download valid binary chunk: " + path);
+        }
+
+        async function fetchAndMergeParts(basePath, count, onProgress) {
+          const partPaths = [];
+          for (let i = 0; i < count; i++) {
+            partPaths.push(basePath + ".part" + String(i).padStart(3, "0"));
+          }
+          partPaths.sort();
+
+          const buffers = [];
+          for (let i = 0; i < partPaths.length; i++) {
+            const partName = partPaths[i];
+            if (onProgress) onProgress(i, count, partName);
+            const buf = await fetchChunkWithFallback(partName);
+            buffers.push(buf);
+          }
+          return new Blob(buffers, { type: 'application/octet-stream' });
+        }
+
+        async function bootKSP() {
+          try {
+            loadStatus.textContent = "Downloading Game Data files (~380 MB)...";
+            const dataBlob = await fetchAndMergeParts("Build/Build.data", 21, (i, total) => {
+              var pct = Math.round((i / (total + 7)) * 70);
+              progFill.style.width = pct + "%";
+              loadStatus.textContent = "Loading Data part (" + (i+1) + "/" + total + ")";
+            });
+            const dataUrl = URL.createObjectURL(dataBlob);
+
+            loadStatus.textContent = "Downloading WebAssembly Engine...";
+            const wasmBlob = await fetchAndMergeParts("Build/Build.wasm", 3, (i, total) => {
+              var pct = Math.round(70 + ((i / total) * 15));
+              progFill.style.width = pct + "%";
+              loadStatus.textContent = "Loading Engine part (" + (i+1) + "/" + total + ")";
+            });
+            const wasmUrl = URL.createObjectURL(wasmBlob);
+
+            loadStatus.textContent = "Assembling Core Packs...";
+            const core0Blob = await fetchAndMergeParts("StreamingAssets/ksp/core.000.pack", 3, () => {});
+            const core1Blob = await fetchAndMergeParts("StreamingAssets/ksp/core.001.pack", 2, () => {});
+            
+            const originalFetch = window.fetch;
+            const core0Url = URL.createObjectURL(core0Blob);
+            const core1Url = URL.createObjectURL(core1Blob);
+
+            window.fetch = async function(resource, init) {
+              if (typeof resource === 'string') {
+                if (resource.includes('core.000.pack')) return originalFetch(core0Url, init);
+                if (resource.includes('core.001.pack')) return originalFetch(core1Url, init);
+              }
+              return originalFetch(resource, init);
+            };
+
+            progFill.style.width = "95%";
+            loadStatus.textContent = "Loading Unity Framework...";
+
+            const loaderScript = document.createElement("script");
+            loaderScript.src = JSDELIVR + "Build/Build.loader.js?t=" + Date.now();
+
+            loaderScript.onload = function () {
+              var config = {
+                dataUrl: dataUrl,
+                frameworkUrl: JSDELIVR + "Build/Build.framework.js",
+                codeUrl: wasmUrl,
+                streamingAssetsUrl: JSDELIVR + "StreamingAssets",
+                companyName: "Squad",
+                productName: "Kerbal Space Program",
+                productVersion: "1.12.4"
+              };
+
+              createUnityInstance(canvas, config, function (progress) {
+                var pct = Math.round(progress * 100);
+                progFill.style.width = pct + "%";
+                loadStatus.textContent = progress >= 1 ? "Starting Engine..." : "Booting KSP: " + pct + "%";
+              }).then(function (instance) {
+                document.getElementById("boot-overlay").style.display = "none";
+                window.unityInstance = instance;
+              }).catch(function (message) { 
+                alert("Unity Engine Boot Error: " + message); 
+              });
+            };
+
+            loaderScript.onerror = function () { alert("Could not load Build.loader.js"); };
+            document.body.appendChild(loaderScript);
+
+          } catch (err) {
+            alert("KSP Boot Error: " + err.message);
+            loadStatus.textContent = "Error: " + err.message;
+          }
+        }
+
+        bootKSP();
+
+      })();
+    </script>
+</body>
+</html>
