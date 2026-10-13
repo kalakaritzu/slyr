@@ -126,7 +126,7 @@ const cap=id=>STEAM+id+'/capsule_616x353.jpg';   /* store artwork, 16:9 */
 const hero=id=>STEAM+id+'/library_hero.jpg';      /* wide hero artwork, centre-cropped */
 const G=(id,title,url,thumb,tags)=>({id,title,url,thumb,tags});
 const GAMES=[
-  G('gta','GTA','https://gta.deloskiyt.pl/',cap(271590),['Open World']),
+  G('gta','GTA V','https://gta.deloskiyt.pl/',cap(271590),['Open World']),
   G('gtavc','GTA Vice City','https://joncodeofficial.github.io/gta-vice-city-wasm',cap(12110),['Open World']),
   G('gta3','GTA III','https://wasm.rip/files/gta3/index.html',cap(1546970),['Open World','Classic']),
   G('bo1z','BO1 Zombies','https://vel.gg/bo1z',cap(42700),['Call of Duty','Shooter']),
@@ -195,11 +195,14 @@ const GAMES=[
   G('granny3','Granny 3','https://wasm.rip/files/granny/granny3.html',cap(1707550),['Horror']),
   G('inscryption','Inscryption','https://wasm.rip/files/inscryption/index.html',cap(1092790),['Horror','Strategy']),
   G('miside','MiSide','https://wasm.rip/files/miside/miside.html',cap(2527500),['Horror','Adventure']),
-  G('howtofish','How to Fish','https://wasm.rip/files/HowToFish/HowToFish.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4001890/c5ccd85d2910a21019adb2581011ac186741d030/capsule_616x353.jpg',['Action','Simulation'])
+  G('howtofish','How to Fish','https://wasm.rip/files/HowToFish/HowToFish.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4001890/c5ccd85d2910a21019adb2581011ac186741d030/capsule_616x353.jpg',['Action','Simulation']),
+  G('lethalcompany','Lethal Company','https://wasm.rip/files/lethal/index.html',cap(1966720),['Horror','Multiplayer']),
+  G('cheeserolling','Cheese Rolling','https://wasm.rip/files/cheese-rolling/index.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3809440/efad0cc7f89c9205e838c1390d3da9193d5c8538/capsule_616x353.jpg',['Action','Sports']),
+  G('crashoutcrew','Crashout Crew','https://wasm.rip/files/cc/index.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3583210/93b822f30cab98333b8f7f4dd43ce543f4c8b355/capsule_616x353.jpg',['Multiplayer','Action'])
 ];
 /* extra words people might search for, per game id */
 const ALIAS={
-  gta:'grand theft auto gta v gta 5 rockstar',gtavc:'grand theft auto vice city gta rockstar',gta3:'grand theft auto 3 gta iii gta3 rockstar',
+  gta:'grand theft auto gta v gta 5 gta5 rockstar',gtavc:'grand theft auto vice city gta rockstar',gta3:'grand theft auto 3 gta iii gta3 rockstar',
   bo1z:'call of duty cod black ops 1 bo1 zombies treyarch',bo2:'call of duty cod black ops 2 bo2 treyarch',bo3:'call of duty cod black ops 3 bo3 zombies treyarch',
   mw2:'call of duty cod modern warfare 2 mw2',skate3:'skate ea skateboarding skateboard',surf:'counter strike cs css cs source surfing',
   shar:'simpsons hit and run shar homer bart',q1:'quake id software',q2:'quake id software',q3:'quake arena id software',rtcw:'wolfenstein return to castle rtcw nazi',
@@ -216,7 +219,7 @@ const ALIAS={
   scpcontainmentbreach:'scp cb containment breach foundation',shiftatmidnight:'night shift gas station',spongeglocksquarepants:'spongebob sponge glock square pants',
   stardewvalley:'stardew farming farm',thatsnotmyneighbor:'tnmn not my neighbour',ultrakill:'ultra kill fps',untitledgoosegame:'goose',webecomewhatwebehold:'we become who we behold',
   webfishing:'web fishing fish',whosyourdaddy:'whos your daddy baby',amongus:'among us impostor crewmate sus innersloth',amongusold:'among us impostor crewmate sus old',
-  granny3:'granny 3 granny three',inscryption:'cards deck builder escape room',miside:'mi side mita',howtofish:'fishing fish guns'
+  granny3:'granny 3 granny three',lethalcompany:'lethal company scrap monsters co op',cheeserolling:'cheese rolling hill race',crashoutcrew:'crash out crew forklift co op',inscryption:'cards deck builder escape room',miside:'mi side mita',howtofish:'fishing fish guns'
 };
 const norm=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 GAMES.forEach(g=>{
@@ -230,8 +233,9 @@ const lev=(a,b)=>{                                   /* tiny edit distance, for 
   for(let i=1;i<=m;i++){const cur=[i];for(let j=1;j<=n;j++)cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));prev=cur}
   return prev[n];
 };
-const exact=(g,words)=>words.every(w=>g.hay.includes(w)||g.flat.includes(w));
-const fuzzy=(g,words)=>words.every(w=>g.hay.includes(w)||g.flat.includes(w)||(w.length>=4&&g.tok.some(t=>lev(w,t)<=(w.length>=7?2:1))));
+const hit=(g,w)=>w.length<=2?g.tok.includes(w):(g.hay.includes(w)||g.flat.includes(w));   /* 1-2 letter words must match a whole word */
+const exact=(g,words)=>words.every(w=>hit(g,w));
+const fuzzy=(g,words)=>words.every(w=>hit(g,w)||(w.length>=4&&g.tok.some(t=>lev(w,t)<=(w.length>=7?2:1))));
 const CATS=['All','Shooter','Call of Duty','Half-Life','Open World','Action','Adventure','Platformer','Horror','Puzzle','Multiplayer','Strategy','Simulation','RPG','Sports','Classic'];
 
 let query='',cat='All';
