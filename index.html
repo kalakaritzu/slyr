@@ -200,7 +200,8 @@ const GAMES=[
   G('cheeserolling','Cheese Rolling','https://wasm.rip/files/cheese-rolling/index.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3809440/efad0cc7f89c9205e838c1390d3da9193d5c8538/capsule_616x353.jpg',['Action','Sports']),
   G('crashoutcrew','Crashout Crew','https://wasm.rip/files/cc/index.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3583210/93b822f30cab98333b8f7f4dd43ce543f4c8b355/capsule_616x353.jpg',['Multiplayer','Action']),
   G('rounds','ROUNDS','https://nawsif.github.io/html/rounds',cap(1557740),['Multiplayer','Action','Platformer']),
-  G('gambonanza','Gambonanza','gambonanza.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3509230/7a62c2313fcc00c041f0afa4fe4edb6a050f6914/capsule_616x353.jpg',['Strategy','Puzzle'])
+  G('gambonanza','Gambonanza','gambonanza.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3509230/7a62c2313fcc00c041f0afa4fe4edb6a050f6914/capsule_616x353.jpg',['Strategy','Puzzle']),
+  G('eaglercraft','Eaglercraft','https://kalakaritzu.github.io/eaglercraft/','https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Minecraft_Creeper.jpg/960px-Minecraft_Creeper.jpg',['Adventure','Multiplayer'])
 ];
 /* always alphabetical, in every category */
 GAMES.sort((a,b)=>a.title.localeCompare(b.title,'en',{numeric:true,sensitivity:'base',ignorePunctuation:true}));
@@ -224,7 +225,7 @@ const ALIAS={
   scpcontainmentbreach:'scp cb containment breach foundation',shiftatmidnight:'night shift gas station',spongeglocksquarepants:'spongebob sponge glock square pants',
   stardewvalley:'stardew farming farm',thatsnotmyneighbor:'tnmn not my neighbour',ultrakill:'ultra kill fps',untitledgoosegame:'goose',webecomewhatwebehold:'we become who we behold',
   webfishing:'web fishing fish',whosyourdaddy:'whos your daddy baby',amongus:'among us impostor crewmate sus innersloth',amongusold:'among us impostor crewmate sus old',
-  granny3:'granny 3 granny three',rounds:'rounds duel fighting platformer 1v1 local multiplayer',gambonanza:'gambo nanza chess roguelike board game',lethalcompany:'lethal company scrap monsters co op',cheeserolling:'cheese rolling hill race',crashoutcrew:'crash out crew forklift co op',inscryption:'cards deck builder escape room',miside:'mi side mita',howtofish:'fishing fish guns'
+  granny3:'granny 3 granny three',eaglercraft:'minecraft mc eagler craft blocks sandbox survival mining creeper',rounds:'rounds duel fighting platformer 1v1 local multiplayer',gambonanza:'gambo nanza chess roguelike board game',lethalcompany:'lethal company scrap monsters co op',cheeserolling:'cheese rolling hill race',crashoutcrew:'crash out crew forklift co op',inscryption:'cards deck builder escape room',miside:'mi side mita',howtofish:'fishing fish guns'
 };
 const norm=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 GAMES.forEach(g=>{
