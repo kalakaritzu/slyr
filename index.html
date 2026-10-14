@@ -107,10 +107,10 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .menu canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:blur(5px) brightness(.8);transform:scale(1.04)}
 .menu::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(58% 54% at 50% 50%,rgba(6,2,3,.5),rgba(6,2,3,.2) 62%,transparent 82%)}
-.menu-inner{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:clamp(24px,5vh,56px) clamp(24px,8vw,120px)}
+.menu-inner{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:16px;padding:clamp(24px,5vh,56px) clamp(24px,8vw,120px)}
 .menu-logo{position:fixed;right:calc(min(26vh,200px)*-.1);bottom:calc(min(26vh,200px)*-.06);height:min(26vh,200px);width:auto;max-width:40vw;color:#f4f1ee;filter:drop-shadow(0 0 36px rgba(255,43,43,.28));
   animation:menu-rise 1s cubic-bezier(.16,1,.3,1) both}
-.menu-title{position:absolute;top:clamp(24px,5vh,56px);left:50%;margin-left:calc(min(78vw,760px)/-2);display:block;width:min(78vw,760px);height:auto;filter:drop-shadow(0 0 28px rgba(255,43,43,.3));animation:menu-rise 1s cubic-bezier(.16,1,.3,1) both}
+.menu-title{position:absolute;top:clamp(24px,5vh,56px);right:clamp(24px,8vw,120px);display:block;width:min(78vw,760px);height:auto;filter:drop-shadow(0 0 28px rgba(255,43,43,.3));animation:menu-rise 1s cubic-bezier(.16,1,.3,1) both}
 .play{position:relative;display:inline-flex;align-items:center;gap:26px;font:700 26px/1 var(--font);letter-spacing:.3em;text-transform:uppercase;
   padding:32px 44px 32px 50px;border:1px solid rgba(255,43,43,.5);border-left:4px solid #ff2b2b;border-radius:3px;cursor:pointer;color:#fff;
   background:linear-gradient(100deg,rgba(255,43,43,.22),rgba(6,2,3,.82) 70%);box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);
@@ -120,6 +120,10 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .play:hover,.play:focus-visible{background:#ff2b2b;border-color:#ff2b2b;color:#060203;box-shadow:0 10px 50px rgba(255,43,43,.4);transform:translateX(6px);outline:none}
 .play:hover svg,.play:focus-visible svg{transform:translateX(6px)}
 .play:active{transform:translateX(6px) scale(.98)}
+a.play{text-decoration:none}
+.play[aria-disabled=true]{filter:brightness(.6);cursor:default}
+.play[aria-disabled=true]:hover{background:linear-gradient(100deg,rgba(255,43,43,.22),rgba(6,2,3,.82) 70%);border-color:rgba(255,43,43,.5);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.45);transform:none}
+.play[aria-disabled=true]:hover svg{transform:none}
 @keyframes menu-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.menu{transition:none}.menu-logo,.menu-title,.play{animation:none}}
 .tile[hidden],.empty[hidden]{display:none}
@@ -158,6 +162,8 @@ html.menu-open,html.menu-open body{overflow:hidden}
     <svg class="menu-logo" viewBox="0 0 502.7 444.0" fill="currentColor" fill-rule="evenodd" role="img" aria-label="slyr"><use href="#reaper"/></svg>
     <img class="menu-title" src="title.png" alt="slyr ports" width="1108" height="112">
     <button class="play" id="play" type="button"><span>Ports</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+    <a class="play" id="apps" href="#" data-url=""><span>Apps</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+    <a class="play" id="discord" href="#" data-url="" rel="noopener"><span>Discord</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
   </div>
 </div>
 <canvas id="mainBg" aria-hidden="true"></canvas>
@@ -690,6 +696,13 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   }
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   play.addEventListener('click',enter);
+  /* Apps and Discord: put the real address in data-url on the links above; until then they stay inactive */
+  ['apps','discord'].forEach(id=>{
+    const a=$('#'+id);if(!a)return;
+    const u=a.dataset.url;
+    if(u){a.href=u;if(id==='discord'){a.target='_blank'}}
+    else{a.setAttribute('aria-disabled','true');a.addEventListener('click',e=>e.preventDefault())}
+  });
 })();
 
 renderCats();
