@@ -24,7 +24,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"slyr","url":"https://slyr.pages.dev/","description":"Free browser games you can play instantly with no downloads.","inLanguage":"en"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f6f6f4;--surface:#fff;--ink:#16161a;--mute:#74747c;--line:#e4e4e0;--hover:#ecece8;
@@ -110,9 +110,17 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .menu-inner{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:16px;padding:clamp(24px,5vh,56px) clamp(24px,8vw,120px)}
 .menu-logo{position:fixed;right:calc(min(42vh,330px)*-.1);bottom:calc(min(42vh,330px)*-.06);height:min(42vh,330px);width:auto;max-width:60vw;color:#f4f1ee;filter:drop-shadow(0 0 36px rgba(255,43,43,.28));
   animation:menu-rise 1.1s cubic-bezier(.16,1,.3,1) .55s backwards}
-.menu-title{position:absolute;top:clamp(24px,5vh,56px);right:clamp(24px,8vw,120px);display:block;width:min(78vw,760px);height:auto;filter:drop-shadow(0 0 28px rgba(255,43,43,.3));animation:menu-rise 1.1s cubic-bezier(.16,1,.3,1) .1s backwards}
+.menu-title{position:absolute;top:clamp(24px,5vh,56px);right:clamp(24px,8vw,120px);text-align:right;margin:0;
+  animation:menu-rise 1.1s cubic-bezier(.16,1,.3,1) .1s backwards}
+.menu-title b{display:block;font:900 clamp(40px,8.4vw,112px)/.95 'Orbitron',var(--font);letter-spacing:.06em;text-transform:uppercase;
+  background:linear-gradient(180deg,#fff 0%,#ffb3b3 38%,#ff2b2b 62%,#7d0000 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(255,43,43,.4)) drop-shadow(0 3px 0 rgba(0,0,0,.55))}
+.menu-title b i{font-style:normal;display:inline-block;margin-left:.22em;-webkit-text-stroke:0}
+.menu-title span{display:block;height:3px;margin:clamp(10px,1.6vw,18px) 0 0 auto;width:100%;background:linear-gradient(90deg,transparent,#ff2b2b 55%,#ff2b2b);
+  transform-origin:right;animation:menu-line 1.3s cubic-bezier(.16,1,.3,1) .5s backwards;box-shadow:0 0 18px rgba(255,43,43,.6)}
+@keyframes menu-line{from{transform:scaleX(0)}to{transform:none}}
 .play{position:relative;display:inline-flex;align-items:center;gap:26px;font:700 30px/1 var(--font);letter-spacing:.3em;text-transform:uppercase;
-  min-width:min(72vw,300px);padding:38px 60px 38px 58px;border:1px solid rgba(255,43,43,.5);border-left:4px solid #ff2b2b;border-radius:3px;cursor:pointer;color:#fff;
+  min-width:min(72vw,340px);padding:38px 60px 38px 58px;border:1px solid rgba(255,43,43,.5);border-left:4px solid #ff2b2b;border-radius:3px;cursor:pointer;color:#fff;
   background:linear-gradient(100deg,rgba(255,43,43,.22),rgba(6,2,3,.82) 70%);box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);
   transition:background .3s ease,color .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.16,1,.3,1),border-color .3s ease;
   animation:menu-rise 1.1s cubic-bezier(.16,1,.3,1) .3s backwards}
@@ -163,7 +171,7 @@ a.play{text-decoration:none}
   <canvas id="bg" aria-hidden="true"></canvas>
   <div class="menu-inner">
     <svg class="menu-logo" viewBox="0 0 502.7 444.0" fill="currentColor" fill-rule="evenodd" role="img" aria-label="slyr"><use href="#reaper"/></svg>
-    <img class="menu-title" src="title.png" alt="slyr ports" width="1108" height="112">
+    <div class="menu-title" role="img" aria-label="slyr ports"><b aria-hidden="true">Slyr<i>Ports</i></b><span aria-hidden="true"></span></div>
     <button class="play" id="play" type="button"><span>Ports</span></button>
     <a class="play" id="apps" href="#" data-url=""><span>Apps</span></a>
     <a class="play" id="discord" href="https://discord.gg/m3xdMUfa4Z" data-url="https://discord.gg/m3xdMUfa4Z" rel="noopener"><span>Discord</span></a>
