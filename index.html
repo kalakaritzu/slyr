@@ -62,7 +62,8 @@ button{cursor:pointer}
 .cat small{font-size:12px;opacity:.9}
 
 /* games: tiles sit edge to edge, no gaps */
-.grid{position:relative;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:var(--bg)}
+#mainBg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;filter:blur(1px) brightness(1.3)}
+.grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:transparent}
 @media(min-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1280px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:1700px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -151,6 +152,7 @@ html.menu-open,html.menu-open body{overflow:hidden}
     <button class="play" id="play" type="button">Play</button>
   </div>
 </div>
+<canvas id="mainBg" aria-hidden="true"></canvas>
 <div class="app" id="app">
   <aside class="side">
     <canvas id="sideBg" aria-hidden="true"></canvas>
@@ -523,8 +525,9 @@ function createContours(cv,o){
 /* ---------- start menu, then the sidebar background ---------- */
 (function(){
   const side=createContours($('#sideBg'),{parent:true,fps:30,dim:0.7,major:1.4,minor:0.7,zoom:1.9});
+  const main=createContours($('#mainBg'),{fps:24,dim:0.6,major:1.4,minor:0.7,zoom:1.2});
   const menu=$('#menu'),app=$('#app'),play=$('#play'),cv=$('#bg');
-  if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();return}
+  if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();main.start();return}
   app.inert=true;
   const bg=createContours(cv,{});
   bg.start();
@@ -537,7 +540,7 @@ function createContours(cv,o){
     document.documentElement.classList.remove('menu-open');   /* page can scroll again */
     document.documentElement.classList.add('menu-open-leaving');
     app.inert=false;
-    side.start();                                             /* sidebar lines begin as the menu slides away */
+    side.start();main.start();                                /* the lines behind the page begin as the menu slides away */
     const done=()=>{bg.destroy();menu.remove();document.documentElement.classList.remove('menu-open-leaving')};
     if(calm){done();return}
     menu.classList.add('out');
