@@ -62,6 +62,7 @@ button{cursor:pointer}
 .cat small{font-size:12px;opacity:.9}
 
 /* games: tiles sit edge to edge, no gaps */
+.side canvas.gl,#mainBg.gl{filter:blur(1px)}
 #mainBg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;filter:blur(1px) brightness(1.3)}
 .grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:transparent}
 @media(min-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
@@ -110,7 +111,7 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .menu-logo{height:min(46vh,380px);width:auto;max-width:82vw;color:#f4f1ee;filter:drop-shadow(0 0 36px rgba(255,43,43,.28));
   animation:menu-rise 1s cubic-bezier(.16,1,.3,1) both}
 .play{font:700 15px/1 var(--font);letter-spacing:.34em;text-transform:uppercase;padding:18px 56px 18px 62px;border-radius:0;
-  border:1px solid #ff2b2b;background:rgba(6,2,3,.6);color:#fff;cursor:pointer;
+  border:1px solid #ff2b2b;background:rgba(6,2,3,.86);color:#fff;cursor:pointer;
   transition:background .25s ease,color .25s ease,box-shadow .25s ease;animation:menu-rise 1s cubic-bezier(.16,1,.3,1) .08s both}
 .play:hover,.play:focus-visible{background:#ff2b2b;color:#060203;box-shadow:0 0 34px rgba(255,43,43,.45);outline:none}
 @keyframes menu-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
@@ -436,7 +437,7 @@ function renderGames(animate){
 $('#search').addEventListener('input',e=>{setQuery(e.target.value);renderGames(true)});
 
 /* ---------- animated red contour lines (start menu + sidebar) ---------- */
-function createContours(cv,o){
+function createContours2D(cv,o){
   o=Object.assign({maxDpr:1.25,fps:60,major:1.8,minor:0.9,alphaMajor:1,alphaMinor:0.8,dim:1,zoom:1,lo:[92,11,18],hi:[255,43,43],parent:false},o||{});
   const ctx=cv.getContext('2d');
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -522,10 +523,140 @@ function createContours(cv,o){
   };
 }
 
+/* ---------- topo lines on the GPU: layered simplex noise, thin on steep ground and fat on flat ground ---------- */
+const TOPO_VERT='attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
+const TOPO_BODY=`
+uniform vec2 res;
+uniform float t;
+uniform float inten;
+uniform float uvs;
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g;
+  vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+  i=mod289(i);
+  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z);
+  vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
+  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
+  return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}
+float field(vec2 uv,float z){
+  float f=0.0;
+  f+=snoise(vec3(uv*1.0,z))*0.55;
+  f+=snoise(vec3(uv*2.1+7.3,z*1.3))*0.28;
+  f+=snoise(vec3(uv*4.3+19.1,z*1.7))*0.12;
+  f+=snoise(vec3(uv*8.7+3.7,z*2.1))*0.05;
+  return f;
+}
+void main(){
+  vec2 uv=(gl_FragCoord.xy-0.5*res)/res.y;
+  uv*=uvs;
+  float z=t*0.045;
+  float h=field(uv,z);
+  float v=h*13.0;
+  float line=abs(fract(v+0.5)-0.5);
+#ifdef NO_DERIV
+  float fw=0.03;
+#else
+  float fw=fwidth(v);
+#endif
+  float width=0.055+fw*0.55;
+  float a=1.0-smoothstep(width-fw*0.8,width+fw*0.8,line);
+  vec3 red=vec3(1.0,0.09,0.09);
+  vec3 base=vec3(0.024,0.008,0.012);
+  gl_FragColor=vec4(base+red*a*inten,1.0);
+}`;
+const topoSource=deriv=>(deriv?'#extension GL_OES_standard_derivatives : enable\n':'#define NO_DERIV\n')+'precision highp float;\n'+TOPO_BODY;
+
+/* can this browser run the shader? checked once on a throw-away canvas */
+const TOPO_GL=(()=>{
+  try{
+    const c=document.createElement('canvas'),gl=c.getContext('webgl',{antialias:false});
+    if(!gl)return null;
+    const deriv=!!gl.getExtension('OES_standard_derivatives');
+    const sh=(type,src)=>{const x=gl.createShader(type);gl.shaderSource(x,src);gl.compileShader(x);return gl.getShaderParameter(x,gl.COMPILE_STATUS)?x:null};
+    const v=sh(gl.VERTEX_SHADER,TOPO_VERT),f=sh(gl.FRAGMENT_SHADER,topoSource(deriv));
+    if(!v||!f)return null;
+    const pr=gl.createProgram();gl.attachShader(pr,v);gl.attachShader(pr,f);gl.linkProgram(pr);
+    const ok=gl.getProgramParameter(pr,gl.LINK_STATUS);
+    const lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();
+    return ok?{deriv}:null;
+  }catch(e){return null}
+})();
+
+function createTopoGL(cv,o){
+  o=Object.assign({fps:30,dim:1,zoom:1,scale:0.75,parent:false},o||{});
+  const gl=cv.getContext('webgl',{antialias:false,alpha:false});
+  cv.classList.add('gl');
+  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(TOPO_GL.deriv)gl.getExtension('OES_standard_derivatives');
+  const mkShader=(type,src)=>{const x=gl.createShader(type);gl.shaderSource(x,src);gl.compileShader(x);return x};
+  const prog=gl.createProgram();
+  gl.attachShader(prog,mkShader(gl.VERTEX_SHADER,TOPO_VERT));
+  gl.attachShader(prog,mkShader(gl.FRAGMENT_SHADER,topoSource(TOPO_GL.deriv)));
+  gl.linkProgram(prog);gl.useProgram(prog);
+  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const uRes=gl.getUniformLocation(prog,'res'),uT=gl.getUniformLocation(prog,'t'),uI=gl.getUniformLocation(prog,'inten'),uS=gl.getUniformLocation(prog,'uvs');
+  let t=40+Math.random()*30,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false;
+  function resize(){
+    const w=o.parent?cv.parentElement.clientWidth:innerWidth,h=o.parent?cv.parentElement.clientHeight:innerHeight;
+    const k=Math.min(window.devicePixelRatio||1,1)*o.scale;       /* lines are soft anyway, so a lighter render is fine */
+    cv.width=Math.max(2,Math.floor(w*k));cv.height=Math.max(2,Math.floor(h*k));
+    gl.viewport(0,0,cv.width,cv.height);
+    if(wanted)draw();
+  }
+  function draw(){
+    gl.uniform2f(uRes,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform1f(uI,o.dim);gl.uniform1f(uS,3.2*o.zoom);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }
+  function frame(now){
+    if(!running)return;
+    raf=requestAnimationFrame(frame);
+    if(now-lastDraw<1000/o.fps-2)return;
+    const dt=Math.min(0.05,(now-last)/1000);last=now;lastDraw=now;
+    t+=dt*(calm?0.08:1);
+    draw();
+  }
+  function run(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(frame)}
+  function halt(){running=false;cancelAnimationFrame(raf)}
+  const onVis=()=>{if(!wanted)return;if(document.hidden)halt();else run()};
+  document.addEventListener('visibilitychange',onVis);
+  let ro=null;
+  if(o.parent&&window.ResizeObserver){ro=new ResizeObserver(resize);ro.observe(cv.parentElement)}
+  else addEventListener('resize',resize);
+  resize();
+  return{
+    start(){wanted=true;draw();if(!document.hidden)run()},
+    stop(){wanted=false;halt()},
+    destroy(){
+      wanted=false;halt();document.removeEventListener('visibilitychange',onVis);removeEventListener('resize',resize);if(ro)ro.disconnect();
+      const lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();
+    }
+  };
+}
+function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,(o&&o.gl)||{})):createContours2D(cv,o)}
+
 /* ---------- start menu, then the sidebar background ---------- */
 (function(){
-  const side=createContours($('#sideBg'),{parent:true,fps:30,dim:0.7,major:1.4,minor:0.7,zoom:1.9});
-  const main=createContours($('#mainBg'),{fps:24,dim:0.6,major:1.4,minor:0.7,zoom:1.2});
+  const side=createContours($('#sideBg'),{parent:true,fps:30,dim:0.7,major:1.4,minor:0.7,zoom:1.9,gl:{dim:0.26,zoom:0.8}});
+  const main=createContours($('#mainBg'),{fps:24,dim:0.6,major:1.4,minor:0.7,zoom:1.2,gl:{dim:0.2,zoom:0.8}});
   const menu=$('#menu'),app=$('#app'),play=$('#play'),cv=$('#bg');
   if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();main.start();return}
   app.inert=true;
