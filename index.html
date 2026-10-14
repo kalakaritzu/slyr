@@ -110,12 +110,13 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .menu-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(24px,6vh,48px);padding:24px}
 .menu-logo{position:fixed;right:calc(min(26vh,200px)*-.1);bottom:calc(min(26vh,200px)*-.06);height:min(26vh,200px);width:auto;max-width:40vw;color:#f4f1ee;filter:drop-shadow(0 0 36px rgba(255,43,43,.28));
   animation:menu-rise 1s cubic-bezier(.16,1,.3,1) both}
+.menu-title{display:block;width:min(78vw,760px);height:auto;filter:drop-shadow(0 0 28px rgba(255,43,43,.3));animation:menu-rise 1s cubic-bezier(.16,1,.3,1) both}
 .play{font:700 15px/1 var(--font);letter-spacing:.34em;text-transform:uppercase;padding:18px 56px 18px 62px;border-radius:0;
   border:1px solid #ff2b2b;background:rgba(6,2,3,.86);color:#fff;cursor:pointer;
   transition:background .25s ease,color .25s ease,box-shadow .25s ease;animation:menu-rise 1s cubic-bezier(.16,1,.3,1) .08s both}
 .play:hover,.play:focus-visible{background:#ff2b2b;color:#060203;box-shadow:0 0 34px rgba(255,43,43,.45);outline:none}
 @keyframes menu-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.menu{transition:none}.menu-logo,.play{animation:none}}
+@media(prefers-reduced-motion:reduce){.menu{transition:none}.menu-logo,.menu-title,.play{animation:none}}
 .tile[hidden],.empty[hidden]{display:none}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .empty{grid-column:1/-1;margin:0;padding:40px 24px;color:var(--mute)}
@@ -150,6 +151,7 @@ html.menu-open,html.menu-open body{overflow:hidden}
   <canvas id="bg" aria-hidden="true"></canvas>
   <div class="menu-inner">
     <svg class="menu-logo" viewBox="0 0 502.7 444.0" fill="currentColor" fill-rule="evenodd" role="img" aria-label="slyr"><use href="#reaper"/></svg>
+    <img class="menu-title" src="title.png" alt="slyr ports" width="1108" height="112">
     <button class="play" id="play" type="button">Play</button>
   </div>
 </div>
