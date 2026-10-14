@@ -4,7 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>slyr</title>
+<title>slyr - free browser games, play instantly</title>
+<meta name="description" content="Play free browser games instantly with no downloads: Quake, Half-Life, GTA, Among Us, Minecraft, Hollow Knight, Stardew Valley and 70+ more. Search and filter by category.">
+<link rel="canonical" href="https://slyr.pages.dev/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#111113">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="slyr">
+<meta property="og:title" content="slyr - free browser games, play instantly">
+<meta property="og:description" content="Free browser games with no downloads. Search 70+ games and play instantly.">
+<meta property="og:url" content="https://slyr.pages.dev/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="slyr - free browser games, play instantly">
+<meta name="twitter:description" content="Free browser games with no downloads. Search 70+ games and play instantly.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"slyr","url":"https://slyr.pages.dev/","description":"Free browser games you can play instantly with no downloads.","inLanguage":"en"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -78,6 +91,7 @@ html.launching,html.launching body{overflow:hidden}
 .launch.go .bar{transform:scaleX(.92)}
 
 .tile[hidden],.empty[hidden]{display:none}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .empty{grid-column:1/-1;margin:0;padding:40px 24px;color:var(--mute)}
 
 /* narrow screens: sidebar turns into a bar on top */
@@ -123,7 +137,7 @@ html.launching,html.launching body{overflow:hidden}
       <div class="cats" id="cats"></div>
     </nav>
   </aside>
-  <main class="grid" id="grid"></main>
+  <main class="grid" id="grid"><h1 class="sr-only">slyr - free browser games, play instantly</h1><noscript><p class="empty">slyr needs JavaScript to show its list of free browser games. Please turn it on and reload.</p></noscript></main>
 </div>
 
 <script>
