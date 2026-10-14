@@ -46,7 +46,7 @@ button{cursor:pointer}
 /* layout: sidebar on the left, games on the right */
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
 .side{position:sticky;top:0;height:100vh;overflow:hidden;background:#060203;border-right:1px solid rgba(255,43,43,.22);color:var(--ink);--ink:#f2f2f0;--mute:#e2d0d2;--line:rgba(255,255,255,.14);--surface:rgba(6,2,3,.72);--hover:rgba(255,255,255,.09);--bg:#060203}
-.side canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.side canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:blur(2.5px) brightness(1.45) saturate(1.15);transform:scale(1.05)}
 .side-body{position:relative;z-index:1;text-shadow:0 0 7px #060203,0 0 3px #060203,0 1px 1px #060203;height:100%;overflow-y:auto;padding:22px 0;display:flex;flex-direction:column;gap:20px}
 .logo{display:block;padding:0 16px;color:var(--ink)}
 .logo svg{display:block;height:92px;width:auto}
