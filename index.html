@@ -12,7 +12,7 @@
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#111113">
 <script>try{if(!sessionStorage.getItem("slyr:entered"))document.documentElement.classList.add("menu-open")}catch(e){document.documentElement.classList.add("menu-open")}</script>
-<link rel="icon" type="image/png" href="favicon.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="slyr">
 <meta property="og:title" content="slyr - free browser games, play instantly">
@@ -45,37 +45,19 @@ button{cursor:pointer}
 
 /* layout: sidebar on the left, games on the right */
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-.side{position:sticky;top:0;height:100vh;overflow:hidden;background:#060203;border-right:1px solid rgba(255,43,43,.22);color:var(--ink);--ink:#f2f2f0;--mute:#e2d0d2;--line:rgba(255,255,255,.14);--surface:rgba(6,2,3,.72);--hover:rgba(255,255,255,.09);--bg:#060203}
-.side canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.side-body{position:relative;z-index:1;text-shadow:0 0 7px #060203,0 0 3px #060203,0 1px 1px #060203;height:100%;overflow-y:auto;padding:22px 0;display:flex;flex-direction:column;gap:20px}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 0;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:20px}
 .logo{display:block;padding:0 16px;color:var(--ink)}
-.logo img{display:block;height:92px;width:auto}
+.logo svg{display:block;height:92px;width:auto}
 .search{width:calc(100% - 32px);margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s}
 .search::placeholder{color:var(--mute)}
 .search:focus{outline:none;border-color:var(--ink)}
 .label{margin:0 16px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.cats{position:relative;display:flex;flex-direction:column;gap:0}
+.cats{display:flex;flex-direction:column;gap:0}
 .cat{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;
-  padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);position:relative;z-index:1;
-  transition:background .2s,color .2s,transform .5s cubic-bezier(.22,1,.36,1)}
-.cat:active{transform:scale(.985);transition-duration:.2s,.2s,.18s}
-.cat:hover{color:var(--ink)}
-.cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);text-shadow:none}
-.cat small{font-size:12px;opacity:.9}
-/* glass highlight: glides to the hovered category, eases down when pressed */
-.bubble{position:absolute;left:0;top:0;width:0;height:0;border-radius:12px;pointer-events:none;z-index:0;opacity:0;
-  background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.035) 62%,rgba(255,255,255,.07));
-  border:1px solid rgba(255,255,255,.15);
-  -webkit-backdrop-filter:blur(10px) saturate(1.5) brightness(.92);backdrop-filter:blur(10px) saturate(1.5) brightness(.92);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(0,0,0,.28),0 8px 22px rgba(0,0,0,.38);
-  transition:translate .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1),opacity .4s ease,scale .6s cubic-bezier(.22,1,.36,1);
-  will-change:translate,width,height,scale}
-.bubble::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:.7;
-  background:radial-gradient(120% 90% at 14% 0%,rgba(255,255,255,.16),transparent 58%)}
-.bubble.show{opacity:1}
-.bubble.snap{transition:none}
-.bubble.press{scale:.975 .93;
-  transition:translate .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1),opacity .4s ease,scale .22s cubic-bezier(.22,1,.36,1)}
+  padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);transition:background .15s,color .15s}
+.cat:hover{background:var(--hover);color:var(--ink)}
+.cat[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.cat small{font-size:12px;opacity:.7}
 
 /* games: tiles sit edge to edge, no gaps */
 .grid{position:relative;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:var(--bg)}
@@ -122,7 +104,7 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .menu::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(58% 54% at 50% 50%,rgba(6,2,3,.78),rgba(6,2,3,.35) 62%,transparent 82%)}
 .menu-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(24px,6vh,48px);padding:24px}
-.menu-logo{height:min(46vh,380px);width:auto;max-width:82vw;object-fit:contain;filter:drop-shadow(0 0 40px rgba(255,43,43,.3));
+.menu-logo{height:min(46vh,380px);width:auto;max-width:82vw;color:#f4f1ee;filter:drop-shadow(0 0 36px rgba(255,43,43,.28));
   animation:menu-rise 1s cubic-bezier(.16,1,.3,1) both}
 .play{font:700 15px/1 var(--font);letter-spacing:.34em;text-transform:uppercase;padding:18px 56px 18px 62px;border-radius:0;
   border:1px solid #ff2b2b;background:rgba(6,2,3,.6);color:#fff;cursor:pointer;
@@ -137,16 +119,14 @@ html.menu-open,html.menu-open body{overflow:hidden}
 /* narrow screens: sidebar turns into a bar on top */
 @media(max-width:820px){
   .app{grid-template-columns:1fr}
-  .side{position:static;height:auto;border-right:0;border-bottom:1px solid rgba(255,43,43,.22)}
-  .side-body{height:auto;overflow:visible;padding:14px 16px;gap:12px}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:14px 16px;gap:12px}
   .logo{padding:0}
-  .logo img{height:46px}
+  .logo svg{height:46px}
   .search{width:100%;margin:0}
   .label{display:none}
   .cats{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
   .cat{width:auto;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
   .cat[aria-pressed="true"]{border-color:var(--ink)}
-  .bubble{border-radius:999px}
 }
 @media(min-width:560px) and (max-width:959px){.grid{grid-template-columns:repeat(2,1fr)}}
 
@@ -160,24 +140,22 @@ html.menu-open,html.menu-open body{overflow:hidden}
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="reaper" viewBox="0 0 122.75 127.50"><path d="M68.80,123.78C68.59,123.64 68.42,123.25 68.26,122.50C68.17,122.12 67.94,121.31 67.74,120.69C66.36,116.36 65.50,112.65 65.13,109.43C65.06,108.81 64.89,107.97 64.77,107.56C64.64,107.15 64.49,106.42 64.44,105.94C64.34,104.91 63.84,101.94 63.57,100.69C63.47,100.21 63.38,99.63 63.38,99.40C63.38,99.17 63.15,97.85 62.88,96.46C62.61,95.07 62.30,93.30 62.19,92.53C62.07,91.75 61.91,90.85 61.81,90.53C61.72,90.20 61.50,88.98 61.33,87.80C61.16,86.63 60.90,85.19 60.76,84.61C60.62,84.04 60.40,82.86 60.26,82.00C60.12,81.14 59.90,79.90 59.76,79.25C59.63,78.60 59.40,77.28 59.25,76.31C59.11,75.35 58.88,74.11 58.75,73.56C58.62,73.01 58.45,72.14 58.38,71.62C58.20,70.36 57.89,68.71 57.68,67.89C57.58,67.51 57.41,66.56 57.31,65.76C57.20,64.96 56.95,63.50 56.75,62.50C56.55,61.50 56.31,60.04 56.20,59.25C56.10,58.46 55.93,57.58 55.83,57.29C55.73,57.00 55.55,56.13 55.44,55.35C55.33,54.57 55.02,52.81 54.76,51.44C54.49,50.06 54.24,48.57 54.19,48.12C54.15,47.68 54.00,46.83 53.87,46.25C53.74,45.67 53.51,44.43 53.37,43.50C53.23,42.57 52.98,41.19 52.81,40.44C52.64,39.68 52.42,38.44 52.31,37.69C52.20,36.93 51.98,35.58 51.81,34.69C51.64,33.79 51.42,32.42 51.31,31.62C51.21,30.83 50.98,29.57 50.81,28.81C50.64,28.06 50.38,26.79 50.25,26.00C49.94,24.21 49.45,22.80 49.03,22.53C48.74,22.34 48.68,22.34 48.14,22.55C47.82,22.68 46.89,22.96 46.06,23.18C45.24,23.40 44.17,23.72 43.69,23.90C43.21,24.08 42.42,24.37 41.94,24.54C40.33,25.11 39.38,25.49 38.63,25.87C38.22,26.08 37.82,26.25 37.74,26.25C37.48,26.25 33.02,28.44 31.50,29.31C30.98,29.61 30.23,30.04 29.81,30.28C28.53,31.01 26.47,32.29 25.69,32.85C23.30,34.56 23.27,34.58 21.71,35.85C17.43,39.30 13.37,43.51 10.78,47.15C9.98,48.30 9.44,49.08 9.00,49.75C8.80,50.06 8.41,50.62 8.14,51.00C7.86,51.38 7.46,52.03 7.24,52.44C7.03,52.85 6.77,53.27 6.69,53.38C6.50,53.60 4.38,58.17 4.07,59.02C3.83,59.69 3.47,60.06 3.17,59.95C2.99,59.88 2.98,59.74 3.05,58.87C3.16,57.57 3.58,55.10 3.83,54.35C3.93,54.02 4.15,53.20 4.31,52.53C4.47,51.86 4.74,50.89 4.91,50.38C5.08,49.86 5.36,49.02 5.54,48.50C6.06,46.94 6.62,45.47 6.87,45.07C6.99,44.86 7.17,44.46 7.25,44.19C7.43,43.63 9.46,39.63 10.20,38.36C12.83,33.89 16.15,29.98 21.06,25.58C23.20,23.66 23.89,23.08 25.37,21.94C25.73,21.66 26.35,21.18 26.75,20.88C28.08,19.84 29.38,18.87 30.12,18.38C30.38,18.20 31.00,17.78 31.50,17.44C32.00,17.09 32.62,16.67 32.88,16.50C33.14,16.33 33.96,15.78 34.71,15.29C35.45,14.80 36.32,14.22 36.62,14.00C37.56,13.36 38.53,12.77 39.12,12.49C39.43,12.34 39.85,12.10 40.06,11.95C40.26,11.81 40.71,11.54 41.06,11.36C41.40,11.19 42.28,10.72 43.00,10.32C43.72,9.92 44.54,9.52 44.81,9.42C45.08,9.32 45.45,9.15 45.62,9.03C46.34,8.56 48.36,7.61 49.30,7.29C49.86,7.11 50.61,6.83 50.97,6.67C51.76,6.32 52.25,6.30 52.62,6.60C52.86,6.79 52.94,7.11 53.21,8.94C53.37,10.11 53.62,11.53 53.75,12.10C53.89,12.67 54.08,13.79 54.19,14.60C54.29,15.40 54.54,16.85 54.74,17.81C54.94,18.77 55.17,20.15 55.25,20.88C55.33,21.60 55.56,22.92 55.75,23.81C55.94,24.71 56.14,25.77 56.18,26.19C56.23,26.60 56.43,27.87 56.63,29.00C56.83,30.13 57.08,31.85 57.18,32.81C57.40,34.75 57.58,35.87 57.76,36.44C57.82,36.64 57.98,37.62 58.12,38.60C58.26,39.58 58.54,41.21 58.74,42.22C58.94,43.23 59.17,44.54 59.25,45.12C59.33,45.71 59.55,47.00 59.75,48.00C59.95,49.00 60.20,50.52 60.31,51.38C60.41,52.23 60.61,53.50 60.74,54.19C60.88,54.88 61.08,56.14 61.19,57.00C61.30,57.86 61.52,59.27 61.69,60.12C61.85,60.98 62.07,62.33 62.18,63.12C62.30,63.92 62.52,65.15 62.69,65.88C62.86,66.60 63.05,67.72 63.13,68.38C63.32,70.13 63.61,72.01 63.75,72.44C63.82,72.65 64.01,73.72 64.18,74.82C64.35,75.92 64.56,77.21 64.66,77.69C64.76,78.17 64.97,79.46 65.12,80.56C65.27,81.66 65.52,83.24 65.69,84.06C65.86,84.89 66.05,86.12 66.12,86.81C66.28,88.39 66.55,90.20 66.80,91.25C66.90,91.70 67.05,92.60 67.13,93.25C67.21,93.90 67.48,95.53 67.74,96.88C68.00,98.22 68.28,99.73 68.35,100.25C68.42,100.77 68.62,101.95 68.79,102.88C68.96,103.80 69.14,105.01 69.19,105.56C69.24,106.11 69.35,106.92 69.45,107.35C70.30,111.16 70.38,116.67 69.67,121.88C69.44,123.56 69.21,124.06 68.80,123.78zM75.01,112.90C74.84,112.58 74.42,110.28 74.25,108.78C74.18,108.08 74.04,107.10 73.95,106.60C73.49,104.08 73.35,103.28 73.06,101.38C72.88,100.24 72.66,98.89 72.56,98.38C72.46,97.86 72.38,97.19 72.38,96.89C72.37,96.23 72.10,94.15 71.68,91.56C71.51,90.53 71.32,89.15 71.26,88.50C71.20,87.85 71.00,86.67 70.83,85.88C70.66,85.08 70.48,84.10 70.44,83.69C70.39,83.28 70.21,82.04 70.04,80.94C69.42,76.90 69.41,76.64 69.81,73.44C69.90,72.68 70.07,71.30 70.19,70.38C70.30,69.45 70.56,67.78 70.76,66.68C70.97,65.58 71.21,64.00 71.31,63.18C71.52,61.35 72.50,56.65 72.93,55.38C73.31,54.27 73.34,53.41 73.01,52.76C72.87,52.50 72.43,51.25 72.01,49.99C71.59,48.72 71.14,47.35 70.99,46.94C70.74,46.23 70.40,45.00 69.66,42.19C69.16,40.31 69.23,37.77 69.89,33.31C70.04,32.34 70.03,32.28 69.64,31.06C68.58,27.74 68.36,27.01 68.20,26.31C68.10,25.90 67.93,25.35 67.82,25.08C67.70,24.82 67.48,24.00 67.32,23.27C67.15,22.54 66.90,21.67 66.76,21.34C66.62,21.01 66.41,20.28 66.30,19.72C66.19,19.15 65.96,18.36 65.79,17.96C65.46,17.17 65.49,16.87 65.91,16.41C66.11,16.19 66.31,16.12 66.77,16.12C67.11,16.12 67.79,16.01 68.28,15.87C68.78,15.73 69.96,15.56 70.90,15.48C72.40,15.36 72.76,15.37 73.71,15.56C75.13,15.84 76.80,16.45 77.30,16.86C77.51,17.05 78.00,17.40 78.38,17.64C80.05,18.74 82.52,21.49 84.58,24.56C85.04,25.25 85.51,25.95 85.63,26.12C86.90,28.03 89.95,33.89 90.26,35.03C90.33,35.32 90.50,35.82 90.63,36.12C92.08,39.69 92.85,42.11 93.55,45.26C94.20,48.18 94.23,48.60 93.86,49.60C93.71,49.99 93.46,50.76 93.30,51.31C93.13,51.86 92.83,52.73 92.63,53.25C92.26,54.21 91.93,55.17 91.18,57.50C90.44,59.80 90.11,60.78 89.69,61.94C89.46,62.56 89.24,63.26 89.19,63.50C89.14,63.74 88.94,64.36 88.75,64.88C88.26,66.18 86.30,72.27 86.07,73.21C85.96,73.64 85.77,74.23 85.64,74.53C85.52,74.82 85.34,75.37 85.25,75.75C85.17,76.13 84.91,76.94 84.69,77.56C84.08,79.23 83.33,81.58 82.75,83.62C82.46,84.62 82.07,85.97 81.87,86.62C81.68,87.28 81.37,88.38 81.20,89.06C81.03,89.75 80.80,90.57 80.69,90.88C80.58,91.18 80.32,92.14 80.12,93.00C79.74,94.59 79.17,96.79 78.60,98.81C77.99,100.97 77.37,103.45 77.05,105.00C76.87,105.86 76.68,106.79 76.62,107.07C76.40,108.16 75.86,110.10 75.57,110.94C75.20,111.96 75.18,112.22 75.44,112.60C75.55,112.75 75.60,112.93 75.56,113.00C75.44,113.20 75.14,113.15 75.01,112.90zM84.17,48.84C84.27,48.69 84.38,48.22 84.42,47.81C84.46,47.40 84.67,46.19 84.88,45.12C85.32,42.92 85.36,42.20 85.07,41.65C84.85,41.22 84.82,40.80 84.99,40.69C85.05,40.65 85.40,40.57 85.76,40.50C86.12,40.43 86.73,40.23 87.11,40.06C88.53,39.41 88.62,39.08 87.81,37.54C87.48,36.93 87.16,36.40 87.08,36.35C86.78,36.15 86.28,36.27 85.62,36.69C84.19,37.62 82.05,37.89 80.69,37.32C79.81,36.95 78.88,35.88 78.88,35.24C78.88,34.94 79.73,34.07 80.56,33.52C80.84,33.34 81.24,33.05 81.46,32.88C81.68,32.71 82.23,32.34 82.70,32.06C83.65,31.49 84.12,31.09 84.12,30.84C84.12,30.62 83.08,29.35 81.81,28.01C80.71,26.86 79.02,25.53 78.51,25.43C77.97,25.31 77.37,25.01 77.30,24.81C77.16,24.46 76.92,24.62 76.62,25.27C76.31,25.91 76.31,25.95 76.31,29.87L76.31,33.81L76.79,34.94C77.06,35.56 77.40,36.29 77.55,36.56C77.71,36.84 77.96,37.39 78.12,37.79C78.28,38.20 78.66,39.00 78.96,39.58C79.55,40.72 79.60,41.05 79.31,41.47C79.14,41.71 78.99,41.75 78.37,41.75C77.72,41.75 77.61,41.79 77.43,42.06C77.14,42.50 77.20,43.01 77.88,45.75C78.01,46.27 78.15,47.00 78.20,47.38C78.37,48.82 78.93,49.30 79.52,48.50C79.85,48.06 79.92,48.05 80.35,48.38C80.78,48.72 81.15,48.62 81.85,47.98C82.35,47.52 82.41,47.49 82.65,47.66C82.80,47.75 82.99,48.05 83.08,48.31C83.38,49.17 83.83,49.39 84.17,48.84z"/><path d="M78.33,124.54C78.15,124.36 78.27,123.51 78.55,122.98C78.82,122.46 79.78,119.33 80.35,117.06C80.77,115.40 81.24,113.87 81.69,112.69C81.93,112.07 82.15,111.39 82.20,111.19C82.24,110.98 82.43,110.31 82.63,109.69C82.83,109.07 83.12,108.08 83.29,107.50C83.95,105.26 84.46,103.67 84.66,103.29C84.78,103.08 84.99,102.46 85.14,101.92C85.28,101.38 85.52,100.71 85.66,100.44C85.90,99.96 86.29,98.78 86.95,96.50C87.12,95.92 87.37,95.16 87.51,94.81C87.65,94.47 87.97,93.63 88.21,92.94C88.45,92.26 88.75,91.50 88.87,91.25C89.33,90.34 89.45,89.12 89.07,89.12C88.73,89.12 88.45,89.56 87.30,91.88C86.63,93.22 85.83,94.76 85.52,95.31C84.84,96.51 84.04,98.02 83.48,99.12C83.26,99.57 82.95,100.13 82.79,100.38C82.64,100.62 82.43,101.04 82.33,101.31C82.15,101.82 80.18,105.52 79.31,107.00C79.05,107.45 78.65,108.16 78.42,108.58C77.99,109.36 77.68,109.72 77.54,109.59C77.47,109.51 77.53,109.21 78.30,105.62C78.73,103.61 79.81,99.33 79.94,99.13C80.02,98.98 80.79,96.07 81.26,94.06C81.45,93.24 81.70,92.31 81.81,92.00C81.92,91.69 82.15,90.88 82.33,90.19C82.50,89.50 82.80,88.40 83.00,87.75C83.20,87.10 83.59,85.75 83.87,84.75C84.46,82.71 85.21,80.36 85.81,78.69C86.04,78.07 86.29,77.25 86.38,76.88C86.47,76.50 86.64,75.95 86.77,75.65C86.89,75.35 87.08,74.76 87.19,74.34C87.43,73.39 89.39,67.30 89.87,66.00C90.07,65.48 90.26,64.87 90.31,64.62C90.36,64.38 90.59,63.68 90.81,63.06C91.23,61.91 91.57,60.93 92.30,58.62C93.05,56.30 93.38,55.33 93.76,54.38C93.96,53.86 94.26,52.99 94.42,52.44C94.59,51.89 94.84,51.12 94.99,50.72C95.90,48.24 94.64,42.10 91.75,35.00C91.63,34.69 91.46,34.20 91.38,33.91C91.08,32.77 88.03,26.90 86.75,25.00C86.63,24.83 86.16,24.12 85.70,23.44C83.60,20.31 81.23,17.67 79.38,16.41C78.93,16.11 78.38,15.73 78.17,15.58C77.95,15.42 77.22,15.11 76.54,14.88C75.87,14.66 75.26,14.43 75.20,14.37C74.83,14.01 77.42,12.25 79.69,11.33C81.70,10.51 82.26,10.23 83.15,9.63C84.92,8.43 84.40,7.75 82.50,8.78C82.12,8.98 81.53,9.25 81.19,9.37C80.84,9.49 80.28,9.77 79.94,9.98C79.60,10.20 79.26,10.37 79.18,10.37C79.10,10.37 78.79,10.56 78.49,10.78C78.19,11.00 77.66,11.33 77.31,11.51C74.54,12.93 73.14,13.69 72.88,13.93C72.59,14.19 72.40,14.23 70.75,14.30C69.76,14.34 68.73,14.42 68.47,14.46C67.74,14.57 67.87,14.28 68.89,13.50C69.38,13.12 70.13,12.55 70.55,12.22C70.97,11.89 71.82,11.29 72.44,10.88C73.06,10.47 73.70,10.03 73.87,9.91C74.04,9.79 74.49,9.51 74.87,9.30C76.84,8.20 77.35,7.90 77.81,7.59C78.08,7.40 78.37,7.25 78.44,7.25C78.51,7.25 78.76,7.12 79.00,6.95C79.87,6.37 83.71,4.49 84.56,4.23C85.04,4.09 85.64,3.87 85.88,3.75C86.50,3.43 88.18,3.13 89.81,3.04C90.98,2.98 91.33,3.01 92.14,3.23C94.09,3.77 96.20,5.09 98.10,6.99C100.49,9.37 101.09,10.36 101.55,12.75C101.98,15.03 102.22,16.63 102.31,17.75C102.35,18.27 102.55,19.62 102.76,20.75C102.96,21.88 103.22,23.43 103.32,24.19C103.42,24.94 103.65,26.15 103.82,26.88C103.99,27.60 104.18,28.64 104.25,29.19C104.36,30.11 104.71,31.96 105.17,34.00C105.27,34.45 105.39,35.14 105.44,35.54C105.48,35.94 105.63,36.59 105.77,36.98C105.90,37.37 106.12,38.22 106.26,38.88C106.52,40.09 107.20,42.31 107.65,43.44C107.79,43.78 108.06,44.51 108.25,45.06C108.44,45.61 108.77,46.40 108.97,46.81C109.18,47.22 109.39,47.79 109.43,48.06C109.52,48.54 110.64,50.66 110.89,50.82C110.95,50.86 111.17,51.21 111.38,51.60C111.80,52.39 113.37,55.02 113.70,55.49C113.94,55.82 114.44,56.70 115.88,59.31C116.41,60.28 117.11,61.54 117.44,62.12C119.79,66.33 120.04,67.09 119.76,68.92C119.56,70.17 119.26,72.98 119.19,74.25C119.15,74.90 119.04,75.96 118.94,76.60C118.83,77.24 118.69,78.31 118.62,78.98C118.39,81.27 117.99,84.57 117.75,86.06C117.42,88.18 117.39,88.40 117.25,89.94C117.18,90.69 117.04,91.76 116.94,92.31C116.77,93.26 116.63,94.28 116.19,97.88C116.08,98.73 115.91,100.06 115.81,100.81C115.71,101.57 115.57,102.71 115.50,103.34C115.43,103.97 115.34,104.58 115.30,104.69C115.20,104.94 114.84,105.13 114.67,105.02C114.27,104.76 114.20,104.26 113.99,100.33C113.92,98.97 113.79,97.39 113.69,96.83C113.45,95.42 113.03,91.93 112.94,90.50C112.89,89.85 112.75,88.58 112.62,87.69C112.49,86.79 112.33,85.25 112.25,84.25C112.18,83.25 112.04,81.82 111.94,81.06C111.83,80.31 111.74,79.46 111.72,79.19C111.69,78.77 111.64,78.68 111.40,78.65C111.03,78.59 110.69,78.90 110.29,79.62C110.13,79.93 109.74,80.53 109.43,80.94C109.13,81.35 108.63,82.05 108.32,82.50C108.01,82.95 107.40,83.82 106.95,84.44C106.50,85.06 105.94,85.83 105.72,86.15C105.50,86.48 105.12,87.02 104.88,87.35C104.63,87.69 104.21,88.29 103.94,88.68C103.66,89.08 103.18,89.76 102.88,90.19C102.02,91.40 101.10,92.75 100.38,93.87C99.91,94.59 98.96,95.97 98.39,96.75C98.11,97.13 97.69,97.72 97.45,98.06C96.43,99.51 95.84,100.35 95.43,100.94C95.19,101.28 94.69,101.98 94.31,102.50C93.35,103.81 92.87,104.51 91.51,106.55C90.08,108.70 89.82,109.09 89.54,109.52C89.39,109.75 89.10,110.16 88.89,110.44C88.03,111.57 87.66,112.09 87.38,112.56C87.22,112.84 86.96,113.20 86.81,113.38C86.66,113.55 86.39,113.94 86.20,114.25C86.01,114.56 85.63,115.12 85.36,115.50C85.09,115.88 84.61,116.55 84.31,117.00C84.01,117.45 83.53,118.12 83.25,118.50C82.97,118.88 82.55,119.47 82.31,119.81C82.08,120.16 81.63,120.79 81.31,121.22C81.00,121.66 80.61,122.28 80.45,122.61C80.28,122.94 80.05,123.28 79.94,123.38C79.82,123.47 79.56,123.79 79.36,124.09C79.01,124.60 78.58,124.79 78.33,124.54z"/></symbol></svg>
 <div class="menu" id="menu" role="dialog" aria-label="slyr start menu">
   <canvas id="bg" aria-hidden="true"></canvas>
   <div class="menu-inner">
-    <img class="menu-logo" src="logo.png" width="510" height="450" alt="slyr">
+    <svg class="menu-logo" viewBox="0 0 122.75 127.50" fill="currentColor" fill-rule="evenodd" role="img" aria-label="slyr"><use href="#reaper"/></svg>
     <button class="play" id="play" type="button">Play</button>
   </div>
 </div>
 <div class="app" id="app">
   <aside class="side">
-    <canvas id="sideBg" aria-hidden="true"></canvas>
-    <div class="side-body">
-    <a class="logo" href="#" aria-label="slyr home"><img src="logo.png" width="510" height="450" alt="slyr"></a>
+    <a class="logo" href="#" aria-label="slyr home"><svg viewBox="0 0 122.75 127.50" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><use href="#reaper"/></svg></a>
     <input class="search" id="search" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
     <nav aria-label="Categories">
       <p class="label">Categories</p>
       <div class="cats" id="cats"></div>
     </nav>
-    </div>
   </aside>
   <main class="grid" id="grid"><h1 class="sr-only">slyr - free browser games, play instantly</h1><noscript><p class="empty">slyr needs JavaScript to show its games as tiles. Here is the full list of free browser games you can play:</p><ul class="empty"><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/ADifficultGameAboutClimbing_Data/index.html" rel="nofollow noopener">A Difficult Game About Climbing</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/AGameAboutFeedingABlackHole/index.html" rel="nofollow noopener">A Game About Feeding a Black Hole</a></li><li><a href="https://wasm.rip/files/amongus/latest/" rel="nofollow noopener">Among Us</a></li><li><a href="https://wasm.rip/files/amongus/legacy/" rel="nofollow noopener">Among Us (Legacy)</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Balatro_Data/index.html" rel="nofollow noopener">Balatro</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/BaldisBasics_Data/index.html" rel="nofollow noopener">Baldi's Basics</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/BendyAndTheInkMachineFULL_Data/index.html" rel="nofollow noopener">Bendy and the Ink Machine</a></li><li><a href="https://vibeslops.luckeysystems.com/" rel="nofollow noopener">Black Ops 2</a></li><li><a href="https://vel.gg/bo1z" rel="nofollow noopener">BO1 Zombies</a></li><li><a href="https://cheese-cube.pages.dev/" rel="nofollow noopener">BO3 Cheese Cube</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/BoilNoodlesAtNight_Data/index.html" rel="nofollow noopener">Boil Noodles at Night</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/BrainrotOnline_Data/index.html" rel="nofollow noopener">Brainrot Online</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Brotato_Data/index.html" rel="nofollow noopener">Brotato</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/BuckshotRoulette_Data/Buckshot.html" rel="nofollow noopener">Buckshot Roulette</a></li><li><a href="https://wasm.rip/files/cheese-rolling/index.html" rel="nofollow noopener">Cheese Rolling</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Clustertruck_Data/index.html" rel="nofollow noopener">Clustertruck</a></li><li><a href="https://wasm.rip/files/cc/index.html" rel="nofollow noopener">Crashout Crew</a></li><li><a href="https://surfd.net/" rel="nofollow noopener">CS Surf</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Cuphead_Data/index.html" rel="nofollow noopener">Cuphead</a></li><li><a href="https://johnimril.github.io/diablo_web/" rel="nofollow noopener">Diablo</a></li><li><a href="https://kalakaritzu.github.io/eaglercraft/" rel="nofollow noopener">Eaglercraft</a></li><li><a href="gambonanza.html" rel="nofollow noopener">Gambonanza</a></li><li><a href="https://wasm.rip/files/granny/granny3.html" rel="nofollow noopener">Granny 3</a></li><li><a href="https://wasm.rip/files/gta3/index.html" rel="nofollow noopener">GTA III</a></li><li><a href="https://gta.deloskiyt.pl/" rel="nofollow noopener">GTA V</a></li><li><a href="https://joncodeofficial.github.io/gta-vice-city-wasm" rel="nofollow noopener">GTA Vice City</a></li><li><a href="https://pixelsuft.github.io/hl/" rel="nofollow noopener">Half Life</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HalfLife2_Data/hl2_launcher.html" rel="nofollow noopener">Half-Life 2</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HalfLifeAzureSheep_Data/index.html" rel="nofollow noopener">Half-Life: Azure Sheep</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HalfLifeBlueShift_Data/index.html" rel="nofollow noopener">Half-Life: Blue Shift</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HalfLifeDeltaParticles_Data/index.html" rel="nofollow noopener">Half-Life: Delta Particles</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HalfLifeOpposingForce_Data/index.html" rel="nofollow noopener">Half-Life: Opposing Force</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HollowKnight_Data/index.html" rel="nofollow noopener">Hollow Knight</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HollowKnightSilkSong_Data/index.html" rel="nofollow noopener">Hollow Knight: Silksong</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/HotlineMiami_Data/index.html" rel="nofollow noopener">Hotline Miami</a></li><li><a href="https://wasm.rip/files/HowToFish/HowToFish.html" rel="nofollow noopener">How to Fish</a></li><li><a href="https://wasm.rip/files/inscryption/index.html" rel="nofollow noopener">Inscryption</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Karlson_Data/index.html" rel="nofollow noopener">Karlson</a></li><li><a href="kerbal.html" rel="nofollow noopener">Kerbal Space Program</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Kindergarten1_Data/index.html" rel="nofollow noopener">Kindergarten</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Kindergarten2_Data/index.html" rel="nofollow noopener">Kindergarten 2</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Kindergarten3_Data/index.html" rel="nofollow noopener">Kindergarten 3</a></li><li><a href="https://wasm.rip/files/lethal/index.html" rel="nofollow noopener">Lethal Company</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/LobotomyCorporation_Data/index.html" rel="nofollow noopener">Lobotomy Corporation</a></li><li><a href="https://wasm.rip/files/miside/miside.html" rel="nofollow noopener">MiSide</a></li><li><a href="https://ovz-game-production.up.railway.app/" rel="nofollow noopener">Modern Warfare 2</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Nodebuster_Data/index.html" rel="nofollow noopener">Nodebuster</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Peak_Data/index.html" rel="nofollow noopener">PEAK</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/PeoplePlayground_Data/index.html" rel="nofollow noopener">People Playground</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/PlagueIncEvolved/index.html" rel="nofollow noopener">Plague Inc: Evolved</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Portal_Data/index.html" rel="nofollow noopener">Portal</a></li><li><a href="https://q1.pieter.com/" rel="nofollow noopener">Quake 1</a></li><li><a href="https://q2.pieter.com/" rel="nofollow noopener">Quake 2</a></li><li><a href="https://q3.pieter.com/" rel="nofollow noopener">Quake 3</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Ravenfield_Data/index.html" rel="nofollow noopener">Ravenfield</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/REPO_Data/index.html" rel="nofollow noopener">R.E.P.O.</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/ReRun_Data/index.html" rel="nofollow noopener">ReRun</a></li><li><a href="https://rtcw.pieter.com/" rel="nofollow noopener">Return to Castle Wolfenstein</a></li><li><a href="https://nawsif.github.io/html/rounds" rel="nofollow noopener">ROUNDS</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/SchoolboyRunaway_Data/index.html" rel="nofollow noopener">Schoolboy Runaway</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/SCPCB_Data/index.html" rel="nofollow noopener">SCP: Containment Breach</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/ShiftAtMidnight_Data/index.html" rel="nofollow noopener">Shift at Midnight</a></li><li><a href="https://skate.aaddpp.lol/" rel="nofollow noopener">Skate 3</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/SlimeRancher_Data/index.html" rel="nofollow noopener">Slime Rancher</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/SpongeGlockSquarePants_Data/index.html" rel="nofollow noopener">SpongeGlock SquarePants</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/StardewValley_Data/index.html" rel="nofollow noopener">Stardew Valley</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/ThatsNotMyNeighbor_Data/index.html" rel="nofollow noopener">That's Not My Neighbor</a></li><li><a href="https://shar-wasm.cjoseph.workers.dev/?skipmovie" rel="nofollow noopener">The Simpsons: Hit &amp; Run</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/TotallyAccurateBattleSimulator_Data/index.html" rel="nofollow noopener">Totally Accurate Battle Simulator</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Ultrakill_Data/index.html" rel="nofollow noopener">ULTRAKILL</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/Undertale_Data/index.html" rel="nofollow noopener">Undertale</a></li><li><a href="https://ut.pieter.com/" rel="nofollow noopener">Unreal Tournament</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/UntitledGooseGame_Data/index.html" rel="nofollow noopener">Untitled Goose Game</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/We%20Become%20Who%20We%20Behold/res.xc.com/main/play/30133/index.html" rel="nofollow noopener">We Become What We Behold</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/WebFishing_Data/index.html" rel="nofollow noopener">WEBFISHING</a></li><li><a href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/WhosYourDaddy/index.html" rel="nofollow noopener">Who's Your Daddy</a></li></ul></noscript></main>
 </div>
@@ -382,7 +360,7 @@ function setQuery(q){
 }
 
 function renderCats(){
-  const box=$('#cats');box.querySelectorAll('.cat').forEach(n=>n.remove());
+  const box=$('#cats');box.innerHTML='';
   CATS.forEach(c=>{
     const n=GAMES.filter(g=>inCat(g,c)).length;
     if(!n)return;
@@ -449,28 +427,29 @@ function renderGames(animate){
 }
 $('#search').addEventListener('input',e=>{setQuery(e.target.value);renderGames(true)});
 
-/* ---------- animated red contour lines (start menu + sidebar) ---------- */
-function createContours(cv,o){
-  o=Object.assign({maxDpr:1.25,fps:60,major:1.8,minor:0.9,alphaMajor:1,alphaMinor:0.8,dim:1,zoom:1,lo:[92,11,18],hi:[255,43,43],parent:false},o||{});
+/* ---------- start menu: animated red contours, then Play ---------- */
+(function(){
+  const menu=$('#menu'),app=$('#app'),play=$('#play'),cv=$('#bg');
+  if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();return}
+  app.inert=true;
   const ctx=cv.getContext('2d');
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const dpr=Math.min(window.devicePixelRatio||1,o.maxDpr);
-  let W=1,H=1,cell=8,cols=1,rows=1,field=new Float32Array(4),t=Math.random()*20,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false;
+  const dpr=Math.min(window.devicePixelRatio||1,1.25);
+  let W,H,cell,cols,rows,field,t=0,last=performance.now(),running=true;
   const LEVELS=[];for(let l=-2;l<=2.0001;l+=0.25)LEVELS.push(+l.toFixed(2));
   function resize(){
-    const w=o.parent?cv.parentElement.clientWidth:innerWidth,h=o.parent?cv.parentElement.clientHeight:innerHeight;
-    W=cv.width=Math.max(2,Math.floor(w*dpr));H=cv.height=Math.max(2,Math.floor(h*dpr));
+    W=cv.width=Math.floor(innerWidth*dpr);H=cv.height=Math.floor(innerHeight*dpr);
     cell=Math.max(6,Math.round(7*dpr));cols=Math.ceil(W/cell);rows=Math.ceil(H/cell);
     field=new Float32Array((cols+1)*(rows+1));
-    if(running)draw();
   }
+  addEventListener('resize',resize);resize();
   function fill(tt){
-    const asp=W/H,z=o.zoom;let k=0;
-    const cx=1.6*Math.cos(tt*0.21)*z,cy=1.0*Math.sin(tt*0.17)*z;
+    const asp=W/H;let k=0;
+    const cx=1.6*Math.cos(tt*0.21),cy=1.0*Math.sin(tt*0.17);
     for(let j=0;j<=rows;j++){
-      const v=((j/rows)*4-2)*z;
+      const v=(j/rows)*4-2;
       for(let i=0;i<=cols;i++){
-        const u=((i/cols)*4-2)*asp*z;
+        const u=((i/cols)*4-2)*asp;
         field[k++]=
           0.55*Math.sin(u*1.3+tt*0.40+1.5*Math.sin(v*0.9-tt*0.30))+
           0.55*Math.sin(v*1.7-tt*0.35+1.2*Math.sin(u*0.8+tt*0.25))+
@@ -500,50 +479,26 @@ function createContours(cv,o){
       }
     }
   }
-  const mix=x=>'rgb('+Math.round(o.lo[0]+(o.hi[0]-o.lo[0])*x)+','+Math.round(o.lo[1]+(o.hi[1]-o.lo[1])*x)+','+Math.round(o.lo[2]+(o.hi[2]-o.lo[2])*x)+')';
-  function draw(){
+  const mix=x=>'rgb('+Math.round(92+163*x)+','+Math.round(11+32*x)+','+Math.round(18+25*x)+')';
+  function frame(now){
+    if(!running)return;
+    const dt=Math.min(0.05,(now-last)/1000);last=now;
+    t+=dt*(calm?0.08:0.5);
     ctx.fillStyle='#060203';ctx.fillRect(0,0,W,H);
     fill(t);ctx.lineCap='round';
     for(let n=0;n<LEVELS.length;n++){
       const major=n%4===0;
       ctx.beginPath();contour(LEVELS[n]);
       ctx.strokeStyle=mix(n/(LEVELS.length-1));
-      ctx.lineWidth=(major?o.major:o.minor)*dpr;
-      ctx.globalAlpha=(major?o.alphaMajor:o.alphaMinor)*o.dim;ctx.stroke();
+      ctx.lineWidth=(major?1.8:0.9)*dpr;ctx.globalAlpha=major?1:0.8;ctx.stroke();
     }
-    ctx.globalAlpha=1;
+    ctx.globalAlpha=1;requestAnimationFrame(frame);
   }
-  function frame(now){
-    if(!running)return;
-    raf=requestAnimationFrame(frame);
-    if(now-lastDraw<1000/o.fps-2)return;
-    const dt=Math.min(0.05,(now-last)/1000);last=now;lastDraw=now;
-    t+=dt*(calm?0.08:0.5);
-    draw();
-  }
-  function run(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(frame)}
-  function halt(){running=false;cancelAnimationFrame(raf)}
-  const onVis=()=>{if(!wanted)return;if(document.hidden)halt();else run()};
-  document.addEventListener('visibilitychange',onVis);
-  let ro=null;
-  if(o.parent&&window.ResizeObserver){ro=new ResizeObserver(resize);ro.observe(cv.parentElement)}
-  else addEventListener('resize',resize);
-  resize();
-  return{
-    start(){wanted=true;draw();if(!document.hidden)run()},
-    stop(){wanted=false;halt()},
-    destroy(){wanted=false;halt();document.removeEventListener('visibilitychange',onVis);removeEventListener('resize',resize);if(ro)ro.disconnect()}
-  };
-}
-
-/* ---------- start menu, then the sidebar background ---------- */
-(function(){
-  const side=createContours($('#sideBg'),{parent:true,fps:30,dim:1,major:2.2,minor:1.2,alphaMinor:1,zoom:1.9,lo:[170,22,30],hi:[255,84,72]});
-  const menu=$('#menu'),app=$('#app'),play=$('#play'),cv=$('#bg');
-  if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();return}
-  app.inert=true;
-  const bg=createContours(cv,{});
-  bg.start();
+  document.addEventListener('visibilitychange',()=>{
+    if(!menu.isConnected)return;
+    running=!document.hidden;if(running){last=performance.now();requestAnimationFrame(frame)}
+  });
+  requestAnimationFrame(frame);
   play.focus({preventScroll:true});
 
   let left=false;
@@ -553,49 +508,13 @@ function createContours(cv,o){
     document.documentElement.classList.remove('menu-open');   /* page can scroll again */
     document.documentElement.classList.add('menu-open-leaving');
     app.inert=false;
-    side.start();                                             /* sidebar lines begin as the menu slides away */
-    const done=()=>{bg.destroy();menu.remove();document.documentElement.classList.remove('menu-open-leaving')};
+    const done=()=>{running=false;menu.remove();document.documentElement.classList.remove('menu-open-leaving')};
     if(calm){done();return}
     menu.classList.add('out');
     menu.addEventListener('transitionend',done,{once:true});
     setTimeout(()=>{if(menu.isConnected)done()},1300);       /* safety net */
   }
-  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   play.addEventListener('click',enter);
-})();
-
-/* ---------- glass bubble on the category list ---------- */
-(function(){
-  const box=$('#cats');
-  const bubble=mk('span',{className:'bubble'});bubble.setAttribute('aria-hidden','true');
-  box.prepend(bubble);
-  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let placed=false,hideT=0;
-  function place(btn,snap){
-    const row=getComputedStyle(box).flexDirection==='row',inset=row?0:8;
-    if(snap)bubble.classList.add('snap');
-    bubble.style.translate=(btn.offsetLeft+inset)+'px '+btn.offsetTop+'px';
-    bubble.style.width=Math.max(0,btn.offsetWidth-inset*2)+'px';
-    bubble.style.height=btn.offsetHeight+'px';
-    if(snap){void bubble.offsetWidth;bubble.classList.remove('snap')}
-  }
-  function show(btn){
-    if(!btn)return;
-    clearTimeout(hideT);
-    place(btn,!placed||still);              /* first appearance: no sliding in from nowhere */
-    placed=true;bubble.classList.add('show');
-  }
-  function hide(){
-    bubble.classList.remove('show','press');
-    clearTimeout(hideT);hideT=setTimeout(()=>{placed=false},320);
-  }
-  box.addEventListener('pointerover',e=>{const b=e.target.closest('.cat');if(b)show(b)});
-  box.addEventListener('pointerleave',hide);
-  box.addEventListener('focusin',e=>{const b=e.target.closest('.cat');if(b&&e.target.matches(':focus-visible'))show(b)});
-  box.addEventListener('focusout',hide);
-  box.addEventListener('pointerdown',e=>{const b=e.target.closest('.cat');if(!b)return;show(b);bubble.classList.add('press')});
-  ['pointerup','pointercancel','blur'].forEach(t=>addEventListener(t,()=>bubble.classList.remove('press')));
-
 })();
 
 renderCats();
