@@ -57,32 +57,25 @@ button{cursor:pointer}
 .cats{position:relative;display:flex;flex-direction:column;gap:0}
 .cat{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;
   padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);position:relative;z-index:1;
-  transition:background .15s,color .15s,transform .5s cubic-bezier(.34,1.56,.64,1)}
-.cat:active{transform:scale(.97);transition-duration:.15s,.15s,.12s}
+  transition:background .2s,color .2s,transform .5s cubic-bezier(.22,1,.36,1)}
+.cat:active{transform:scale(.985);transition-duration:.2s,.2s,.18s}
 .cat:hover{color:var(--ink)}
 .cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);text-shadow:none}
 .cat small{font-size:12px;opacity:.9}
-/* glass bubble: follows the hovered category, squishes when pressed, pops bubbles on click */
-.bubble{position:absolute;left:0;top:0;width:0;height:0;border-radius:16px;pointer-events:none;z-index:0;opacity:0;
-  background:linear-gradient(145deg,rgba(255,255,255,.27),rgba(255,255,255,.07) 55%,rgba(255,110,110,.14));
-  border:1px solid rgba(255,255,255,.32);
-  -webkit-backdrop-filter:blur(8px) saturate(1.7) brightness(1.15);backdrop-filter:blur(8px) saturate(1.7) brightness(1.15);
-  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.14),inset 0 0 18px rgba(255,255,255,.08),0 10px 28px rgba(0,0,0,.4),0 0 26px rgba(255,60,60,.3);
-  transition:translate .5s cubic-bezier(.16,1,.3,1),width .5s cubic-bezier(.16,1,.3,1),height .5s cubic-bezier(.16,1,.3,1),opacity .25s ease,scale .55s cubic-bezier(.34,1.56,.64,1);
+/* glass highlight: glides to the hovered category, eases down when pressed */
+.bubble{position:absolute;left:0;top:0;width:0;height:0;border-radius:12px;pointer-events:none;z-index:0;opacity:0;
+  background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.035) 62%,rgba(255,255,255,.07));
+  border:1px solid rgba(255,255,255,.15);
+  -webkit-backdrop-filter:blur(10px) saturate(1.5) brightness(.92);backdrop-filter:blur(10px) saturate(1.5) brightness(.92);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(0,0,0,.28),0 8px 22px rgba(0,0,0,.38);
+  transition:translate .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1),opacity .4s ease,scale .6s cubic-bezier(.22,1,.36,1);
   will-change:translate,width,height,scale}
-.bubble::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:.85;
-  background:radial-gradient(120% 90% at 16% 0%,rgba(255,255,255,.4),transparent 56%)}
-.bubble::after{content:"";position:absolute;left:12%;right:12%;bottom:2px;height:34%;border-radius:0 0 40% 40%;opacity:.55;
-  background:linear-gradient(to top,rgba(255,255,255,.22),transparent)}
+.bubble::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:.7;
+  background:radial-gradient(120% 90% at 14% 0%,rgba(255,255,255,.16),transparent 58%)}
 .bubble.show{opacity:1}
 .bubble.snap{transition:none}
-.bubble.press{scale:.94 .82;
-  transition:translate .5s cubic-bezier(.16,1,.3,1),width .5s cubic-bezier(.16,1,.3,1),height .5s cubic-bezier(.16,1,.3,1),opacity .25s ease,scale .14s ease-out}
-.pop{position:absolute;z-index:2;border-radius:50%;pointer-events:none;translate:-50% -50%;
-  background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.92),rgba(255,255,255,.3) 38%,rgba(255,255,255,.08) 72%);
-  border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 0 6px rgba(255,255,255,.35),0 0 10px rgba(255,80,80,.38);
-  animation:pop .95s cubic-bezier(.16,1,.3,1) both}
-@keyframes pop{from{opacity:0;transform:translate(0,0) scale(.3)}16%{opacity:1}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.15)}}
+.bubble.press{scale:.975 .93;
+  transition:translate .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1),opacity .4s ease,scale .22s cubic-bezier(.22,1,.36,1)}
 
 /* games: tiles sit edge to edge, no gaps */
 .grid{position:relative;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:var(--bg)}
@@ -603,20 +596,6 @@ function createContours(cv,o){
   box.addEventListener('pointerdown',e=>{const b=e.target.closest('.cat');if(!b)return;show(b);bubble.classList.add('press')});
   ['pointerup','pointercancel','blur'].forEach(t=>addEventListener(t,()=>bubble.classList.remove('press')));
 
-  /* a few small glass bubbles float up from where you clicked */
-  box.addEventListener('click',e=>{
-    const b=e.target.closest('.cat');
-    if(still||!b)return;
-    const r=box.getBoundingClientRect(),br=b.getBoundingClientRect();
-    const x=e.detail===0?br.left+br.width/2-r.left+box.scrollLeft:e.clientX-r.left+box.scrollLeft;
-    const y=e.detail===0?br.top+br.height/2-r.top+box.scrollTop:e.clientY-r.top+box.scrollTop;
-    for(let i=0;i<6;i++){
-      const p=mk('span',{className:'pop'}),d=6+Math.random()*10;
-      p.style.cssText='left:'+x+'px;top:'+y+'px;width:'+d+'px;height:'+d+'px;--dx:'+((Math.random()-0.5)*80).toFixed(1)+'px;--dy:'+(-(16+Math.random()*48)).toFixed(1)+'px;animation-delay:'+(i*28)+'ms';
-      p.addEventListener('animationend',()=>p.remove());
-      box.append(p);
-    }
-  });
 })();
 
 renderCats();
