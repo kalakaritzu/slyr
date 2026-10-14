@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><script>(function(){try{if(window.__nfAudioHook)return;var AC=window.AudioContext||window.webkitAudioContext;if(!AC||!window.AudioNode)return;window.__nfAudioHook=true;window.__nfAudioStreams=window.__nfAudioStreams||[];var ensureTap=function(c){if(!c.__nfTap){c.__nfTap=c.createMediaStreamDestination();window.__nfAudioStreams.push(c.__nfTap.stream);}return c.__nfTap;};var oc=window.AudioNode.prototype.connect;window.AudioNode.prototype.connect=function(d){var r=oc.apply(this,arguments);try{var c=this.context;if(c&&d===c.destination)oc.call(this,ensureTap(c));}catch(e){}return r;};var wrap=function(C){var P=function(){var c=Reflect.construct(C,arguments,P);try{ensureTap(c);}catch(e){}return c;};P.prototype=C.prototype;return P;};if(window.AudioContext)window.AudioContext=wrap(window.AudioContext);if(window.webkitAudioContext)window.webkitAudioContext=wrap(window.webkitAudioContext);}catch(e){}})();</script>
+<head><base href="https://nostaligafun.pages.dev/games/games-accualy/OTHER/"><script>(function(){try{if(window.__nfAudioHook)return;var AC=window.AudioContext||window.webkitAudioContext;if(!AC||!window.AudioNode)return;window.__nfAudioHook=true;window.__nfAudioStreams=window.__nfAudioStreams||[];var ensureTap=function(c){if(!c.__nfTap){c.__nfTap=c.createMediaStreamDestination();window.__nfAudioStreams.push(c.__nfTap.stream);}return c.__nfTap;};var oc=window.AudioNode.prototype.connect;window.AudioNode.prototype.connect=function(d){var r=oc.apply(this,arguments);try{var c=this.context;if(c&&d===c.destination)oc.call(this,ensureTap(c));}catch(e){}return r;};var wrap=function(C){var P=function(){var c=Reflect.construct(C,arguments,P);try{ensureTap(c);}catch(e){}return c;};P.prototype=C.prototype;return P;};if(window.AudioContext)window.AudioContext=wrap(window.AudioContext);if(window.webkitAudioContext)window.webkitAudioContext=wrap(window.webkitAudioContext);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nostaliga.loader</title>
+<style>
+  /* Remove default margins and ensure body & html fill the screen */
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Hide scrollbars */
+  }
+
+  /* Fullscreen iframe */
+  iframe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;   /* Full viewport width */
+    height: 100vh;  /* Full viewport height */
+    border: none;   /* Remove default border */
+  }
+</style>
+</head>
+<body>
+<iframe 
+  src="./BadParenting1_Data/index.html"
+  sandbox="allow-scripts allow-same-origin allow-pointer-lock"
+  allow="pointer-lock"
+  allowfullscreen>
+</iframe>
+</body>
+</html>
