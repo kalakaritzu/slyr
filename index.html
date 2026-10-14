@@ -44,22 +44,30 @@ button{cursor:pointer}
 :focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
 
 /* layout: sidebar on the left, games on the right */
-.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-.side{position:sticky;top:0;height:100vh;overflow:hidden;background:#060203;border-right:1px solid rgba(255,43,43,.22);color:var(--ink);--ink:#f2f2f0;--mute:#e2d0d2;--line:rgba(255,255,255,.14);--surface:rgba(6,2,3,.72);--hover:rgba(255,255,255,.09);--bg:#060203}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:hidden;background:#060203;border-right:1px solid rgba(255,43,43,.22);color:var(--ink);--ink:#f6f2ee;--mute:rgba(246,242,238,.55);--line:rgba(255,255,255,.18);--surface:transparent;--hover:transparent;--bg:#060203}
 .side canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:brightness(1.3)}
-.side-body{position:relative;z-index:1;text-shadow:0 0 7px #060203,0 0 3px #060203,0 1px 1px #060203;height:100%;overflow-y:auto;padding:22px 0;display:flex;flex-direction:column;gap:20px}
-.logo{display:block;padding:0 16px;color:var(--ink)}
-.logo svg{display:block;height:92px;width:auto}
-.search{width:calc(100% - 32px);margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s}
-.search::placeholder{color:var(--mute)}
-.search:focus{outline:none;border-color:var(--ink)}
-.label{margin:0 16px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.cats{display:flex;flex-direction:column;gap:0}
-.cat{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;
-  padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);transition:background .15s,color .15s}
-.cat:hover{background:var(--hover);color:var(--ink)}
-.cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);text-shadow:none}
-.cat small{font-size:12px;opacity:.9}
+.side-body{position:relative;z-index:1;text-shadow:0 0 7px #060203,0 0 3px #060203,0 1px 1px #060203;height:100%;overflow-y:auto;padding:44px 0 32px;display:flex;flex-direction:column;gap:34px;
+  scrollbar-width:thin;scrollbar-color:rgba(255,43,43,.4) transparent}
+.search{width:calc(100% - 56px);margin:0 28px;padding:10px 0 12px;border:0;border-bottom:2px solid var(--line);border-radius:0;background:transparent linear-gradient(#ff2b2b,#ff2b2b) left bottom/0 2px no-repeat;background-origin:border-box;
+  font:800 24px/1.1 'Bricolage Grotesque',var(--font);letter-spacing:-.03em;color:var(--ink);text-shadow:none;transition:background-size .6s cubic-bezier(.16,1,.3,1),border-color .3s ease}
+.search::placeholder{color:var(--mute);opacity:1}
+.search:focus{outline:none;background-size:100% 2px;border-bottom-color:transparent}
+.search::-webkit-search-cancel-button{filter:invert(1) opacity(.5)}
+.label{margin:0 28px 14px;font:800 12px/1 'Bricolage Grotesque',var(--font);letter-spacing:.2em;text-transform:uppercase;color:#ff2b2b}
+.cats{display:flex;flex-direction:column;gap:2px}
+.cat{display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;text-align:left;border:0;background:transparent;border-radius:0;
+  padding:5px 28px;font:800 21px/1.2 'Bricolage Grotesque',var(--font);letter-spacing:-.025em;color:var(--mute);
+  transition:color .3s ease,opacity .4s ease,transform .55s cubic-bezier(.16,1,.3,1)}
+.cat span::before{content:"";display:inline-block;width:0;height:3px;margin-right:0;vertical-align:.24em;background:#ff2b2b;
+  transition:width .5s cubic-bezier(.16,1,.3,1),margin-right .5s cubic-bezier(.16,1,.3,1)}
+.cat small{font:700 12px/1 'Bricolage Grotesque',var(--font);letter-spacing:0;opacity:.55}
+.cats:hover .cat:not(:hover){opacity:.4}
+.cat:hover{color:#fff;transform:translateX(6px)}
+.cat:hover span::before{width:14px;margin-right:9px}
+.cat[aria-pressed="true"]{color:#ff2b2b;background:transparent}
+.cat[aria-pressed="true"] span::before{width:14px;margin-right:9px}
+.cat:active{transform:translateX(6px) scale(.98)}
 
 /* games: tiles sit edge to edge, no gaps */
 .side canvas.gl,#mainBg.gl{filter:none}
@@ -82,8 +90,13 @@ button{cursor:pointer}
   background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.75) 45%,rgba(0,0,0,.35) 100%);
   opacity:0;transition:opacity .3s ease}
 .tile:hover .shade,.tile:focus-visible .shade{opacity:1}
-.tile .shade h3{margin:0;color:#fff;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15;
-  transform:translateY(10px);transition:transform .4s cubic-bezier(.2,.8,.1,1)}
+.tile .shade h3{margin:0;color:#fff;font:800 26px/1.08 'Bricolage Grotesque',var(--font);letter-spacing:-.03em;
+  transform:translateY(10px);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.tile .shade h3::before{content:"";display:block;width:38px;height:3px;margin-bottom:12px;background:#ff2b2b;transform:scaleX(0);transform-origin:left;
+  transition:transform .6s cubic-bezier(.16,1,.3,1) .06s}
+.tile:hover .shade h3::before,.tile:focus-visible .shade h3::before{transform:scaleX(1)}
+.tile::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 -4px 0 0 transparent;transition:box-shadow .4s ease}
+.tile:hover::after,.tile:focus-visible::after{box-shadow:inset 0 -4px 0 0 #ff2b2b}
 .tile:hover .shade h3,.tile:focus-visible .shade h3{transform:none}
 
 /* launch: the thumbnail grows to fill the screen, then the game loads */
@@ -92,7 +105,7 @@ html.launching,html.launching body{overflow:hidden}
 .launch.art{background:linear-gradient(135deg,hsl(var(--h) 55% 30%),hsl(calc(var(--h) + 40) 55% 18%))}
 .launch::before{content:"";position:absolute;inset:0;background:#000;opacity:0;transition:opacity .55s ease .15s}
 .launch.go::before{opacity:.62}
-.launch h3{position:absolute;left:50%;top:50%;margin:0;width:90%;text-align:center;color:#fff;font-size:clamp(28px,5vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1.1;
+.launch h3{position:absolute;left:50%;top:50%;margin:0;width:90%;text-align:center;color:#fff;font:800 clamp(30px,5.4vw,72px)/1.05 'Bricolage Grotesque',var(--font);letter-spacing:-.035em;
   opacity:0;transform:translate(-50%,-44%);transition:opacity .45s ease .4s,transform .7s cubic-bezier(.2,.8,.1,1) .4s}
 .launch.go h3{opacity:1;transform:translate(-50%,-50%)}
 .launch .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#fff;transform:scaleX(0);transform-origin:0 50%;transition:transform 3s cubic-bezier(.1,.6,.2,1) .6s}
@@ -172,27 +185,29 @@ html.menu-open,html.menu-open body{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.menu{transition:none}.menu *,.menu canvas,.menu::after{animation:none!important}.m-reaper .par{transition:none}}
 .tile[hidden],.empty[hidden]{display:none}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.empty{grid-column:1/-1;margin:0;padding:40px 24px;color:var(--mute)}
+.empty{grid-column:1/-1;margin:0;padding:64px 40px;font:800 clamp(30px,4.4vw,56px)/1.05 'Bricolage Grotesque',var(--font);letter-spacing:-.035em;color:rgba(246,242,238,.5)}
 
 /* narrow screens: sidebar turns into a bar on top */
 @media(max-width:820px){
   .app{grid-template-columns:1fr}
   .side{position:static;height:auto;border-right:0;border-bottom:1px solid rgba(255,43,43,.22)}
-  .side-body{height:auto;overflow:visible;padding:14px 16px;gap:12px}
-  .logo{padding:0}
-  .logo svg{height:46px}
-  .search{width:100%;margin:0}
+  .side-body{height:auto;overflow:visible;padding:22px 20px 14px;gap:16px}
+  .search{width:100%;margin:0;font-size:22px}
   .label{display:none}
-  .cats{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
-  .cat{width:auto;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
-  .cat[aria-pressed="true"]{border-color:var(--ink)}
+  .cats{flex-direction:row;overflow-x:auto;gap:20px;padding-bottom:6px;scrollbar-width:none}
+  .cats::-webkit-scrollbar{display:none}
+  .cat{width:auto;flex:none;padding:4px 0 6px;font-size:18px;border-bottom:3px solid transparent}
+  .cat span::before{display:none}
+  .cat:hover{transform:none}
+  .cat[aria-pressed="true"]{border-bottom-color:#ff2b2b}
 }
 @media(min-width:560px) and (max-width:959px){.grid{grid-template-columns:repeat(2,1fr)}}
 
 /* touch screens have no hover, so keep the title readable */
 @media(hover:none){
   .tile .shade{opacity:1;background:linear-gradient(to top,rgba(0,0,0,.85),transparent 55%)}
-  .tile .shade h3{transform:none;font-size:18px}
+  .tile .shade h3{transform:none;font-size:20px}
+  .tile .shade h3::before{transform:scaleX(1)}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
@@ -220,7 +235,7 @@ html.menu-open,html.menu-open body{overflow:hidden}
   <aside class="side">
     <canvas id="sideBg" aria-hidden="true"></canvas>
     <div class="side-body">
-    <input class="search" id="search" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
+    <input class="search" id="search" type="search" placeholder="search" aria-label="Search games" autocomplete="off">
     <nav aria-label="Categories">
       <p class="label">Categories</p>
       <div class="cats" id="cats"></div>
@@ -729,11 +744,21 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   play.focus({preventScroll:true});
 
   let left=false;
+  /* the games screen builds itself in under the sliding menu: search, categories and the visible tiles rise in one after another */
+  function reveal(){
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const go=(el,delay,dy)=>{if(el)el.animate([{opacity:0,transform:'translateY('+dy+'px)'},{opacity:1,transform:'none'}],{duration:1000,delay:delay,easing:EASE,fill:'backwards'})};
+    go($('#search'),480,18);go(document.querySelector('.side .label'),540,14);
+    document.querySelectorAll('#cats .cat').forEach((b,k)=>go(b,580+k*45,14));
+    let n=0;
+    tiles.forEach(tl=>{if(tl.hidden)return;if(tl.getBoundingClientRect().top<innerHeight){go(tl,500+n*70,30);n++}});
+  }
   function enter(){
     if(left)return;left=true;
     document.documentElement.classList.remove('menu-open');   /* page can scroll again */
     document.documentElement.classList.add('menu-open-leaving');
     app.inert=false;
+    reveal();
     side.start();main.start();                                /* the lines behind the page begin as the menu slides away */
     const done=()=>{bg.destroy();menu.remove();document.documentElement.classList.remove('menu-open-leaving')};
     if(calm){done();return}
