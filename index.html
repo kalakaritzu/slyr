@@ -54,12 +54,35 @@ button{cursor:pointer}
 .search::placeholder{color:var(--mute)}
 .search:focus{outline:none;border-color:var(--ink)}
 .label{margin:0 16px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.cats{display:flex;flex-direction:column;gap:0}
+.cats{position:relative;display:flex;flex-direction:column;gap:0}
 .cat{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;
-  padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);transition:background .15s,color .15s}
-.cat:hover{background:var(--hover);color:var(--ink)}
+  padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);position:relative;z-index:1;
+  transition:background .15s,color .15s,transform .5s cubic-bezier(.34,1.56,.64,1)}
+.cat:active{transform:scale(.97);transition-duration:.15s,.15s,.12s}
+.cat:hover{color:var(--ink)}
 .cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);text-shadow:none}
 .cat small{font-size:12px;opacity:.9}
+/* glass bubble: follows the hovered category, squishes when pressed, pops bubbles on click */
+.bubble{position:absolute;left:0;top:0;width:0;height:0;border-radius:16px;pointer-events:none;z-index:0;opacity:0;
+  background:linear-gradient(145deg,rgba(255,255,255,.27),rgba(255,255,255,.07) 55%,rgba(255,110,110,.14));
+  border:1px solid rgba(255,255,255,.32);
+  -webkit-backdrop-filter:blur(8px) saturate(1.7) brightness(1.15);backdrop-filter:blur(8px) saturate(1.7) brightness(1.15);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.14),inset 0 0 18px rgba(255,255,255,.08),0 10px 28px rgba(0,0,0,.4),0 0 26px rgba(255,60,60,.3);
+  transition:translate .5s cubic-bezier(.16,1,.3,1),width .5s cubic-bezier(.16,1,.3,1),height .5s cubic-bezier(.16,1,.3,1),opacity .25s ease,scale .55s cubic-bezier(.34,1.56,.64,1);
+  will-change:translate,width,height,scale}
+.bubble::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:.85;
+  background:radial-gradient(120% 90% at 16% 0%,rgba(255,255,255,.4),transparent 56%)}
+.bubble::after{content:"";position:absolute;left:12%;right:12%;bottom:2px;height:34%;border-radius:0 0 40% 40%;opacity:.55;
+  background:linear-gradient(to top,rgba(255,255,255,.22),transparent)}
+.bubble.show{opacity:1}
+.bubble.snap{transition:none}
+.bubble.press{scale:.94 .82;
+  transition:translate .5s cubic-bezier(.16,1,.3,1),width .5s cubic-bezier(.16,1,.3,1),height .5s cubic-bezier(.16,1,.3,1),opacity .25s ease,scale .14s ease-out}
+.pop{position:absolute;z-index:2;border-radius:50%;pointer-events:none;translate:-50% -50%;
+  background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.92),rgba(255,255,255,.3) 38%,rgba(255,255,255,.08) 72%);
+  border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 0 6px rgba(255,255,255,.35),0 0 10px rgba(255,80,80,.38);
+  animation:pop .95s cubic-bezier(.16,1,.3,1) both}
+@keyframes pop{from{opacity:0;transform:translate(0,0) scale(.3)}16%{opacity:1}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.15)}}
 
 /* games: tiles sit edge to edge, no gaps */
 .grid{position:relative;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:var(--bg)}
@@ -130,6 +153,7 @@ html.menu-open,html.menu-open body{overflow:hidden}
   .cats{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
   .cat{width:auto;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
   .cat[aria-pressed="true"]{border-color:var(--ink)}
+  .bubble{border-radius:999px}
 }
 @media(min-width:560px) and (max-width:959px){.grid{grid-template-columns:repeat(2,1fr)}}
 
@@ -365,7 +389,7 @@ function setQuery(q){
 }
 
 function renderCats(){
-  const box=$('#cats');box.innerHTML='';
+  const box=$('#cats');box.querySelectorAll('.cat').forEach(n=>n.remove());
   CATS.forEach(c=>{
     const n=GAMES.filter(g=>inCat(g,c)).length;
     if(!n)return;
@@ -545,6 +569,54 @@ function createContours(cv,o){
   }
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   play.addEventListener('click',enter);
+})();
+
+/* ---------- glass bubble on the category list ---------- */
+(function(){
+  const box=$('#cats');
+  const bubble=mk('span',{className:'bubble'});bubble.setAttribute('aria-hidden','true');
+  box.prepend(bubble);
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let placed=false,hideT=0;
+  function place(btn,snap){
+    const row=getComputedStyle(box).flexDirection==='row',inset=row?0:8;
+    if(snap)bubble.classList.add('snap');
+    bubble.style.translate=(btn.offsetLeft+inset)+'px '+btn.offsetTop+'px';
+    bubble.style.width=Math.max(0,btn.offsetWidth-inset*2)+'px';
+    bubble.style.height=btn.offsetHeight+'px';
+    if(snap){void bubble.offsetWidth;bubble.classList.remove('snap')}
+  }
+  function show(btn){
+    if(!btn)return;
+    clearTimeout(hideT);
+    place(btn,!placed||still);              /* first appearance: no sliding in from nowhere */
+    placed=true;bubble.classList.add('show');
+  }
+  function hide(){
+    bubble.classList.remove('show','press');
+    clearTimeout(hideT);hideT=setTimeout(()=>{placed=false},320);
+  }
+  box.addEventListener('pointerover',e=>{const b=e.target.closest('.cat');if(b)show(b)});
+  box.addEventListener('pointerleave',hide);
+  box.addEventListener('focusin',e=>{const b=e.target.closest('.cat');if(b&&e.target.matches(':focus-visible'))show(b)});
+  box.addEventListener('focusout',hide);
+  box.addEventListener('pointerdown',e=>{const b=e.target.closest('.cat');if(!b)return;show(b);bubble.classList.add('press')});
+  ['pointerup','pointercancel','blur'].forEach(t=>addEventListener(t,()=>bubble.classList.remove('press')));
+
+  /* a few small glass bubbles float up from where you clicked */
+  box.addEventListener('click',e=>{
+    const b=e.target.closest('.cat');
+    if(still||!b)return;
+    const r=box.getBoundingClientRect(),br=b.getBoundingClientRect();
+    const x=e.detail===0?br.left+br.width/2-r.left+box.scrollLeft:e.clientX-r.left+box.scrollLeft;
+    const y=e.detail===0?br.top+br.height/2-r.top+box.scrollTop:e.clientY-r.top+box.scrollTop;
+    for(let i=0;i<6;i++){
+      const p=mk('span',{className:'pop'}),d=6+Math.random()*10;
+      p.style.cssText='left:'+x+'px;top:'+y+'px;width:'+d+'px;height:'+d+'px;--dx:'+((Math.random()-0.5)*80).toFixed(1)+'px;--dy:'+(-(16+Math.random()*48)).toFixed(1)+'px;animation-delay:'+(i*28)+'ms';
+      p.addEventListener('animationend',()=>p.remove());
+      box.append(p);
+    }
+  });
 })();
 
 renderCats();
