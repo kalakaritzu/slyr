@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://slyr.pages.dev/">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#111113">
-<script>try{if(!sessionStorage.getItem("slyr:entered"))document.documentElement.classList.add("menu-open")}catch(e){document.documentElement.classList.add("menu-open")}</script>
+<script>document.documentElement.classList.add("menu-open")</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="slyr">
@@ -672,7 +672,6 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   let left=false;
   function enter(){
     if(left)return;left=true;
-    try{sessionStorage.setItem('slyr:entered','1')}catch(e){}
     document.documentElement.classList.remove('menu-open');   /* page can scroll again */
     document.documentElement.classList.add('menu-open-leaving');
     app.inert=false;
