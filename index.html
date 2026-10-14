@@ -261,7 +261,8 @@ const GAMES=[
   G('eaglercraft','Eaglercraft','https://kalakaritzu.github.io/eaglercraft/','thumbs/minecraft.jpg',['Adventure','Multiplayer']),
   G('gangbeasts','Gang Beasts','gangbeasts.html',cap(285900),['Multiplayer','Action']),
   G('slowroads','Slow Roads','slowroads.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3431300/227c316d235a0605a54bceda432375c061dbfb12/capsule_616x353.jpg',['Simulation']),
-  G('treeshateyou','Trees Hate You','treeshateyou.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4171850/e91e9662ad67f01a965b1ea764629bd63cba7c32/capsule_616x353.jpg',['Action','Adventure'])
+  G('treeshateyou','Trees Hate You','treeshateyou.html','https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4171850/e91e9662ad67f01a965b1ea764629bd63cba7c32/capsule_616x353.jpg',['Action','Adventure']),
+  G('trombonechamp','Trombone Champ','https://wasm.rip/files/tchamp/index.html',cap(1059990),['Music','Action'])
 ];
 /* always alphabetical, in every category */
 GAMES.sort((a,b)=>a.title.localeCompare(b.title,'en',{numeric:true,sensitivity:'base',ignorePunctuation:true}));
@@ -285,7 +286,7 @@ const ALIAS={
   scpcontainmentbreach:'scp cb containment breach foundation',shiftatmidnight:'night shift gas station',spongeglocksquarepants:'spongebob sponge glock square pants',
   stardewvalley:'stardew farming farm',thatsnotmyneighbor:'tnmn not my neighbour',ultrakill:'ultra kill fps',untitledgoosegame:'goose',webecomewhatwebehold:'we become who we behold',
   webfishing:'web fishing fish',whosyourdaddy:'whos your daddy baby',amongus:'among us impostor crewmate sus innersloth',amongusold:'among us impostor crewmate sus old',
-  granny3:'granny 3 granny three',gangbeasts:'gang beasts party fighting brawler blobs jelly multiplayer',slowroads:'slow roads driving drive zen endless road car relaxing chill',treeshateyou:'trees hate you forest survival lumber',eaglercraft:'minecraft mc eagler craft blocks sandbox survival mining creeper',rounds:'rounds duel fighting platformer 1v1 local multiplayer',gambonanza:'gambo nanza chess roguelike board game',lethalcompany:'lethal company scrap monsters co op',cheeserolling:'cheese rolling hill race',crashoutcrew:'crash out crew forklift co op',inscryption:'cards deck builder escape room',miside:'mi side mita',howtofish:'fishing fish guns'
+  granny3:'granny 3 granny three',trombonechamp:'trombone champ rhythm music tromboner musical songs instrument',gangbeasts:'gang beasts party fighting brawler blobs jelly multiplayer',slowroads:'slow roads driving drive zen endless road car relaxing chill',treeshateyou:'trees hate you forest survival lumber',eaglercraft:'minecraft mc eagler craft blocks sandbox survival mining creeper',rounds:'rounds duel fighting platformer 1v1 local multiplayer',gambonanza:'gambo nanza chess roguelike board game',lethalcompany:'lethal company scrap monsters co op',cheeserolling:'cheese rolling hill race',crashoutcrew:'crash out crew forklift co op',inscryption:'cards deck builder escape room',miside:'mi side mita',howtofish:'fishing fish guns'
 };
 const norm=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 GAMES.forEach(g=>{
@@ -302,7 +303,7 @@ const lev=(a,b)=>{                                   /* tiny edit distance, for 
 const hit=(g,w)=>w.length<=2?g.tok.includes(w):(g.hay.includes(w)||g.flat.includes(w));   /* 1-2 letter words must match a whole word */
 const exact=(g,words)=>words.every(w=>hit(g,w));
 const fuzzy=(g,words)=>words.every(w=>hit(g,w)||(w.length>=4&&g.tok.some(t=>lev(w,t)<=(w.length>=7?2:1))));
-const CATS=['All','Shooter','Call of Duty','Half-Life','Open World','Action','Adventure','Platformer','Horror','Puzzle','Multiplayer','Strategy','Simulation','RPG','Sports','Classic'];
+const CATS=['All','Shooter','Call of Duty','Half-Life','Open World','Action','Adventure','Platformer','Horror','Puzzle','Multiplayer','Music','Strategy','Simulation','RPG','Sports','Classic'];
 
 let query='',cat='All';
 
