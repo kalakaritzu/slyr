@@ -664,7 +664,7 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   const menu=$('#menu'),app=$('#app'),play=$('#play'),cv=$('#bg');
   if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();main.start();return}
   app.inert=true;
-  const bg=createContours(cv,{});
+  const bg=createContours(cv,{dim:0.6,gl:{dim:0.55,zoom:0.45}});
   bg.start();
   play.focus({preventScroll:true});
 
