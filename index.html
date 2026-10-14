@@ -43,16 +43,14 @@ button{cursor:pointer}
 
 /* layout: sidebar on the left, games on the right */
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-.side{position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:20px}
-.brand{display:block;padding:0;color:var(--ink)}
-.ascii{margin:0;font:11px/1 'Cascadia Mono','Cascadia Code','DejaVu Sans Mono','Segoe UI Symbol','Menlo',monospace;letter-spacing:0;white-space:pre;user-select:none;-webkit-user-select:none}
-.search{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 0;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:20px}
+.search{width:calc(100% - 32px);margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s}
 .search::placeholder{color:var(--mute)}
 .search:focus{outline:none;border-color:var(--ink)}
-.label{margin:0 8px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.cats{display:flex;flex-direction:column;gap:2px}
+.label{margin:0 16px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.cats{display:flex;flex-direction:column;gap:0}
 .cat{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;
-  padding:8px 10px;border-radius:8px;font-weight:500;color:var(--mute);transition:background .15s,color .15s}
+  padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);transition:background .15s,color .15s}
 .cat:hover{background:var(--hover);color:var(--ink)}
 .cat[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .cat small{font-size:12px;opacity:.7}
@@ -99,8 +97,8 @@ html.launching,html.launching body{overflow:hidden}
 /* narrow screens: sidebar turns into a bar on top */
 @media(max-width:820px){
   .app{grid-template-columns:1fr}
-  .ascii{font-size:6px}
   .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:14px 16px;gap:12px}
+  .search{width:100%;margin:0}
   .label{display:none}
   .cats{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
   .cat{width:auto;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
@@ -120,19 +118,6 @@ html.launching,html.launching body{overflow:hidden}
 
 <div class="app">
   <aside class="side">
-    <a class="brand" href="#" aria-label="slyr home"><pre class="ascii" aria-hidden="true">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢤⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡾⠿⢿⡀⠀⠀⠀⠀⣠⣶⣿⣷⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣦⣴⣿⡋⠀⠀⠈⢳⡄⠀⢠⣾⣿⠁⠈⣿⡆⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⠿⠛⠉⠉⠁⠀⠀⠀⠹⡄⣿⣿⣿⠀⠀⢹⡇⠀⠀⠀
-⠀⠀⠀⠀⠀⣠⣾⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⣰⣏⢻⣿⣿⡆⠀⠸⣿⠀⠀⠀
-⠀⠀⠀⢀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣆⠹⣿⣷⠀⢘⣿⠀⠀⠀
-⠀⠀⢀⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⠋⠉⠛⠂⠹⠿⣲⣿⣿⣧⠀⠀
-⠀⢠⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣿⣿⣿⣷⣾⣿⡇⢀⠀⣼⣿⣿⣿⣧⠀
-⠰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⡘⢿⣿⣿⣿⠀
-⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣷⡈⠿⢿⣿⡆
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠛⠁⢙⠛⣿⣿⣿⣿⡟⠀⡿⠀⠀⢀⣿⡇
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣶⣤⣉⣛⠻⠇⢠⣿⣾⣿⡄⢻⡇
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣦⣤⣾⣿⣿⣿⣿⣆⠁</pre></a>
     <input class="search" id="search" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
     <nav aria-label="Categories">
       <p class="label">Categories</p>
