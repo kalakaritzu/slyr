@@ -143,8 +143,8 @@
     </div>
 
     <script>
-      const COMMIT_REF = "0a620ab";
-      const REPO_PATH = "AlexBoops/GangBeast-WebPort";
+      const COMMIT_REF = "4943afe";
+      const REPO_PATH = "teaserlua/GangBeast-WebPort";
 
       // Primary CDN and Fallback CDN Mirrors
       const CDN_BASES = [
@@ -188,16 +188,18 @@
       // Tries multiple CDN mirrors if jsDelivr throws 404/403/429
       async function fetchBufferWithMirrors(relativePath) {
         let lastError = null;
+        // jsDelivr refuses files over 50 MB, so the single wasm file skips it
+        const bases = relativePath.endsWith(".wasm") ? CDN_BASES.filter(u => !u.includes("jsdelivr")) : CDN_BASES;
 
-        for (let b = 0; b < CDN_BASES.length; b++) {
-          const fullUrl = CDN_BASES[b] + relativePath;
+        for (let b = 0; b < bases.length; b++) {
+          const fullUrl = bases[b] + relativePath;
           for (let attempt = 1; attempt <= 2; attempt++) {
             try {
               const res = await fetch(attempt === 1 ? fullUrl : `${fullUrl}?t=${Date.now()}`);
               if (res.ok) {
                 return await res.arrayBuffer();
               }
-              if (res.status === 404 && b < CDN_BASES.length - 1) {
+              if (res.status === 404 && b < bases.length - 1) {
                 // If 404, move straight to the fallback mirror
                 break;
               }
@@ -283,15 +285,10 @@
         return await downloadAndMergePartsWithDetails(relPaths, "DATA", dataSizeHint, onProgress);
       }
 
-      // 2. Load 4 WASM Chunks
+      // 2. Load the WASM file
       async function loadWasmMerged(onProgress) {
-        const wasmPaths = [
-          "Build/WebGLValidation.wasm.part1",
-          "Build/WebGLValidation.wasm.part2",
-          "Build/WebGLValidation.wasm.part3",
-          "Build/WebGLValidation.wasm.part4"
-        ];
-        const wasmSizeHint = 50 * 1024 * 1024;
+        const wasmPaths = ["Build/WebGLValidation.wasm"];
+        const wasmSizeHint = 72 * 1024 * 1024;
         return await downloadAndMergePartsWithDetails(wasmPaths, "WASM", wasmSizeHint, onProgress);
       }
 
@@ -307,7 +304,7 @@
             progressBarFull.style.width = (ratio * 55).toFixed(1) + "%";
           });
 
-          // Phase 2: Download & Merge 4 WASM chunks (55% -> 80% overall progress)
+          // Phase 2: Download the WASM file (55% -> 80% overall progress)
           wasmBlobUrl = await loadWasmMerged((loaded, total, ratio) => {
             progressBarFull.style.width = (55 + ratio * 25).toFixed(1) + "%";
           });
@@ -321,7 +318,7 @@
             dataUrl: dataBlobUrl,
             frameworkUrl: CDN_BASES[0] + "Build/WebGLValidation.framework.js",
             codeUrl: wasmBlobUrl,
-            streamingAssetsUrl: CDN_BASES[0] + "StreamingAssets",
+            streamingAssetsUrl: CDN_BASES[1] + "StreamingAssets",
             companyName: "Boneloaf",
             productName: "Gang Beasts",
             productVersion: "1.0",
