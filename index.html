@@ -53,6 +53,9 @@ button{cursor:pointer}
 .search{width:calc(100% - 32px);margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s}
 .search::placeholder{color:var(--mute)}
 .search:focus{outline:none;border-color:var(--ink)}
+.home{display:flex;align-items:center;gap:9px;margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600;color:var(--ink);transition:background .15s,border-color .15s}
+.home svg{width:16px;height:16px;flex:none;fill:currentColor}
+.home:hover{background:var(--hover);border-color:var(--ink)}
 .label{margin:0 16px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 .cats{display:flex;flex-direction:column;gap:0}
 .cat{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;
@@ -190,6 +193,7 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
   .logo{padding:0}
   .logo svg{height:46px}
   .search{width:100%;margin:0}
+  .home{margin:0}
   .label{display:none}
   .cats{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
   .cat{width:auto;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
@@ -228,6 +232,7 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
   <aside class="side">
     <canvas id="sideBg" aria-hidden="true"></canvas>
     <div class="side-body">
+    <a class="home" id="home" href="./" aria-label="Back to the start screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 12h3v8h5v-6h4v6h5v-8h3z"/></svg>Home</a>
     <input class="search" id="search" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
     <nav aria-label="Categories">
       <p class="label">Categories</p>
