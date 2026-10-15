@@ -68,7 +68,27 @@
         <div id="loader-status">0%</div>
     </div>
     <script>
-        const BASE = "https://cdn.jsdelivr.net/gh/thirstygithub/fugglelatougin@main/Build/";
+        // The game files live in thirstygithub/fugglelatougin. jsDelivr sometimes answers big files with a
+        // 200 "429: Too Many Requests" page, so every piece is size-checked and retried on other mirrors.
+        const REPO = "thirstygithub/fugglelatougin";
+        const REF = "64b65ba";
+        const BASES = [
+            `https://cdn.jsdelivr.net/gh/${REPO}@${REF}/Build/`,
+            `https://raw.githubusercontent.com/${REPO}/${REF}/Build/`,
+            `https://cdn.jsdelivr.net/gh/${REPO}@main/Build/`,
+            `https://raw.githubusercontent.com/${REPO}/main/Build/`
+        ];
+        const SIZES = {
+            "TreesHateYou_Web.data.br.part0": 20971520,
+            "TreesHateYou_Web.data.br.part1": 20971520,
+            "TreesHateYou_Web.data.br.part2": 20971520,
+            "TreesHateYou_Web.data.br.part3": 20971520,
+            "TreesHateYou_Web.data.br.part4": 480614,
+            "TreesHateYou_Web.wasm.br.part0": 20971520,
+            "TreesHateYou_Web.wasm.br.part1": 20971520,
+            "TreesHateYou_Web.wasm.br.part2": 20971520,
+            "TreesHateYou_Web.wasm.br.part3": 7433037
+        };
         const loaderStatus = document.getElementById('loader-status');
         const progressFill = document.getElementById('progress-fill');
         const customLoader = document.getElementById('custom-loader');
@@ -81,16 +101,33 @@
             }
         }
 
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        // Returns the file's bytes from the first mirror that gives a complete, valid copy
+        async function fetchVerified(name) {
+            const expected = SIZES[name];
+            for (const base of BASES) {
+                for (let attempt = 1; attempt <= 2; attempt++) {
+                    try {
+                        const r = await fetch(base + name + (attempt > 1 ? "?t=" + Date.now() : ""));
+                        if (r.ok) {
+                            const buf = await r.arrayBuffer();
+                            const head = new TextDecoder().decode(new Uint8Array(buf, 0, Math.min(4, buf.byteLength)));
+                            if (expected ? buf.byteLength === expected : (buf.byteLength > 0 && head !== "429:")) return buf;
+                        }
+                    } catch (e) { /* try the next copy */ }
+                    await sleep(300 * attempt);
+                }
+            }
+            throw new Error("Failed: " + name);
+        }
+
         async function fetchChunks(name, parts, progressStart, progressEnd) {
             const buffers = [];
             let total = 0;
             for (let i = 0; i < parts; i++) {
-                const pct = progressStart + ((i / parts) * (progressEnd - progressStart));
-                updateProgress(pct);
-                
-                const r = await fetch(BASE + name + ".part" + i);
-                if (!r.ok) throw new Error("Failed: " + name + ".part" + i);
-                const buf = await r.arrayBuffer();
+                updateProgress(progressStart + ((i / parts) * (progressEnd - progressStart)));
+                const buf = await fetchVerified(name + ".part" + i);
                 buffers.push(buf);
                 total += buf.byteLength;
             }
@@ -106,18 +143,8 @@
                 const dataUrl = URL.createObjectURL(new Blob([dataBytes]));
 
                 updateProgress(45);
-                const r = await fetch(BASE + "TreesHateYou_Web.framework.js.br");
-                const fwBytes = await r.arrayBuffer();
-                const fwText = new TextDecoder().decode(fwBytes);
-                await new Promise((resolve, reject) => {
-                    const s = document.createElement("script");
-                    s.textContent = fwText;
-                    s.onerror = reject;
-                    document.head.appendChild(s);
-                    resolve();
-                });
-                const fwUrl = URL.createObjectURL(new Blob([""], { type: "application/javascript" }));
-                
+                const fwUrl = URL.createObjectURL(new Blob([await fetchVerified("TreesHateYou_Web.framework.js.br")], { type: "application/javascript" }));
+
                 const wasmBytes = await fetchChunks("TreesHateYou_Web.wasm.br", 4, 50, 90);
                 const wasmUrl = URL.createObjectURL(new Blob([wasmBytes], { type: "application/wasm" }));
 
@@ -136,24 +163,25 @@
                 };
 
                 updateProgress(92);
-                const loaderRes = await fetch(BASE + "TreesHateYou_Web.loader.js");
-                const loaderText = await loaderRes.text();
+                const loaderUrl = URL.createObjectURL(new Blob([await fetchVerified("TreesHateYou_Web.loader.js")], { type: "application/javascript" }));
                 const script = document.createElement("script");
-                script.textContent = loaderText;
+                script.src = loaderUrl;
+                script.onerror = () => { loaderStatus.innerText = "Error"; console.error("Could not start the Unity loader"); };
+                script.onload = () => {
+                    updateProgress(95);
+                    createUnityInstance(canvas, config, (progress) => {
+                        updateProgress(95 + (progress * 5));
+                    }).then((unityInstance) => {
+                        updateProgress(100);
+                        customLoader.style.opacity = '0';
+                        setTimeout(() => customLoader.style.display = 'none', 300);
+                    }).catch((message) => {
+                        loaderStatus.innerText = "Error";
+                        console.error(message);
+                        alert(message);
+                    });
+                };
                 document.head.appendChild(script);
-
-                updateProgress(95);
-                
-                createUnityInstance(canvas, config, (progress) => {
-                    updateProgress(95 + (progress * 5));
-                }).then((unityInstance) => {
-                    updateProgress(100);
-                    customLoader.style.opacity = '0';
-                    setTimeout(() => customLoader.style.display = 'none', 300);
-                }).catch((message) => {
-                    loaderStatus.innerText = "Error";
-                    alert(message);
-                });
 
             } catch(err) {
                 loaderStatus.innerText = "Error";
