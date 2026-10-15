@@ -100,15 +100,18 @@ html.launching,html.launching body{overflow:hidden}
 
 /* start menu */
 .menu{display:none;position:fixed;inset:0;z-index:200;background:#060203;overflow:hidden;
-  transition:transform .9s cubic-bezier(.16,1,.3,1)}
+  transition:opacity 1.3s cubic-bezier(.33,1,.68,1)}
 html.menu-open .menu,html.menu-open-leaving .menu{display:block}
 html.menu-open,html.menu-open body{overflow:hidden}
-.menu.out{transform:translateY(-100%)}
-.menu.exit .m-title .l span{transform:translateY(-125%) rotate(-5deg);transition:transform .7s cubic-bezier(.16,1,.3,1) calc(var(--i)*.05s)}
-.menu.exit .m-link .t{transform:translateY(-125%);transition:transform .7s cubic-bezier(.16,1,.3,1) calc(.12s + var(--n)*.07s)}
-.menu.exit .m-gh{opacity:0;transform:translateY(-12px);transition:opacity .45s ease-out,transform .6s cubic-bezier(.16,1,.3,1)}
-.menu.exit .m-reaper{opacity:0;transform:translateY(14%);transition:opacity .7s ease-out .05s,transform .9s cubic-bezier(.16,1,.3,1)}
-.menu.exit .m-embers,.menu.exit .m-glow{opacity:0;transition:opacity .6s ease-out}
+.menu.out{opacity:0;pointer-events:none}
+.menu.exit .m-title .l span{transform:translateY(-118%);transition:transform 1s cubic-bezier(.25,1,.5,1) calc(var(--i)*.05s)}
+.menu.exit .m-link .t{transform:translateY(-118%);transition:transform 1s cubic-bezier(.25,1,.5,1) calc(.1s + var(--n)*.07s)}
+.menu.exit .m-gh{opacity:0;transform:translateY(-10px);transition:opacity .7s cubic-bezier(.33,1,.68,1) .1s,transform 1s cubic-bezier(.25,1,.5,1) .1s}
+.menu.exit .m-reaper{opacity:0;transform:translateY(8%);transition:opacity 1s cubic-bezier(.33,1,.68,1) .1s,transform 1.3s cubic-bezier(.25,1,.5,1) .1s}
+.menu.exit .m-embers,.menu.exit .m-glow{opacity:0;transition:opacity .9s cubic-bezier(.33,1,.68,1)}
+.menu.exit .m-reaper svg,.menu.exit .m-reaper .back,.menu.exit .m-embers i{animation-play-state:paused}
+.app{background:#060203}
+html.bgin .side canvas,html.bgin #mainBg{animation:m-fade 2s cubic-bezier(.33,1,.68,1) backwards}
 .menu canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:blur(5px) brightness(.8);transform:scale(1.04);
   animation:m-fade 1.8s ease-out backwards}
 .menu::after{content:"";position:absolute;inset:0;pointer-events:none;
@@ -738,40 +741,42 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   let left=false;
   function enter(){
     if(left)return;left=true;
-    document.documentElement.classList.remove('menu-open');   /* page can scroll again */
-    document.documentElement.classList.add('menu-open-leaving');
+    const root=document.documentElement;
+    root.classList.remove('menu-open');                       /* page can scroll again */
+    root.classList.add('menu-open-leaving');
     app.inert=false;
-    side.start();main.start();                                /* the lines behind the page begin as the menu slides away */
-    const done=()=>{bg.destroy();menu.remove();document.documentElement.classList.remove('menu-open-leaving')};
-    if(calm){done();return}
-    menu.classList.add('exit');                               /* title, buttons and reaper leave first, each on its own */
-    setTimeout(()=>{
-      menu.classList.add('out');                              /* then the panel lifts away */
-      reveal();                                               /* and the page builds itself underneath */
-      menu.addEventListener('transitionend',e=>{if(e.target===menu&&e.propertyName==='transform')done()});
-    },420);
-    setTimeout(()=>{if(menu.isConnected)done()},2400);       /* safety net */
+    bg.stop();                                                /* one animated background at a time keeps every frame smooth */
+    const done=()=>{bg.destroy();menu.remove();root.classList.remove('menu-open-leaving')};
+    const lines=()=>{root.classList.add('bgin');side.start();main.start()};
+    if(calm){done();side.start();main.start();return}
+    menu.classList.add('exit');                               /* title, words and reaper drift away, each on its own */
+    setTimeout(()=>{menu.classList.add('out');reveal()},380); /* the panel dissolves while the page builds itself underneath */
+    setTimeout(lines,1000);                                   /* the topo behind the page fades in last */
+    menu.addEventListener('transitionend',e=>{if(e.target===menu&&e.propertyName==='opacity'&&menu.classList.contains('out'))done()});
+    setTimeout(()=>{if(menu.isConnected)done()},3200);        /* safety net */
   }
-  /* sidebar pieces and the visible tiles come in one after another, each rising into place while its picture settles */
+  /* everything on the page fades in with a long, soft ease-out; position and opacity are separate animations so neither feels abrupt */
+  const SOFT='cubic-bezier(.25,1,.5,1)',FADE='cubic-bezier(.33,1,.68,1)';
+  function appear(el,delay,dx,dy,dur){
+    if(!el)return;
+    el.animate([{opacity:0},{opacity:1}],{duration:dur*.75,delay:delay,easing:FADE,fill:'backwards'});
+    if(dx||dy)el.animate([{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'none'}],{duration:dur,delay:delay,easing:SOFT,fill:'backwards'});
+  }
   function reveal(){
-    const rise=(el,delay,dx,dy,s)=>el&&el.animate(
-      [{opacity:0,transform:'translate('+dx+'px,'+dy+'px) scale('+s+')'},{opacity:1,transform:'none'}],
-      {duration:1200,delay:delay,easing:EASE,fill:'backwards'});
-    const side_=document.querySelector('.side');
-    if(side_)side_.animate([{opacity:0,transform:'translateX(-40px)'},{opacity:1,transform:'none'}],{duration:1100,delay:80,easing:EASE,fill:'backwards'});
-    rise($('#search'),260,-22,0,1);
-    rise(document.querySelector('.side .label'),330,-22,0,1);
-    document.querySelectorAll('#cats .cat').forEach((b,k)=>rise(b,380+k*45,-26,0,1));
+    appear(document.querySelector('.side'),0,0,0,1300);
+    appear($('#search'),380,-16,0,1500);
+    appear(document.querySelector('.side .label'),460,-16,0,1500);
+    document.querySelectorAll('#cats .cat').forEach((b,k)=>appear(b,540+k*55,-18,0,1500));
     const vh=innerHeight,gr=$('#grid').getBoundingClientRect();
     const seen=tiles.filter(tl=>!tl.hidden&&tl.getBoundingClientRect().top<vh);
-    const colW=seen.length&&seen[0].getBoundingClientRect().width||1;
+    const first=seen.length?seen[0].getBoundingClientRect():null;
     seen.forEach(tl=>{
       const r=tl.getBoundingClientRect();
-      const col=Math.round((r.left-gr.left)/colW),row=Math.round(r.top/(r.height||1));
-      const delay=300+(row*2+col)*110;                          /* a diagonal wave from the top left */
-      rise(tl,delay,0,44,.965);
+      const col=Math.round((r.left-gr.left)/(first.width||1)),row=Math.round((r.top-first.top)/(first.height||1));
+      const delay=420+(row*2+col)*90;                         /* a soft diagonal wave from the top left */
+      appear(tl,delay,0,26,1700);
       const im=tl.querySelector('img');
-      if(im)im.animate([{transform:'scale(1.16)'},{transform:'none'}],{duration:1800,delay:delay,easing:EASE,fill:'backwards'});
+      if(im)im.animate([{transform:'scale(1.07)'},{transform:'none'}],{duration:2400,delay:delay,easing:SOFT,fill:'backwards'});
     });
   }
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
