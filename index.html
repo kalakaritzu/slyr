@@ -364,6 +364,7 @@ const norm=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[
 GAMES.forEach(g=>{
   g.hay=norm(g.title+' '+(ALIAS[g.id]||'')+' '+g.tags.join(' '));
   g.flat=g.hay.replace(/ /g,'');
+  g.title0=norm(g.title);
   g.tok=[...new Set(g.hay.split(' '))];
 });
 const lev=(a,b)=>{                                   /* tiny edit distance, for typos */
@@ -372,9 +373,11 @@ const lev=(a,b)=>{                                   /* tiny edit distance, for 
   for(let i=1;i<=m;i++){const cur=[i];for(let j=1;j<=n;j++)cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));prev=cur}
   return prev[n];
 };
-const hit=(g,w)=>w.length<=2?g.tok.includes(w):(g.hay.includes(w)||g.flat.includes(w));   /* 1-2 letter words must match a whole word */
-const exact=(g,words)=>words.every(w=>hit(g,w));
-const fuzzy=(g,words)=>words.every(w=>hit(g,w)||(w.length>=4&&g.tok.some(t=>lev(w,t)<=(w.length>=7?2:1))));
+const hit=(g,w,solo)=>w.length<=2
+  ?(solo?(g.title0.startsWith(w)||g.tok.includes(w)):g.tok.some(t=>t.startsWith(w)))   /* 1-2 letters: alone, the title must start with it (a -> Among Us, u -> Undertale); in a longer search it can start any word */
+  :(g.hay.includes(w)||g.flat.includes(w));
+const exact=(g,words)=>words.every(w=>hit(g,w,words.length===1));
+const fuzzy=(g,words)=>words.every(w=>hit(g,w,words.length===1)||(w.length>=4&&g.tok.some(t=>lev(w,t)<=(w.length>=7?2:1))));
 const CATS=['All','Shooter','Call of Duty','Half-Life','Open World','Action','Adventure','Platformer','Horror','Puzzle','Multiplayer','Music','Strategy','Simulation','RPG','Sports','Classic'];
 
 let query='',cat='All';
