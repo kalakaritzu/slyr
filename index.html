@@ -734,6 +734,7 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   const menu=$('#menu'),app=$('#app'),play=$('#play'),cv=$('#bg');
   if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();main.start();return}
   app.inert=true;
+  tiles.slice(0,18).forEach(tl=>{const im=tl.querySelector('img');if(im){im.loading='eager';if(im.decode)im.decode().catch(()=>{})}});
   const bg=createContours(cv,{dim:0.6,gl:{dim:0.55,zoom:0.45}});
   bg.start();
   play.focus({preventScroll:true});
@@ -742,16 +743,13 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   function enter(){
     if(left)return;left=true;
     const root=document.documentElement;
-    root.classList.remove('menu-open');                       /* page can scroll again */
-    root.classList.add('menu-open-leaving');
     app.inert=false;
-    bg.stop();                                                /* one animated background at a time keeps every frame smooth */
-    const done=()=>{bg.destroy();menu.remove();root.classList.remove('menu-open-leaving')};
-    const lines=()=>{root.classList.add('bgin');side.start();main.start()};
-    if(calm){done();side.start();main.start();return}
+    side.start();main.start();                                /* the topo behind the page is already moving, so nothing underneath is ever black or empty */
+    const done=()=>{bg.destroy();menu.remove();root.classList.remove('menu-open')};   /* the page stays unscrollable until the end, so no scrollbar can jolt the layout */
+    if(calm){done();return}
     menu.classList.add('exit');                               /* title, words and reaper drift away, each on its own */
-    setTimeout(()=>{menu.classList.add('out');reveal()},380); /* the panel lifts away while the page builds itself underneath */
-    setTimeout(lines,1000);                                   /* the topo behind the page wipes in last */
+    setTimeout(()=>{menu.classList.add('out');reveal()},300); /* the panel lifts away while the page builds itself underneath */
+    setTimeout(()=>bg.stop(),1400);                           /* the menu's own topo keeps moving until the panel is out of sight */
     menu.addEventListener('transitionend',e=>{if(e.target===menu&&e.propertyName==='transform'&&menu.classList.contains('out'))done()});
     setTimeout(()=>{if(menu.isConnected)done()},3200);        /* safety net */
   }
