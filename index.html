@@ -99,7 +99,7 @@ html.launching,html.launching body{overflow:hidden}
 .launch.go .bar{transform:scaleX(.92)}
 
 /* start menu */
-.menu{display:none;position:fixed;inset:0;z-index:200;background:#060203;overflow:hidden;
+.menu{display:none;position:fixed;inset:0;z-index:200;background:#060203;overflow:hidden;will-change:transform;
   transition:transform .95s cubic-bezier(.22,1,.36,1)}
 html.menu-open .menu,html.menu-open-leaving .menu{display:block}
 html.menu-open,html.menu-open body{overflow:hidden}
@@ -743,13 +743,12 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   function enter(){
     if(left)return;left=true;
     const root=document.documentElement;
-    app.inert=false;
-    side.start();main.start();                                /* the topo behind the page is already moving, so nothing underneath is ever black or empty */
+    app.inert=false;                                          /* the topo behind the page was drawn once while the menu showed, so nothing underneath is ever black */
     const done=()=>{bg.destroy();menu.remove();root.classList.remove('menu-open')};   /* the page stays unscrollable until the end, so no scrollbar can jolt the layout */
-    if(calm){done();return}
+    if(calm){done();side.start();main.start();return}
     menu.classList.add('exit');                               /* title, words and reaper drift away, each on its own */
     menu.classList.add('out');reveal();                       /* the panel lifts away at once while the page builds itself underneath */
-    setTimeout(()=>bg.stop(),1100);                           /* the menu's own topo keeps moving until the panel is out of sight */
+    setTimeout(()=>{bg.stop();side.start();main.start()},800);   /* the new topos start moving only once the panel has almost left, so no frame ever has to do two jobs */
     menu.addEventListener('transitionend',e=>{if(e.target===menu&&e.propertyName==='transform'&&menu.classList.contains('out'))done()});
     setTimeout(()=>{if(menu.isConnected)done()},2400);        /* safety net */
   }
@@ -774,6 +773,8 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
     });
   }
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* draw the page's topo once, early and out of sight, so starting it later costs nothing; the picture stays on the canvas */
+  if(!calm)setTimeout(()=>{if(left)return;side.start();main.start();requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!left){side.stop();main.stop()}}))},1600);
   play.addEventListener('click',enter);
   addEventListener('keydown',()=>document.documentElement.classList.add('kb'),{once:true});
   if(!calm){
