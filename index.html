@@ -36,7 +36,7 @@
   color-scheme:dark;
 }}
 *,*::before,*::after{box-sizing:border-box}
-html{background:var(--bg)}
+html{background:#060203;scrollbar-gutter:stable}   /* the scrollbar's space stays reserved, so locking and unlocking scroll never shifts the layout sideways */
 body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.5 var(--font);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button,input{font:inherit;color:inherit}
@@ -112,12 +112,12 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .menu.exit .m-gh{transform:translateY(-70px);transition:transform .8s cubic-bezier(.22,1,.36,1)}
 .menu.exit .m-reaper{transform:translateY(112%);transition:transform .9s cubic-bezier(.22,1,.36,1)}
 .menu.exit .m-reaper svg,.menu.exit .m-reaper .back,.menu.exit .m-embers i{animation-play-state:paused}
-/* coming back from the games: the same moves played in reverse, easing in gently and settling softly */
-.menu.back{transition:transform .8s cubic-bezier(.45,0,.2,1)}
-.menu.back .m-title .l span{transition:transform .7s cubic-bezier(.45,0,.2,1) calc((3 - var(--i))*.03s)}
-.menu.back .m-link .t{transition:transform .7s cubic-bezier(.45,0,.2,1) calc((2 - var(--n))*.04s)}
-.menu.back .m-gh{transition:transform .7s cubic-bezier(.45,0,.2,1)}
-.menu.back .m-reaper{transition:transform .8s cubic-bezier(.45,0,.2,1)}
+/* parked above the screen, the start screen runs nothing at all */
+.menu.out *,.menu.out::after{animation-play-state:paused!important}
+/* coming back from the games: the start screen drops over the page like a curtain, with a soft shadow along its edge */
+.menu.back{transition:transform .72s cubic-bezier(.45,0,.1,1);box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.menu.back .m-gh{transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.menu.back .m-reaper{transition:transform .8s cubic-bezier(.16,1,.3,1)}
 .app{background:#060203}
 @keyframes m-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
 html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,1,.36,1) backwards}
@@ -527,14 +527,14 @@ function createContours2D(cv,o){
   const ctx=cv.getContext('2d');
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const dpr=Math.min(window.devicePixelRatio||1,o.maxDpr);
-  let W=1,H=1,cell=8,cols=1,rows=1,field=new Float32Array(4),t=Math.random()*20,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false;
+  let W=1,H=1,cell=8,cols=1,rows=1,field=new Float32Array(4),t=Math.random()*20,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false,painted=false;
   const LEVELS=[];for(let l=-2;l<=2.0001;l+=0.25)LEVELS.push(+l.toFixed(2));
   function resize(){
     const w=o.parent?cv.parentElement.clientWidth:innerWidth,h=o.parent?cv.parentElement.clientHeight:innerHeight;
     W=cv.width=Math.max(2,Math.floor(w*dpr));H=cv.height=Math.max(2,Math.floor(h*dpr));
     cell=Math.max(6,Math.round(7*dpr));cols=Math.ceil(W/cell);rows=Math.ceil(H/cell);
     field=new Float32Array((cols+1)*(rows+1));
-    if(running)draw();
+    if(running||painted)draw();            /* resizing wipes a canvas, so repaint even while paused */
   }
   function fill(tt){
     const asp=W/H,z=o.zoom;let k=0;
@@ -574,6 +574,7 @@ function createContours2D(cv,o){
   }
   const mix=x=>'rgb('+Math.round(o.lo[0]+(o.hi[0]-o.lo[0])*x)+','+Math.round(o.lo[1]+(o.hi[1]-o.lo[1])*x)+','+Math.round(o.lo[2]+(o.hi[2]-o.lo[2])*x)+')';
   function draw(){
+    painted=true;
     ctx.fillStyle='#060203';ctx.fillRect(0,0,W,H);
     fill(t);ctx.lineCap='round';
     for(let n=0;n<LEVELS.length;n++){
@@ -604,6 +605,7 @@ function createContours2D(cv,o){
   return{
     start(){wanted=true;draw();if(!document.hidden)run()},
     stop(){wanted=false;halt()},
+    ensure(){if(!painted)draw()},          /* one picture if there has never been one, and nothing more */
     destroy(){wanted=false;halt();document.removeEventListener('visibilitychange',onVis);removeEventListener('resize',resize);if(ro)ro.disconnect()}
   };
 }
@@ -699,15 +701,16 @@ function createTopoGL(cv,o){
   gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
   const uRes=gl.getUniformLocation(prog,'res'),uT=gl.getUniformLocation(prog,'t'),uI=gl.getUniformLocation(prog,'inten'),uS=gl.getUniformLocation(prog,'uvs');
-  let t=40+Math.random()*30,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false;
+  let t=40+Math.random()*30,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false,painted=false;
   function resize(){
     const w=o.parent?cv.parentElement.clientWidth:innerWidth,h=o.parent?cv.parentElement.clientHeight:innerHeight;
     const k=Math.min(window.devicePixelRatio||1,1)*o.scale;       /* lines are soft anyway, so a lighter render is fine */
     cv.width=Math.max(2,Math.floor(w*k));cv.height=Math.max(2,Math.floor(h*k));
     gl.viewport(0,0,cv.width,cv.height);
-    if(wanted)draw();
+    if(wanted||painted)draw();             /* resizing wipes a canvas, so repaint even while paused */
   }
   function draw(){
+    painted=true;
     gl.uniform2f(uRes,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform1f(uI,o.dim);gl.uniform1f(uS,3.2*o.zoom);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   }
@@ -730,6 +733,7 @@ function createTopoGL(cv,o){
   return{
     start(){wanted=true;draw();if(!document.hidden)run()},
     stop(){wanted=false;halt()},
+    ensure(){if(!painted)draw()},          /* one picture if there has never been one, and nothing more */
     destroy(){
       wanted=false;halt();document.removeEventListener('visibilitychange',onVis);removeEventListener('resize',resize);if(ro)ro.disconnect();
       const lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();
@@ -756,69 +760,56 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
     if(left||busy)return;left=true;busy=true;
     const root=document.documentElement;
     app.inert=false;                                          /* the topo behind the page was drawn once while the menu showed, so nothing underneath is ever black */
+    side.ensure();main.ensure();                              /* and if nothing drew it yet, it is drawn now, before the first frame of the reveal */
     let fin=false,onEnd=null;
     /* the panel is not thrown away: it stays parked above the screen, ready to come back down */
-    const done=()=>{if(fin)return;fin=true;if(onEnd)menu.removeEventListener('transitionend',onEnd);bg.destroy();
+    const done=()=>{if(fin)return;fin=true;if(onEnd)menu.removeEventListener('transitionend',onEnd);bg.stop();
       root.classList.remove('menu-open');root.classList.add('menu-open-leaving');menu.inert=true;busy=false};   /* the page stays unscrollable until the end, so no scrollbar can jolt the layout */
     if(calm){menu.classList.add('out');done();side.start();main.start();return}
-    menu.classList.add('exit');                               /* title, words and reaper drift away, each on its own */
-    menu.classList.add('out');reveal();                       /* the panel lifts away at once while the page builds itself underneath */
-    setTimeout(()=>{bg.stop();side.start();main.start()},800);   /* the new topos start moving only once the panel has almost left, so no frame ever has to do two jobs */
-    onEnd=e=>{if(e.target===menu&&e.propertyName==='transform'&&menu.classList.contains('out'))done()};
-    menu.addEventListener('transitionend',onEnd);
-    setTimeout(done,2400);                                    /* safety net */
+    /* the click's own frame can be a heavy one while the page wakes up, so the motion starts two frames later and begins cleanly */
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      menu.classList.add('exit');                             /* title, words and reaper drift away, each on its own */
+      menu.classList.add('out');reveal();                     /* the panel lifts away at once while the page builds itself underneath */
+      setTimeout(()=>{bg.stop();side.start()},800);           /* the page's two moving backgrounds start only once the panel has almost left, one at a time, so no frame has to do two jobs */
+      setTimeout(()=>main.start(),1150);
+      onEnd=e=>{if(e.target===menu&&e.propertyName==='transform'&&menu.classList.contains('out'))done()};
+      menu.addEventListener('transitionend',onEnd);
+    }));
+    setTimeout(done,2600);                                    /* safety net */
   }
 
-  /* the way back: the start screen drops down again while the page leaves the way it arrived */
-  const pageAnims=[];
-  function unreveal(){
-    const K=.8,EI='cubic-bezier(.45,0,.2,1)';                 /* a little quicker than the way in, with a gentle start and a soft landing */
-    const items=[];
-    const add=(el,delay,dur,from,to)=>{if(el)items.push({el,delay,dur,from,to})};
-    add(document.querySelector('.side'),0,950,[{transform:'none'},{transform:'translateX(-100%)'}]);
-    add($('#search'),40,950,[{transform:'none'},{transform:'translateX(-260px)'}]);
-    add(document.querySelector('.side .label'),80,950,[{transform:'none'},{transform:'translateX(-260px)'}]);
-    document.querySelectorAll('#cats .cat').forEach((b,k)=>add(b,100+k*26,950,[{transform:'none'},{transform:'translateX(-260px)'}]));
-    const vh=innerHeight,gr=$('#grid').getBoundingClientRect();
-    const seen=tiles.filter(tl=>!tl.hidden&&tl.getBoundingClientRect().top<vh);
-    const first=seen.length?seen[0].getBoundingClientRect():null;
-    seen.forEach(tl=>{
-      const r=tl.getBoundingClientRect();
-      const col=Math.round((r.left-gr.left)/(first.width||1)),row=Math.round((r.top-first.top)/(first.height||1));
-      const delay=60+(row*2+col)*55;
-      add(tl,delay,1000,[{clipPath:'inset(0 0 0 0)'},{clipPath:'inset(100% 0 0 0)'}]);
-      const im=tl.querySelector('img');
-      if(im)add(im,delay,1300,[{transform:'none'},{transform:'translateY(18%) scale(1.14)'}]);
-    });
-    const total=Math.max(...items.map(i=>i.delay+i.dur));
-    items.forEach(i=>{      /* whatever arrived last now leaves first, and everything ends together */
-      pageAnims.push(i.el.animate(i.from.length?i.from:[],{duration:i.dur*K,delay:(total-i.delay-i.dur)*K,easing:EI,fill:'forwards'}));
-    });
+  /* the way back: the page stays still and sinks back a little while the start screen drops over it like a curtain;
+     as it lands, the title and words rise in with the same intro the site opens with. Only transforms move. */
+  const RISE='cubic-bezier(.16,1,.3,1)';
+  function intro(){
+    menu.classList.remove('exit');            /* the gh link and the reaper glide in on their own; the letters and words are replayed below */
+    menu.querySelectorAll('.m-title .l span').forEach((el,i)=>el.animate([{transform:'translateY(112%) rotate(7deg)'},{transform:'none'}],{duration:700,delay:40+i*45,easing:RISE,fill:'backwards'}));
+    menu.querySelectorAll('.m-link .t').forEach((el,n)=>el.animate([{transform:'translateY(112%) rotate(7deg)'},{transform:'none'}],{duration:680,delay:180+n*55,easing:RISE,fill:'backwards'}));
   }
   function goHome(){
     if(!left||busy)return;busy=true;
     const root=document.documentElement;
     app.inert=true;
-    /* the old background canvas gave up its drawing surface when the menu left, so it gets a fresh one */
-    const old=$('#bg'),nv=mk('canvas',{id:'bg'});nv.setAttribute('aria-hidden','true');old.replaceWith(nv);
-    bg=createContours(nv,BGOPT);bg.start();
+    side.stop();main.stop();                                  /* the page's moving lines pause (their last picture stays), so the graphics card only has the curtain to do */
+    bg.start();requestAnimationFrame(()=>requestAnimationFrame(()=>bg.stop()));   /* the menu's own picture is refreshed once, then held still until it has landed */
     let fin=false,onBack=null;
     const finish=()=>{if(fin)return;fin=true;if(onBack)menu.removeEventListener('transitionend',onBack);
       menu.classList.remove('back');
-      pageAnims.splice(0).forEach(a=>a.cancel());
       root.classList.remove('menu-open-leaving');root.classList.add('menu-open');
-      scrollTo(0,0);side.stop();main.stop();
-      left=false;busy=false;menu.inert=false;play.focus({preventScroll:true})};
-    if(calm){menu.classList.remove('out','exit');finish();return}
+      scrollTo(0,0);
+      bg.start();                                             /* the lines behind the menu start moving again once everything has settled */
+      left=false;menu.inert=false;play.focus({preventScroll:true});
+      setTimeout(()=>{busy=false},900)};                      /* Ports stays locked until the title has finished rising */
+    if(calm){menu.classList.remove('out','exit');finish();busy=false;return}
     root.classList.add('menu-open-leaving');
     void menu.offsetWidth;                                    /* commit the parked state so the transitions start from it */
     menu.inert=false;
     menu.classList.add('back');
-    menu.classList.remove('out','exit');                      /* the panel drops; title, words and reaper move back in, each on its own */
-    unreveal();
+    menu.classList.remove('out');                             /* the curtain drops; the words stay hidden above until it is nearly down */
+    setTimeout(intro,260);
     onBack=e=>{if(e.target===menu&&e.propertyName==='transform'&&!menu.classList.contains('out'))finish()};
     menu.addEventListener('transitionend',onBack);
-    setTimeout(finish,2200);                                  /* safety net */
+    setTimeout(finish,1800);                                  /* safety net */
   }
   const homeBtn=$('#home');
   if(homeBtn)homeBtn.addEventListener('click',e=>{
@@ -840,9 +831,7 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
       const r=tl.getBoundingClientRect();
       const col=Math.round((r.left-gr.left)/(first.width||1)),row=Math.round((r.top-first.top)/(first.height||1));
       const delay=60+(row*2+col)*55;                        /* a diagonal wave from the top left */
-      tl.animate([{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0 0 0 0)'}],{duration:1000,delay:delay,easing:EO,fill:'backwards'});
-      const im=tl.querySelector('img');
-      if(im)im.animate([{transform:'translateY(18%) scale(1.14)'},{transform:'none'}],{duration:1300,delay:delay,easing:EO,fill:'backwards'});
+      tl.animate([{transform:'translateY(48px)'},{transform:'none'}],{duration:1000,delay:delay,easing:EO,fill:'backwards'});
     });
   }
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
