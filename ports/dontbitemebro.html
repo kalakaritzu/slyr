@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Don't Bite Me Bro!</title>
+    <link rel="stylesheet" href="dontbitemebro/TemplateData/style.css">
+    <script src="dontbitemebro/TemplateData/UnityProgress.js"></script>
+    <script src="dontbitemebro/UnityLoader.js"></script>
+    <style>
+        #loadingMessage {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background: #171717;
+            color: white;
+            font: 18px Arial, sans-serif;
+            text-align: center;
+            padding: 0 20px;
+            z-index: 9999;
+        }
+        #loadingBar { width: min(320px, 80vw); height: 8px; background: rgba(255,255,255,.15); border-radius: 4px; overflow: hidden; }
+        #loadingFill { width: 0%; height: 100%; background: #4caf50; transition: width .2s linear; }
+        #loadingDetail { font-size: 13px; color: rgba(255,255,255,.6); min-height: 1.2em; }
+        #loadingCredit { position: absolute; bottom: 14px; font-size: 12px; color: rgba(255,255,255,.4); }
+        #loadingRetry { display: none; margin-top: 4px; padding: 8px 18px; border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; border-radius: 999px; cursor: pointer; font: 14px Arial, sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="loadingMessage">
+        <div id="loadingText">Preparing game files...</div>
+        <div id="loadingBar"><div id="loadingFill"></div></div>
+        <div id="loadingDetail"></div>
+        <button id="loadingRetry" type="button" onclick="location.reload()">Try again</button>
+        <div id="loadingCredit">Port by Noob_God2729</div>
+    </div>
+    <div class="webgl-content">
+        <div id="gameContainer"></div>
+    </div>
+
+    <script>
+        let gameInstance;
+
+        // The game files live in usheje883-maker/Better-Dont-Bite-Me-Bro-Webport. The CDN sometimes answers big
+        // files with an error page, so every piece is size-checked and retried on the next copy.
+        const REPO = "usheje883-maker/Better-Dont-Bite-Me-Bro-Webport";
+        const REF = "cb477a5";
+        const BASES = [
+            `https://cdn.jsdelivr.net/gh/${REPO}@${REF}/`,
+            `https://raw.githubusercontent.com/${REPO}/${REF}/`,
+            `https://cdn.jsdelivr.net/gh/${REPO}@main/`,
+            `https://raw.githubusercontent.com/${REPO}/main/`
+        ];
+        const B = "Build/Bite_me_bro_web.";
+        const SIZES = {
+            [B + "data.unityweb.part000"]: 20971520,
+            [B + "data.unityweb.part001"]: 20971520,
+            [B + "data.unityweb.part002"]: 20971520,
+            [B + "data.unityweb.part003"]: 8796718,
+            [B + "wasm.code.unityweb.part000"]: 20971520,
+            [B + "wasm.code.unityweb.part001"]: 5430603,
+            [B + "wasm.framework.unityweb"]: 775818,
+            [B + "json"]: 636
+        };
+        const TOTAL = Object.values(SIZES).reduce((a, b) => a + b, 0);
+        let loaded = 0;
+
+        const $ = id => document.getElementById(id);
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        const mb = n => (n / 1048576).toFixed(0);
+
+        // One complete, correctly sized file from the first copy that works
+        async function fetchVerified(path) {
+            const expected = SIZES[path];
+            for (const base of BASES) {
+                for (let attempt = 1; attempt <= 2; attempt++) {
+                    try {
+                        const r = await fetch(base + path + (attempt > 1 ? "?t=" + Date.now() : ""));
+                        if (r.ok) {
+                            const buf = await r.arrayBuffer();
+                            if (buf.byteLength === expected) {
+                                loaded += buf.byteLength;
+                                const pct = Math.min(100, loaded / TOTAL * 100);
+                                $("loadingFill").style.width = pct.toFixed(1) + "%";
+                                $("loadingDetail").textContent = mb(loaded) + " MB of " + mb(TOTAL) + " MB";
+                                return buf;
+                            }
+                        }
+                    } catch (e) { /* try the next copy */ }
+                    await sleep(300 * attempt);
+                }
+            }
+            throw new Error("Could not load " + path);
+        }
+
+        async function loadParts(basePath, count) {
+            const parts = [];
+            let totalSize = 0;
+            for (let i = 0; i < count; i++) {
+                const data = await fetchVerified(basePath + ".part" + String(i).padStart(3, "0"));
+                parts.push(data);
+                totalSize += data.byteLength;
+            }
+            const combined = new Uint8Array(totalSize);
+            let offset = 0;
+            for (const part of parts) {
+                combined.set(new Uint8Array(part), offset);
+                offset += part.byteLength;
+            }
+            return URL.createObjectURL(new Blob([combined], { type: "application/octet-stream" }));
+        }
+
+        async function StartGame() {
+            try {
+                $("loadingText").textContent = "Downloading the game...";
+
+                const dataFile = await loadParts(B + "data.unityweb", 4);
+                const wasmCode = await loadParts(B + "wasm.code.unityweb", 2);
+                const wasmFramework = URL.createObjectURL(new Blob([await fetchVerified(B + "wasm.framework.unityweb")], { type: "application/octet-stream" }));
+                const config = JSON.parse(new TextDecoder().decode(await fetchVerified(B + "json")));
+
+                // The old-browser (asm.js) files are only used when WebAssembly is missing, so they are left on the CDN
+                const cdn = BASES[1];
+                config.dataUrl = dataFile;
+                config.wasmCodeUrl = wasmCode;
+                config.wasmFrameworkUrl = wasmFramework;
+                config.asmCodeUrl = cdn + B + "asm.code.unityweb";
+                config.asmMemoryUrl = cdn + B + "asm.memory.unityweb";
+                config.asmFrameworkUrl = cdn + B + "asm.framework.unityweb";
+                config.streamingAssetsUrl = cdn + "StreamingAssets";
+
+                const configBlob = URL.createObjectURL(new Blob([JSON.stringify(config)], { type: "application/json" }));
+
+                $("loadingMessage").remove();
+
+                gameInstance = UnityLoader.instantiate("gameContainer", configBlob, { onProgress: UnityProgress });
+
+                function Resize() {
+                    if (document.fullscreenElement || document.webkitFullscreenElement) return;
+                    const container = document.getElementById("gameContainer");
+                    if (gameInstance && gameInstance.Module && gameInstance.Module.setCanvasSize) {
+                        gameInstance.Module.setCanvasSize(container.clientWidth, container.clientHeight);
+                    }
+                }
+                function FullscreenChanged() {
+                    if (!document.fullscreenElement && !document.webkitFullscreenElement) Resize();
+                }
+                window.addEventListener("resize", Resize);
+                document.addEventListener("fullscreenchange", FullscreenChanged);
+                document.addEventListener("webkitfullscreenchange", FullscreenChanged);
+
+            } catch (error) {
+                const text = $("loadingText");
+                if (text) {
+                    text.textContent = "Game loading failed: " + error.message;
+                    $("loadingRetry").style.display = "block";
+                }
+                console.error(error);
+            }
+        }
+
+        StartGame();
+    </script>
+</body>
+</html>
