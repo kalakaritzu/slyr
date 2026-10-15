@@ -162,15 +162,61 @@
         }
       }
 
-      var cdnBase = "https://cdn.jsdelivr.net/gh/AlexBoops/Gambonanza-Port@main/Build";
-
-      var chunkMap = {
-        "data": { count: 5, prefix: cdnBase + "/Downloads.data.part" },
-        "wasm": { count: 3, prefix: cdnBase + "/Downloads.wasm.part" }
+      // The game files live in AlexBoops/Gambonanza-Port. jsDelivr refuses some of the big pieces (403),
+      // so GitHub's raw host goes first and every piece is size-checked before it is used.
+      var REPO = "AlexBoops/Gambonanza-Port";
+      var REF = "b99dbb5";
+      var MIRRORS = [
+        "https://raw.githubusercontent.com/" + REPO + "/" + REF + "/Build/",
+        "https://cdn.jsdelivr.net/gh/" + REPO + "@" + REF + "/Build/",
+        "https://raw.githubusercontent.com/" + REPO + "/main/Build/",
+        "https://cdn.jsdelivr.net/gh/" + REPO + "@main/Build/"
+      ];
+      var SIZES = {
+        "Downloads.data.part1": 19922944, "Downloads.data.part2": 19922944, "Downloads.data.part3": 19922944,
+        "Downloads.data.part4": 19922944, "Downloads.data.part5": 16329076,
+        "Downloads.wasm.part1": 19922944, "Downloads.wasm.part2": 19922944, "Downloads.wasm.part3": 11820785
       };
 
+      var chunkMap = {
+        "data": { count: 5, prefix: "Downloads.data.part" },
+        "wasm": { count: 3, prefix: "Downloads.wasm.part" }
+      };
+
+      function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+
+      // Whole small file (framework, loader) from the first mirror that returns something valid
+      async function fetchSmall(name) {
+        for (var m = 0; m < MIRRORS.length; m++) {
+          try {
+            var r = await fetch(MIRRORS[m] + name);
+            if (r.ok) {
+              var buf = await r.arrayBuffer();
+              if (buf.byteLength > 1000) return buf;
+            }
+          } catch (e) { /* try the next mirror */ }
+        }
+        throw new Error("Failed to load " + name);
+      }
+
       // Stream fetcher tracking total bytes and download speed
-      async function fetchChunkWithProgress(url, onChunkProgress) {
+      async function fetchChunkWithProgress(name, onChunkProgress) {
+        var expected = SIZES[name];
+        for (var m = 0; m < MIRRORS.length; m++) {
+          for (var attempt = 1; attempt <= 2; attempt++) {
+            var got = 0;
+            try {
+              var buf = await fetchChunkFrom(MIRRORS[m] + name + (attempt > 1 ? "?t=" + Date.now() : ""), function(n, t) { got += n; onChunkProgress(n, t); });
+              if (!expected || buf.byteLength === expected) return buf;
+            } catch (e) { /* fall through and retry */ }
+            if (got) onChunkProgress(-got, 0);   // take the failed attempt back out of the counters
+            await sleep(300 * attempt);
+          }
+        }
+        throw new Error("Failed to load chunk: " + name);
+      }
+
+      async function fetchChunkFrom(url, onChunkProgress) {
         var response = await fetch(url);
         if (!response.ok) throw new Error("Failed to load chunk: " + url);
 
@@ -207,20 +253,20 @@
         var bytesLoadedInStage = 0;
 
         for (var i = 1; i <= chunkInfo.count; i++) {
-          var partUrl = chunkInfo.prefix + i;
+          var partName = chunkInfo.prefix + i;
 
-          var buffer = await fetchChunkWithProgress(partUrl, function(chunkBytes, chunkTotal) {
+          var buffer = await fetchChunkWithProgress(partName, function(chunkBytes, chunkTotal) {
             bytesLoadedInStage += chunkBytes;
 
             var currentTime = performance.now();
             var duration = (currentTime - startTime) / 1000; // seconds
             var speedMBps = duration > 0 ? ((bytesLoadedInStage / (1024 * 1024)) / duration).toFixed(1) : "0.0";
 
-            var currentMB = (bytesLoadedInStage / (1024 * 1024)).toFixed(1);
+            var currentMB = Math.max(0, bytesLoadedInStage / (1024 * 1024)).toFixed(1);
             
             // Calculate progress for current stage
             var stageProgress = (i - 1 + (chunkTotal ? (chunkBytes / chunkTotal) : 0.5)) / chunkInfo.count;
-            var globalPercent = Math.min(100, Math.round(globalStartWeight + (stageProgress * (globalEndWeight - globalStartWeight))));
+            var globalPercent = Math.max(0, Math.min(100, Math.round(globalStartWeight + (stageProgress * (globalEndWeight - globalStartWeight)))));
 
             mbText.innerText = currentMB + " MB (Chunk " + i + "/" + chunkInfo.count + ")";
             speedText.innerText = speedMBps + " MB/s";
@@ -247,12 +293,13 @@
         mbText.innerText = "Decompressing WASM...";
         speedText.innerText = "Local";
 
-        var loaderUrl = cdnBase + "/Downloads.loader.js";
+        var loaderUrl = URL.createObjectURL(new Blob([await fetchSmall("Downloads.loader.js")], { type: "application/javascript" }));
+        var frameworkUrl = URL.createObjectURL(new Blob([await fetchSmall("Downloads.framework.js")], { type: "application/javascript" }));
 
         var config = {
           arguments: [],
           dataUrl: dataBlobUrl,
-          frameworkUrl: cdnBase + "/Downloads.framework.js",
+          frameworkUrl: frameworkUrl,
           codeUrl: wasmBlobUrl,
           companyName: "Blukulele",
           productName: "GamboNanza",
