@@ -100,18 +100,18 @@ html.launching,html.launching body{overflow:hidden}
 
 /* start menu */
 .menu{display:none;position:fixed;inset:0;z-index:200;background:#060203;overflow:hidden;
-  transition:opacity 1.3s cubic-bezier(.33,1,.68,1)}
+  transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
 html.menu-open .menu,html.menu-open-leaving .menu{display:block}
 html.menu-open,html.menu-open body{overflow:hidden}
-.menu.out{opacity:0;pointer-events:none}
-.menu.exit .m-title .l span{transform:translateY(-118%);transition:transform 1s cubic-bezier(.25,1,.5,1) calc(var(--i)*.05s)}
-.menu.exit .m-link .t{transform:translateY(-118%);transition:transform 1s cubic-bezier(.25,1,.5,1) calc(.1s + var(--n)*.07s)}
-.menu.exit .m-gh{opacity:0;transform:translateY(-10px);transition:opacity .7s cubic-bezier(.33,1,.68,1) .1s,transform 1s cubic-bezier(.25,1,.5,1) .1s}
-.menu.exit .m-reaper{opacity:0;transform:translateY(8%);transition:opacity 1s cubic-bezier(.33,1,.68,1) .1s,transform 1.3s cubic-bezier(.25,1,.5,1) .1s}
-.menu.exit .m-embers,.menu.exit .m-glow{opacity:0;transition:opacity .9s cubic-bezier(.33,1,.68,1)}
+.menu.out{transform:translateY(-100%);pointer-events:none}
+.menu.exit .m-title .l span{transform:translateY(-118%);transition:transform 1.1s cubic-bezier(.22,1,.36,1) calc(var(--i)*.05s)}
+.menu.exit .m-link .t{transform:translateY(-118%);transition:transform 1.1s cubic-bezier(.22,1,.36,1) calc(.1s + var(--n)*.07s)}
+.menu.exit .m-gh{transform:translateY(-70px);transition:transform 1.1s cubic-bezier(.22,1,.36,1) .1s}
+.menu.exit .m-reaper{transform:translateY(112%);transition:transform 1.3s cubic-bezier(.22,1,.36,1) .05s}
 .menu.exit .m-reaper svg,.menu.exit .m-reaper .back,.menu.exit .m-embers i{animation-play-state:paused}
 .app{background:#060203}
-html.bgin .side canvas,html.bgin #mainBg{animation:m-fade 2s cubic-bezier(.33,1,.68,1) backwards}
+@keyframes m-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,1,.36,1) backwards}
 .menu canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:blur(5px) brightness(.8);transform:scale(1.04);
   animation:m-fade 1.8s ease-out backwards}
 .menu::after{content:"";position:absolute;inset:0;pointer-events:none;
@@ -750,33 +750,29 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
     const lines=()=>{root.classList.add('bgin');side.start();main.start()};
     if(calm){done();side.start();main.start();return}
     menu.classList.add('exit');                               /* title, words and reaper drift away, each on its own */
-    setTimeout(()=>{menu.classList.add('out');reveal()},380); /* the panel dissolves while the page builds itself underneath */
-    setTimeout(lines,1000);                                   /* the topo behind the page fades in last */
-    menu.addEventListener('transitionend',e=>{if(e.target===menu&&e.propertyName==='opacity'&&menu.classList.contains('out'))done()});
+    setTimeout(()=>{menu.classList.add('out');reveal()},380); /* the panel lifts away while the page builds itself underneath */
+    setTimeout(lines,1000);                                   /* the topo behind the page wipes in last */
+    menu.addEventListener('transitionend',e=>{if(e.target===menu&&e.propertyName==='transform'&&menu.classList.contains('out'))done()});
     setTimeout(()=>{if(menu.isConnected)done()},3200);        /* safety net */
   }
-  /* everything on the page fades in with a long, soft ease-out; position and opacity are separate animations so neither feels abrupt */
-  const SOFT='cubic-bezier(.25,1,.5,1)',FADE='cubic-bezier(.33,1,.68,1)';
-  function appear(el,delay,dx,dy,dur){
-    if(!el)return;
-    el.animate([{opacity:0},{opacity:1}],{duration:dur*.75,delay:delay,easing:FADE,fill:'backwards'});
-    if(dx||dy)el.animate([{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'none'}],{duration:dur,delay:delay,easing:SOFT,fill:'backwards'});
-  }
+  /* everything on the page moves into place with a long ease-out; nothing fades */
+  const EO='cubic-bezier(.22,1,.36,1)';
+  const slide=(el,delay,from,dur)=>{if(el)el.animate([{transform:from},{transform:'none'}],{duration:dur,delay:delay,easing:EO,fill:'backwards'})};
   function reveal(){
-    appear(document.querySelector('.side'),0,0,0,1300);
-    appear($('#search'),380,-16,0,1500);
-    appear(document.querySelector('.side .label'),460,-16,0,1500);
-    document.querySelectorAll('#cats .cat').forEach((b,k)=>appear(b,540+k*55,-18,0,1500));
+    slide(document.querySelector('.side'),0,'translateX(-100%)',1400);
+    slide($('#search'),300,'translateX(-260px)',1400);
+    slide(document.querySelector('.side .label'),380,'translateX(-260px)',1400);
+    document.querySelectorAll('#cats .cat').forEach((b,k)=>slide(b,440+k*50,'translateX(-260px)',1400));
     const vh=innerHeight,gr=$('#grid').getBoundingClientRect();
     const seen=tiles.filter(tl=>!tl.hidden&&tl.getBoundingClientRect().top<vh);
     const first=seen.length?seen[0].getBoundingClientRect():null;
     seen.forEach(tl=>{
       const r=tl.getBoundingClientRect();
       const col=Math.round((r.left-gr.left)/(first.width||1)),row=Math.round((r.top-first.top)/(first.height||1));
-      const delay=420+(row*2+col)*90;                         /* a soft diagonal wave from the top left */
-      appear(tl,delay,0,26,1700);
+      const delay=420+(row*2+col)*100;                        /* a diagonal wave from the top left */
+      tl.animate([{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0 0 0 0)'}],{duration:1400,delay:delay,easing:EO,fill:'backwards'});
       const im=tl.querySelector('img');
-      if(im)im.animate([{transform:'scale(1.07)'},{transform:'none'}],{duration:2400,delay:delay,easing:SOFT,fill:'backwards'});
+      if(im)im.animate([{transform:'translateY(18%) scale(1.14)'},{transform:'none'}],{duration:1900,delay:delay,easing:EO,fill:'backwards'});
     });
   }
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
