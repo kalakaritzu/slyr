@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<base href="https://cdn.jsdelivr.net/gh/tinklegames/mp-web@9793b91/docs/">
+
+	<script>
+	/* The CDN sometimes refuses big files (403/429) or answers with a tiny error page. When that happens the same file is
+	   fetched again from GitHub's own servers, and the other way round. */
+	(function(){
+	  var of=window.fetch.bind(window);
+	  var jd=/^https:\/\/cdn\.jsdelivr\.net\/gh\/([^\/@]+)\/([^\/@]+)@([^\/]+)\/(.*)$/;
+	  var raw=/^https:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)$/;
+	  var BINARY=/\.(part[-.\w]*|unityweb|wasm|data|pck|dat|bin|unx|mp4)(\?.*)?$/i;
+	  function alt(u){
+	    var m=jd.exec(u); if(m) return "https://raw.githubusercontent.com/"+m[1]+"/"+m[2]+"/"+m[3]+"/"+m[4];
+	    m=raw.exec(u); if(m) return "https://cdn.jsdelivr.net/gh/"+m[1]+"/"+m[2]+"@"+m[3]+"/"+m[4];
+	    return null;
+	  }
+	  function bad(r,u){
+	    if(!r.ok) return true;
+	    var cl=+r.headers.get("content-length");
+	    return !!(cl&&cl<2000&&BINARY.test(u));
+	  }
+	  window.fetch=function(input,init){
+	    var u=typeof input==="string"?input:(input instanceof URL?input.href:(input&&input.url));
+	    var a=u&&alt(u);
+	    if(!a) return of(input,init);
+	    return of(input,init).then(function(r){
+	      if(!bad(r,u)) return r;
+	      return of(a,init).then(function(r2){ return bad(r2,u)?r:r2; },function(){ return r; });
+	    },function(e){
+	      return of(a,init).catch(function(){ throw e; });
+	    });
+	  };
+	})();
+	</script>
+
+
+	<meta
+		name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0"
+	>
+
+	<title>Machine Party</title>
+
+	<style>
+		html,
+		body,
+		#canvas {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+		}
+
+		body {
+			color: white;
+			background-color: black;
+			overflow: hidden;
+			touch-action: none;
+		}
+
+		#canvas {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+
+		#canvas:focus {
+			outline: none;
+		}
+
+		#status {
+			position: absolute;
+			inset: 0;
+			background: black;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			z-index: 100;
+		}
+
+		#status-splash {
+			max-height: 100%;
+			max-width: 100%;
+			margin: auto;
+		}
+
+		#status-splash.show-image--false {
+			display: none;
+		}
+
+		#status-loading-text {
+			color: white;
+			font-family: Arial, sans-serif;
+			font-size: 24px;
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		#status-progress {
+			width: 50%;
+			max-width: 600px;
+		}
+
+		#status-notice {
+			display: none;
+			background-color: #5b3943;
+			border: 1px solid #9b3943;
+			border-radius: 0.5rem;
+			color: #e0e0e0;
+			font-family: Arial, sans-serif;
+			margin: 2rem;
+			padding: 1rem;
+			white-space: pre-wrap;
+			text-align: center;
+		}
+	</style>
+
+	<link rel="icon" type="image/png" href="index.icon.png">
+	<link rel="apple-touch-icon" href="index.apple-touch-icon.png">
+</head>
+
+<body>
+	<canvas id="canvas">
+		Your browser does not support the canvas tag.
+	</canvas>
+
+	<noscript>
+		Your browser does not support JavaScript.
+	</noscript>
+
+	<div id="status">
+		<img
+			id="status-splash"
+			class="show-image--false"
+			src="index.png"
+			alt=""
+		>
+
+		<div id="status-loading-text">
+			Loading Machine Party...
+		</div>
+
+		<progress id="status-progress" value="0" max="1"></progress>
+		<div id="status-notice"></div>
+	</div>
+
+	<script src="index.js"></script>
+
+	<script>
+		const GODOT_CONFIG = {
+			args: [],
+			canvasResizePolicy: 2,
+			emscriptenPoolSize: 8,
+			ensureCrossOriginIsolationHeaders: false,
+			executable: "index",
+			experimentalVK: false,
+			fileSizes: {
+				"index.pck": 636530976,
+				"index.wasm": 36157734
+			},
+			focusCanvas: true,
+			gdextensionLibs: [],
+			godotPoolSize: 4
+		};
+
+		const GODOT_THREADS_ENABLED = false;
+
+		const CHUNK_BASE =
+			"https://raw.githubusercontent.com/tinklegames/mp-web/9793b91/docs/";
+
+		function makePartNames(prefix, count) {
+			const parts = [];
+
+			for (let i = 0; i < count; i++) {
+				parts.push(
+					prefix +
+					String(i).padStart(3, "0")
+				);
+			}
+
+			return parts;
+		}
+
+		const WASM_PARTS =
+			makePartNames(
+				"index.wasm.part-",
+				3
+			);
+
+		const PCK_PARTS =
+			makePartNames(
+				"index.pck.part-",
+				41
+			);
+
+		const statusOverlay =
+			document.getElementById("status");
+
+		const statusProgress =
+			document.getElementById("status-progress");
+
+		const statusNotice =
+			document.getElementById("status-notice");
+
+		const loadingText =
+			document.getElementById("status-loading-text");
+
+		function setLoadingText(text) {
+			loadingText.textContent = text;
+		}
+
+		function setProgress(current, total) {
+			if (total <= 0) {
+				statusProgress.removeAttribute("value");
+				statusProgress.removeAttribute("max");
+				return;
+			}
+
+			statusProgress.max = total;
+			statusProgress.value = current;
+		}
+
+		function showError(error) {
+			console.error(error);
+
+			loadingText.style.display = "none";
+			statusProgress.style.display = "none";
+			statusNotice.style.display = "block";
+
+			let message;
+
+			if (error instanceof Error) {
+				message = error.message;
+			} else {
+				message = String(error);
+			}
+
+			statusNotice.textContent =
+				"Failed to load Machine Party:\n\n" +
+				message;
+		}
+
+		async function downloadSplitFile(
+			partNames,
+			expectedSize,
+			label,
+			overallStart,
+			overallTotal
+		) {
+			const output =
+				new Uint8Array(expectedSize);
+
+			let writeOffset = 0;
+
+			for (let i = 0; i < partNames.length; i++) {
+				const partName = partNames[i];
+				const partURL = CHUNK_BASE + partName;
+
+				setLoadingText(
+					`${label} ${i + 1}/${partNames.length}`
+				);
+
+				console.log(`Downloading ${partURL}`);
+
+				const response = await fetch(
+					partURL,
+					{ cache: "no-cache" }
+				);
+
+				if (!response.ok) {
+					throw new Error(
+						`Could not download ${partName} ` +
+						`(${response.status} ${response.statusText})`
+					);
+				}
+
+				const partBuffer = await response.arrayBuffer();
+				const partArray = new Uint8Array(partBuffer);
+
+				if (
+					writeOffset +
+					partArray.byteLength >
+					output.byteLength
+				) {
+					throw new Error(
+						`${partName} makes ${label} larger than expected.`
+					);
+				}
+
+				output.set(partArray, writeOffset);
+				writeOffset += partArray.byteLength;
+
+				setProgress(
+					overallStart + i + 1,
+					overallTotal
+				);
+			}
+
+			if (writeOffset !== expectedSize) {
+				throw new Error(
+					`${label} size mismatch.\n` +
+					`Expected: ${expectedSize} bytes\n` +
+					`Downloaded: ${writeOffset} bytes`
+				);
+			}
+
+			console.log(
+				`${label} reconstructed successfully:`,
+				writeOffset,
+				"bytes"
+			);
+
+			return output.buffer;
+		}
+
+		function getRequestURL(resource) {
+			if (typeof resource === "string") {
+				return resource;
+			}
+
+			if (resource instanceof URL) {
+				return resource.href;
+			}
+
+			if (resource instanceof Request) {
+				return resource.url;
+			}
+
+			return String(resource);
+		}
+
+		function isIndexWasmRequest(resource) {
+			const rawURL = getRequestURL(resource);
+
+			try {
+				const parsedURL = new URL(
+					rawURL,
+					window.location.href
+				);
+
+				return parsedURL.pathname.endsWith(
+					"/index.wasm"
+				);
+			} catch (error) {
+				return (
+					rawURL === "index.wasm" ||
+					rawURL.endsWith("/index.wasm")
+				);
+			}
+		}
+
+		async function startMachineParty() {
+			try {
+				const missing = Engine.getMissingFeatures({
+					threads: GODOT_THREADS_ENABLED
+				});
+
+				if (missing.length !== 0) {
+					throw new Error(
+						"The following browser features " +
+						"required by Godot are missing:\n" +
+						missing.join("\n")
+					);
+				}
+
+				const totalParts =
+					WASM_PARTS.length +
+					PCK_PARTS.length;
+
+				setProgress(0, totalParts);
+
+				const wasmBuffer = await downloadSplitFile(
+					WASM_PARTS,
+					GODOT_CONFIG.fileSizes["index.wasm"],
+					"Downloading engine",
+					0,
+					totalParts
+				);
+
+				setLoadingText("Preparing engine...");
+
+				const engine = new Engine(GODOT_CONFIG);
+				const originalFetch = window.fetch.bind(window);
+
+				window.fetch = async function(resource, options) {
+					if (isIndexWasmRequest(resource)) {
+						console.log("Serving reconstructed index.wasm");
+
+						return new Response(
+							wasmBuffer.slice(0),
+							{
+								status: 200,
+								statusText: "OK",
+								headers: {
+									"Content-Type": "application/wasm"
+								}
+							}
+						);
+					}
+
+					return originalFetch(resource, options);
+				};
+
+				try {
+					await engine.init("index");
+				} finally {
+					window.fetch = originalFetch;
+				}
+
+				console.log("Godot WASM initialized successfully.");
+
+				const pckBuffer = await downloadSplitFile(
+					PCK_PARTS,
+					GODOT_CONFIG.fileSizes["index.pck"],
+					"Downloading game data",
+					WASM_PARTS.length,
+					totalParts
+				);
+
+				setLoadingText("Loading game data...");
+
+				await engine.preloadFile(
+					pckBuffer,
+					"index.pck"
+				);
+
+				console.log("index.pck loaded successfully.");
+
+				setLoadingText("Starting Machine Party...");
+
+				await engine.start({
+					args: [
+						"--main-pack",
+						"index.pck"
+					]
+				});
+
+				statusOverlay.remove();
+
+			} catch (error) {
+				showError(error);
+			}
+		}
+
+		startMachineParty();
+	</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"><head>
+<base href="https://cdn.jsdelivr.net/gh/nawsif/host@80b52b8/MimicParty/">
+<script>
+/* The CDN sometimes refuses big files (403/429) or answers with a tiny error page. When that happens the same file is
+   fetched again from GitHub's own servers, and the other way round. */
+(function(){
+  var of=window.fetch.bind(window);
+  var jd=/^https:\/\/cdn\.jsdelivr\.net\/gh\/([^\/@]+)\/([^\/@]+)@([^\/]+)\/(.*)$/;
+  var raw=/^https:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)$/;
+  var BINARY=/\.(part[-.\w]*|unityweb|wasm|data|pck|dat|bin|unx|mp4)(\?.*)?$/i;
+  function alt(u){
+    var m=jd.exec(u); if(m) return "https://raw.githubusercontent.com/"+m[1]+"/"+m[2]+"/"+m[3]+"/"+m[4];
+    m=raw.exec(u); if(m) return "https://cdn.jsdelivr.net/gh/"+m[1]+"/"+m[2]+"@"+m[3]+"/"+m[4];
+    return null;
+  }
+  function bad(r,u){
+    if(!r.ok) return true;
+    var cl=+r.headers.get("content-length");
+    return !!(cl&&cl<2000&&BINARY.test(u));
+  }
+  window.fetch=function(input,init){
+    var u=typeof input==="string"?input:(input instanceof URL?input.href:(input&&input.url));
+    var a=u&&alt(u);
+    if(!a) return of(input,init);
+    return of(input,init).then(function(r){
+      if(!bad(r,u)) return r;
+      return of(a,init).then(function(r2){ return bad(r2,u)?r:r2; },function(){ return r; });
+    },function(e){
+      return of(a,init).catch(function(){ throw e; });
+    });
+  };
+})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#414141">
+<title>Mimic Party</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#414141}html,body{height:100dvh}
+    #unity-container,#unity-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}#unity-container{overflow:hidden}
+    #unity-canvas{background:#151515;outline:0;touch-action:none}
+    #tinkle-loader{position:fixed;inset:0;z-index:70;background:#414141;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;color:#f6cb68;transition:opacity .7s ease,visibility .7s ease;font-family:'Orbitron',Arial,sans-serif}
+    #tinkle-loader.fading{opacity:0;visibility:hidden;pointer-events:none}
+    .tinkle-diamond{width:48px;height:48px;border:3px solid #efbd47;transform:rotate(45deg);box-shadow:0 0 18px #dca12877;animation:diamond-pulse 1.5s ease-in-out infinite;margin:0 0 12px}
+    @keyframes diamond-pulse{0%,100%{opacity:.55;scale:.9}50%{opacity:1;scale:1.1}}
+    .tinkle-title{font-weight:900;font-size:clamp(27px,6vw,53px);letter-spacing:.1em;background:linear-gradient(180deg,#fff2af 0%,#f6c55d 40%,#b97613 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tinkle-track{width:min(365px,80vw);height:10px;border:1px solid #d6a538;background:#252525;border-radius:15px;overflow:hidden;margin-top:8px}
+    #tinkle-progress{height:100%;width:0;background:linear-gradient(90deg,#b67a19,#ffdf70);transition:width .17s linear;box-shadow:0 0 12px #ffdc6d}
+    #tinkle-percent{font-size:15px;letter-spacing:.15em;color:#ffcf65}
+    #tinkle-status{font-family:Arial,sans-serif;font-size:13px;color:#dedede;max-width:85vw}
+    #retry-button{display:none;border:1px solid #d6a538;border-radius:4px;background:#352a18;color:#ffdc6d;font:700 14px Arial,sans-serif;padding:11px 24px;cursor:pointer}
+    #unity-warning{position:fixed;z-index:100;top:12px;left:50%;transform:translateX(-50%);max-width:min(700px,95vw);color:white;font:14px Arial,sans-serif;pointer-events:none}
+    #unity-warning>div{padding:12px;border-radius:6px;background:#962d28;margin-bottom:6px;overflow-wrap:anywhere}
+  </style>
+</head><body>
+<div id="unity-container"><canvas id="unity-canvas" tabindex="-1"></canvas></div>
+<div id="tinkle-loader" role="status" aria-live="polite">
+<div class="tinkle-track"><div id="tinkle-progress"></div></div>
+<div id="tinkle-percent">0%</div><div id="tinkle-status">Preparing Mimic Party…</div>
+<button id="retry-button" type="button">RETRY</button></div>
+<div id="unity-warning"></div>
+<script>
+(() => {
+  const canvas = document.getElementById('unity-canvas');
+  const overlay = document.getElementById('tinkle-loader');
+  const status = document.getElementById('tinkle-status');
+  const retry = document.getElementById('retry-button');
+  const urls = [];
+  let busy = false, done = false, lastProgress = 0;
+  const parts = ['aa', 'ab', 'ac'].map(s => `WebGL.data.unityweb.part-${s}`);
+  function progress(value, message) {
+    lastProgress = Math.max(lastProgress, Math.min(100, value));
+    document.getElementById('tinkle-progress').style.width = lastProgress + '%';
+    document.getElementById('tinkle-percent').textContent = Math.floor(lastProgress) + '%';
+    if (message) status.textContent = message;
+  }
+  function banner(message, type) {
+    if (type !== 'error') { console.warn(message); return; }
+    const div = document.createElement('div'); div.textContent = message;
+    document.getElementById('unity-warning').appendChild(div);
+  }
+  async function download(url, attempts = 3) {
+    for (let i = 0; i < attempts; i++) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 120000);
+      try {
+        const response = await fetch(url, {signal: controller.signal, cache: i ? 'reload' : 'default'});
+        if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+        const blob = await response.blob();
+        if (!blob.size || /text\/html/i.test(blob.type)) throw new Error(`${url}: missing game file`);
+        return blob;
+      } catch (error) { if (i === attempts - 1) throw error; }
+      finally { clearTimeout(timeout); }
+    }
+  }
+  async function loadScript(src) {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script'); script.src = src;
+      script.onload = resolve; script.onerror = () => {script.remove();reject(new Error(`Cannot load ${src}`));};
+      document.body.appendChild(script);
+    });
+    if (typeof createUnityInstance !== 'function') throw new Error('Unity loader did not initialize.');
+  }
+  async function locateBuild() {
+    // Set this to a folder or CDN URL if your files are hosted elsewhere.
+    const configured = window.MIMIC_BUILD_URL;
+    const candidates = configured ? [configured] : ['Build', '.'];
+    for (const folder of candidates) {
+      try {
+        const blob = await download(`${folder}/WebGL.loader.js`, 1);
+        const src = URL.createObjectURL(new Blob([blob], {type:'text/javascript'})); urls.push(src);
+        await loadScript(src); return folder.replace(/\/$/, '');
+      } catch (error) { if (folder === candidates[candidates.length-1]) throw error; }
+    }
+  }
+  async function start() {
+    if (busy || done) return;
+    busy = true; lastProgress = 0; retry.style.display = 'none';
+    document.getElementById('unity-warning').textContent = '';
+    progress(0, 'Finding game files…');
+    // An incoming request wakes the Render service while the game loads.
+    fetch('https://partymimic.onrender.com/health', {mode:'no-cors',cache:'no-store'}).catch(() => {});
+    try {
+      const build = await locateBuild();
+      progress(5, 'Downloading game…');
+      let completed = 0;
+      let blobs;
+      try {
+        blobs = await Promise.all(parts.map(async name => {
+          const blob = await download(`${build}/${name}`);
+          progress(5 + (++completed / parts.length) * 65, 'Downloading game…'); return blob;
+        }));
+      } catch (error) {
+        // Also accepts the original unsplit Unity build.
+        blobs = [await download(`${build}/WebGL.data.unityweb`, 1)];
+      }
+      const dataUrl = URL.createObjectURL(new Blob(blobs, {type:'application/octet-stream'})); urls.push(dataUrl);
+      progress(70, 'Starting Mimic Party…');
+      const instance = await createUnityInstance(canvas, {
+        arguments: [], dataUrl,
+        frameworkUrl: `${build}/WebGL.framework.js.unityweb`,
+        codeUrl: `${build}/WebGL.wasm.unityweb`,
+        streamingAssetsUrl: build === "." ? "StreamingAssets" : `${build}/../StreamingAssets`,
+        companyName:'DefaultCompany', productName:'ExportedProject', productVersion:'1.0',
+        matchWebGLToCanvasSize:true, autoSyncPersistentDataPath:true, showBanner:banner
+      }, p => progress(70 + p * 29, 'Starting Mimic Party…'));
+      window.unityInstance = instance; done = true; progress(100, 'Ready');
+      overlay.classList.add('fading'); setTimeout(() => overlay.remove(), 750); canvas.focus();
+      // Unity has finished reading the combined data file.
+      urls.splice(0).forEach(url => URL.revokeObjectURL(url));
+    } catch (error) {
+      status.textContent = 'Could not load the game. ' + (error.message || error);
+      retry.style.display = 'block'; urls.splice(0).forEach(url => URL.revokeObjectURL(url));
+    } finally { busy = false; }
+  }
+  retry.addEventListener('click', start);
+  window.addEventListener('pagehide', () => urls.forEach(url => URL.revokeObjectURL(url)));
+  start();
+})();
+</script></body></html>
