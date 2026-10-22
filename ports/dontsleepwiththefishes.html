@@ -146,7 +146,7 @@
 
       // The game files live in AlexBoops/DSWTF-Port (pinned to one version). Every file is size-checked, and a bad
       // or refused download is retried on another copy of the same file.
-      const REPO = "AlexBoops/DSWTF-Port", REF = "e479142";
+      const REPO = "AlexBoops/DSWTF-Port", REF = "89da47f";
       const BASES = [
         `https://raw.githubusercontent.com/${REPO}/${REF}/`,
         `https://cdn.jsdelivr.net/gh/${REPO}@${REF}/`
@@ -155,9 +155,9 @@
         "Build/DSWTF-Port.data.part0001": 19922944, "Build/DSWTF-Port.data.part0002": 19922944,
         "Build/DSWTF-Port.data.part0003": 19922944, "Build/DSWTF-Port.data.part0004": 19922944,
         "Build/DSWTF-Port.data.part0005": 19922944, "Build/DSWTF-Port.data.part0006": 19922944,
-        "Build/DSWTF-Port.data.part0007": 2614907,
+        "Build/DSWTF-Port.data.part0007": 2614693,
         "Build/DSWTF-Port.wasm.part0001": 19922944, "Build/DSWTF-Port.wasm.part0002": 19922944,
-        "Build/DSWTF-Port.wasm.part0003": 9657020
+        "Build/DSWTF-Port.wasm.part0003": 9657061
       };
       const sleep = ms => new Promise(r => setTimeout(r, ms));
       async function fetchVerified(path) {

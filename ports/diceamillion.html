@@ -38,10 +38,25 @@
    deleted. Those requests are pointed at the complete version this page is pinned to. */
 (function(){
   var f=window.fetch.bind(window);
+  /* jsDelivr now refuses every big file of this repo ("package size exceeded"), so the game's data files are taken
+     straight from GitHub. The small script files stay on jsDelivr because GitHub serves them as plain text. */
+  function fix(u){
+    if(typeof u!=="string") return u;
+    u=u.replace("Unblocked-Games@main/diceamillion/","Unblocked-Games@c963cef/diceamillion/");
+    var m=u.match(/^https:\/\/cdn\.jsdelivr\.net\/gh\/NotRexed\/Unblocked-Games@c963cef\/diceamillion\/([^?#]*)(.*)$/);
+    if(m&&!/\.(js|json|html|css)$/i.test(m[1])) return "https://raw.githubusercontent.com/NotRexed/Unblocked-Games/c963cef/diceamillion/"+m[1]+m[2];
+    return u;
+  }
   window.fetch=function(input,init){
-    var u=typeof input==="string"?input:(input instanceof URL?input.href:(input&&input.url));
-    if(u&&u.indexOf("Unblocked-Games@main/diceamillion/")>=0) input=u.replace("Unblocked-Games@main/diceamillion/","Unblocked-Games@c963cef/diceamillion/");
+    if(typeof input==="string") input=fix(input);
+    else if(input instanceof URL) input=fix(input.href);
+    else if(input&&input.url){var n=fix(input.url); if(n!==input.url) input=new Request(n,input);}
     return f(input,init);
+  };
+  var xo=XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open=function(m,u){
+    var a=Array.prototype.slice.call(arguments); a[1]=fix(String(u));
+    return xo.apply(this,a);
   };
 })();
 </script>
