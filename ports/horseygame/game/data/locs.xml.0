@@ -1,0 +1,36 @@
+<TextureAtlas>
+  <sprite n="LocStable" x="0" y="0" w="32" h="32" c="8"/>
+  <sprite n="LocTrack" x="0" y="32" w="32" h="32" c="6"/>
+  <sprite n="LocSweetie" x="192" y="32" w="32" h="32"/>
+  <sprite n="LocHermit" x="224" y="32" w="32" h="32"/>
+  <sprite n="LocCrispr" x="0" y="64" w="32" h="32"/>
+  <sprite n="LocGlue" x="32" y="64" w="32" h="32"/>
+  <sprite n="LocCarLot" x="64" y="64" w="32" h="32"/>
+  <sprite n="LocLab" x="96" y="64" w="32" h="32"/>
+  <sprite n="LocSupply" x="128" y="64" w="32" h="32"/>
+  <sprite n="LocEcologist" x="160" y="64" w="32" h="32"/>
+  <sprite n="LocHutch" x="192" y="64" w="32" h="32"/>
+  <sprite n="LocCircus" x="224" y="64" w="32" h="32"/>
+  <sprite n="LocZoo" x="0" y="96" w="32" h="32"/>
+  <sprite n="LocAcres" x="32" y="96" w="32" h="32"/>
+  <sprite n="LocSaloon" x="64" y="96" w="32" h="32"/>
+  <sprite n="LocPowerPlant" x="96" y="96" w="32" h="32"/>
+  <sprite n="LocPaddock" x="128" y="96" w="32" h="32"/>
+  <sprite n="LocSumo" x="160" y="96" w="32" h="32"/>
+  <sprite n="LocPawn" x="192" y="96" w="32" h="32"/>
+  <sprite n="LocBiohacker" x="224" y="96" w="32" h="32"/>
+  <sprite n="LocTrackB" x="0" y="128" w="32" h="32"/>
+  <sprite n="LocPaddockB" x="32" y="128" w="32" h="32"/>
+  <sprite n="LocTrackC" x="64" y="128" w="32" h="32"/>
+  <sprite n="LocPaddockC" x="96" y="128" w="32" h="32"/>
+  <sprite n="LocClub" x="128" y="128" w="32" h="32"/>
+  <sprite n="LocAbandoned" x="160" y="128" w="32" h="32"/>
+  <sprite n="LocM" x="192" y="128" w="32" h="32"/>
+  <sprite n="MarkStart" x="0" y="192" w="32" h="32"/>
+  <sprite n="MarkHerd" x="32" y="192" w="32" h="32"/>
+  <sprite n="LocCrispr2" x="96" y="224" w="32" h="32"/>
+  <sprite n="LocPowerPlant2" x="128" y="224" w="32" h="32"/>
+  <sprite n="LocCarLot2" x="160" y="224" w="32" h="32"/>
+  <sprite n="LocSaloon2" x="192" y="224" w="32" h="32"/>
+  <sprite n="LocSweetie2" x="224" y="224" w="32" h="32"/>
+</TextureAtlas>

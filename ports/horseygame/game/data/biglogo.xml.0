@@ -1,0 +1,4 @@
+<TextureAtlas>
+  <sprite n="LogoHorsey" x="0" y="0" w="934" h="254" hy="202"/>
+  <sprite n="LogoGame" x="0" y="278" w="718" h="208" hy="204"/>
+</TextureAtlas>

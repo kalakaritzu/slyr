@@ -1,0 +1,45 @@
+<TextureAtlas>
+  <sprite n="Plain" x="0" y="0" w="32" h="32" c="4"/>
+  <sprite n="GrassLand" x="128" y="0" w="32" h="32"/>
+  <sprite n="BogLand" x="160" y="0" w="32" h="32"/>
+  <sprite n="PalmLand" x="192" y="0" w="32" h="32"/>
+  <sprite n="CactusLand" x="224" y="0" w="32" h="32"/>
+  <sprite n="Water" x="0" y="32" w="32" h="32"/>
+  <sprite n="Pond" x="32" y="32" w="32" h="32"/>
+  <sprite n="Bush" x="64" y="32" w="32" h="32"/>
+  <sprite n="Stump" x="96" y="32" w="32" h="32"/>
+  <sprite n="Birch" x="128" y="32" w="32" h="32"/>
+  <sprite n="BridgeH" x="160" y="32" w="32" h="32"/>
+  <sprite n="BridgeV" x="192" y="32" w="32" h="32"/>
+  <sprite n="BadLand" x="224" y="32" w="32" h="32"/>
+  <sprite n="Mountain" x="0" y="64" w="32" h="32" c="4"/>
+  <sprite n="Fir" x="128" y="64" w="32" h="32"/>
+  <sprite n="Un1" x="160" y="64" w="32" h="32"/>
+  <sprite n="Un2" x="192" y="64" w="32" h="32"/>
+  <sprite n="Boulder" x="160" y="64" w="32" h="32"/>
+  <sprite n="AcaciaLand" x="0" y="96" w="32" h="32"/>
+  <sprite n="AppleTree" x="32" y="96" w="32" h="32"/>
+  <sprite n="DeadTree" x="64" y="96" w="32" h="32"/>
+  <sprite n="Cave" x="96" y="96" w="32" h="32"/>
+  <sprite n="FenceIcon" x="128" y="102" w="32" h="15" hy="8"/>
+  <sprite n="FenceIconNotNeeded" x="169" y="96" w="14" h="32" hx="7"/>
+  <sprite n="Tumbleweed" x="192" y="96" w="32" h="32"/>
+  <sprite n="Pebbles" x="224" y="96" w="32" h="32"/>
+  <sprite n="Road" x="0" y="128" w="32" h="32" c="8"/>
+  <sprite n="Road8" x="0" y="160" w="32" h="32" c="8"/>
+  <sprite n="DirtRoad" x="0" y="192" w="32" h="32" c="8"/>
+  <sprite n="DirtRoad8" x="0" y="224" w="32" h="32" c="8"/>
+  <sprite n="Goop" x="0" y="256" w="32" h="32" c="2"/>
+  <sprite n="Glass" x="64" y="256" w="32" h="32"/>
+  <sprite n="GlassBG" x="96" y="256" w="32" h="32"/>
+  <sprite n="Gray" x="128" y="256" w="32" h="32"/>
+  <sprite n="NGrassLand" x="160" y="256" w="32" h="32"/>
+
+  <sprite n="Grass" x="0" y="288" w="32" h="32" c="5"/>
+  <sprite n="Reeds" x="0" y="320" w="32" h="32" c="5"/>
+  <sprite n="Acacia" x="0" y="352" w="32" h="32" c="5"/>
+  <sprite n="Apple" x="0" y="384" w="32" h="32" c="5"/>
+  <sprite n="Palm" x="0" y="416" w="32" h="32" c="5"/>
+  <sprite n="Cactus" x="0" y="448" w="32" h="32" c="5"/>
+  <sprite n="NGrass" x="0" y="480" w="32" h="32" c="5"/>
+</TextureAtlas>

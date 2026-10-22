@@ -1,0 +1,322 @@
+<TextureAtlas>
+  <sprite n="Pause" x="0" y="36" w="7" h="7"/>
+  <sprite n="Pointer" x="0" y="64" w="11" h="11"/>
+  <sprite n="Pointer2" x="12" y="64" w="11" h="13" hx="5"/>
+  <sprite n="GrabHand" x="24" y="64" w="11" h="12" hx="5.5" hy="6"/>
+  <sprite n="GrabHand2" x="36" y="66" w="11" h="10" hx="5.5" hy="4"/>
+  <sprite n="PointerInspect" x="48" y="64" w="12" h="12" hx="3" hy="3"/>
+  <sprite n="PointerEnter" x="61" y="64" w="13" h="13" hx="6" hy="6"/>
+  <sprite n="PointerLasso" x="76" y="64" w="16" h="14" hx="8" hy="7"/>
+  <sprite n="PointerShoot" x="62" y="78" w="13" h="13" hx="6.5" hy="6.5"/>
+  <sprite n="PointerDig" x="76" y="79" w="10" h="16" hx="5" hy="15"/>
+  <sprite n="PointerThis" x="15" y="50" w="15" h="13" hx="1" hy="5"/>
+  <sprite n="PointerTalk" x="31" y="51" w="13" h="12" hx="2" hy="6"/>
+  <sprite n="PointerPet" x="31" y="38" w="14" h="12" hx="7" hy="6"/>
+  <sprite n="PointerGo" x="58" y="45" w="11" h="11" hx="5" hy="11"/>
+  <sprite n="PointerText" x="46" y="39" w="6" h="12" hx="0" hy="0"/>
+  <sprite n="PointerAttach" x="53" y="39" w="4" h="4" hx="2" hy="2"/>
+  <sprite n="PointerEat" x="70" y="47" w="9" h="8" hx="4" hy="4"/>
+  <sprite n="PointerEat2" x="70" y="54" w="9" h="9" hx="4" hy="4"/>
+  <sprite n="PointerPan" x="17" y="36" w="13" h="13" hx="6.5" hy="6.5"/>
+  <sprite n="PointerMallet" x="99" y="46" w="19" h="19" hx="4" hy="4"/>
+  <sprite n="DownHere" x="53" y="27" w="9" h="9" hx="4.5" hy="9"/>
+  <sprite n="Lasso" x="136" y="87" w="16" h="14" hx="6" hy="14"/>
+  <sprite n="Lasso2" x="153" y="87" w="16" h="14" hx="9" hy="14"/>
+  <sprite n="SilverLasso" x="136" y="103" w="16" h="14" hx="6" hy="14"/>
+  <sprite n="SilverLasso2" x="153" y="103" w="16" h="14" hx="9" hy="14"/>
+  <sprite n="GunProj" x="44" y="125" w="6" h="5" hx="3" hy="2.5"/>
+  <sprite n="Hole" x="104" y="118" w="14" h="8"/>
+  <sprite n="HoleG" x="153" y="139" w="14" h="8"/>
+  <sprite n="DriveDest" x="58" y="57" w="11" h="5" hx="5" hy="2"/>
+  <sprite n="AnimShovel" x="7" y="92" w="8" h="14" hx="4" hy="14"/>
+  <sprite n="AnimShovelSilver" x="16" y="92" w="8" h="14" hx="4" hy="14"/>
+  <sprite n="Fence" x="462" y="94" w="32" h="15" hy="8"/>
+  <sprite n="FenceV" x="446" y="88" w="14" h="32" hx="7"/>
+  <sprite n="FenceI" x="462" y="77" w="32" h="16" hy="9"/>
+  <sprite n="FenceIV" x="495" y="77" w="16" h="32" hx="8"/>
+  <sprite n="FenceP" x="470" y="308" w="32" h="16" hy="9"/>
+  <sprite n="FencePV" x="503" y="292" w="8" h="32" hx="4"/>
+ 
+  <sprite n="ItemHay" x="40" y="78" w="9" h="11" hx="4" hy="5"/>
+  <sprite n="ItemBale" x="43" y="106" w="24" h="16" hx="12" hy="8"/>
+  <sprite n="ItemApple" x="40" y="92" w="9" h="11" hx="4" hy="5"/>
+  <sprite n="ItemBeer" x="68" y="110" w="13" h="16" hx="6" hy="8"/>
+  <sprite n="ItemHotsauce" x="7" y="107" w="8" h="17" hx="4" hy="9"/>
+  <sprite n="ItemPlutonium" x="70" y="97" w="18" h="11" hx="9" hy="5"/>
+  <sprite n="ItemBones" x="83" y="110" w="16" h="7" hx="8" hy="3"/>
+  <sprite n="ItemCarcass" x="115" y="152" w="21" h="10" hx="10.5" hy="5"/>
+  <sprite n="ItemDung" x="100" y="109" w="14" h="8" hx="7" hy="4"/>
+  <sprite n="ItemTrophy" x="18" y="107" w="9" h="16" hx="4" hy="8"/>
+  <sprite n="ItemChampTrophy" x="30" y="107" w="9" h="16" hx="4" hy="8"/>
+  <sprite n="ItemVipCard" x="137" y="180" w="17" h="11" hx="8.5" hy="5.5"/>
+  <sprite n="ItemVial" x="91" y="129" w="18" h="21" hx="9" hy="11"/>
+  <sprite n="ItemDiskette" x="155" y="174" w="14" h="14" hx="7" hy="7"/>
+  <sprite n="ItemBriefcase" x="177" y="153" w="16" h="13" hx="8" hy="7"/>
+  <sprite n="ItemChest" x="488" y="202" w="21" h="22" hx="10" hy="11"/>
+  <sprite n="ItemCactus" x="194" y="184" w="11" h="19" hx="5.5" hy="10"/>
+  <sprite n="ItemVase" x="206" y="184" w="10" h="17" hx="5" hy="9"/>
+  <sprite n="ItemTM" x="32" y="264" w="16" h="16" hx="8" hy="8"/>
+
+  <sprite n="ItemG" x="192" y="3" w="9" h="9" hx="4.5" hy="4.5"/> <!-- must be bigger for collision -->
+  <sprite n="ItemA" x="200" y="3" w="9" h="9" hx="4.5" hy="4.5"/>
+  <sprite n="ItemT" x="208" y="3" w="9" h="9" hx="4.5" hy="4.5"/>
+  <sprite n="ItemC" x="216" y="3" w="9" h="9" hx="4.5" hy="4.5"/>
+  <sprite n="ItemStripe" x="126" y="44" w="16" h="15" hx="8" hy="8"/>
+  <sprite n="ItemLift" x="143" y="44" w="16" h="15" hx="8" hy="8"/>
+  <sprite n="ItemRambar" x="160" y="44" w="16" h="15" hx="8" hy="8"/>
+  <sprite n="ItemSneakers" x="217" y="184" w="16" h="12" hx="8" hy="6"/>
+  <sprite n="ItemBowTie" x="217" y="197" w="18" h="9" hx="9" hy="4.5"/>
+  <sprite n="ItemCravat" x="313" y="219" w="12" h="20" hx="6" hy="10"/>
+  <sprite n="ItemTopHat" x="236" y="184" w="20" h="13" hx="10" hy="7"/>
+  <sprite n="ItemToque" x="297" y="222" w="15" h="17" hx="7.5" hy="9"/>
+  <sprite n="ItemGlasses" x="312" y="208" w="16" h="10" hx="8" hy="5"/>
+  <sprite n="ItemSunglasses" x="257" y="184" w="15" h="10" hx="8" hy="5"/>
+  <sprite n="ItemBallAndChain" x="257" y="198" w="17" h="12" hx="8" hy="6"/>
+  <sprite n="ItemJetEngine" x="273" y="184" w="22" h="12" hx="11" hy="6"/>
+  <sprite n="ItemBalloon" x="275" y="197" w="12" h="16" hx="6" hy="6"/>
+  <sprite n="ItemRollerblades" x="296" y="184" w="15" h="14" hx="7" hy="7"/>
+  <sprite n="ItemStilts" x="342" y="183" w="11" h="24" hx="5.5" hy="12"/>
+  <sprite n="ItemClownNose" x="329" y="184" w="12" h="12" hx="6" hy="6"/>
+  <sprite n="ItemCowboyBoots1" x="400" y="199" w="16" h="20" hx="8" hy="10"/>
+  <sprite n="ItemCowboyBoots2" x="417" y="199" w="16" h="20" hx="8" hy="10"/>
+  <sprite n="ItemCowboyBoots3" x="400" y="178" w="16" h="20" hx="8" hy="10"/>
+  <sprite n="ItemCowboyBoots4" x="417" y="178" w="16" h="20" hx="8" hy="10"/>
+  <sprite n="ItemRibbon1" x="394" y="153" w="11" h="17" hx="5.5" hy="8"/>
+  <sprite n="ItemRibbon2" x="406" y="153" w="11" h="17" hx="5.5" hy="8"/>
+  <sprite n="ItemRibbon3" x="418" y="153" w="11" h="17" hx="5.5" hy="8"/>
+  <sprite n="ItemRibbon4" x="430" y="153" w="11" h="17" hx="5.5" hy="8"/>
+  <sprite n="ItemFenceBox" x="177" y="44" w="16" h="15" hx="8" hy="8"/>
+  <sprite n="ItemMemory" x="110" y="163" w="9" h="10" hx="4" hy="5"/>
+  <sprite n="ItemCrown" x="28" y="92" w="10" h="11" hx="5" hy="5"/>
+  <sprite n="ItemMeat" x="28" y="92" w="10" h="11" hx="5" hy="5"/>
+  
+  <sprite n="ItemPlutonium2" x="170" y="64" w="18" h="11" hx="9" hy="5"/>
+
+  <sprite n="LetterG" x="194" y="13" w="5" h="7" hx="2.5" hy="3.5"/>
+  <sprite n="LetterA" x="202" y="13" w="5" h="7" hx="2.5" hy="3.5"/>
+  <sprite n="LetterT" x="210" y="13" w="5" h="7" hx="2.5" hy="3.5"/>
+  <sprite n="LetterC" x="218" y="13" w="5" h="7" hx="2.5" hy="3.5"/>
+
+  <sprite n="DecoToque" x="354" y="174" w="45" h="45" hx="22.5" hy="45"/>
+  <sprite n="DecoSpikedBall" x="328" y="183" w="14" h="14" hx="7" hy="7"/>
+  <sprite n="DecoSunglasses" x="207" y="207" w="28" h="5" hx="15" hy="2"/>
+  <sprite n="DecoSneakers" x="217" y="184" w="16" h="12" hx="0" hy="0"/>
+  <sprite n="DecoSneakers" x="217" y="184" w="16" h="12" hx="0" hy="0"/>
+  <sprite n="DecoJetEngine" x="273" y="184" w="22" h="12" hx="2" hy="10"/>
+  <sprite n="DecoJetEngineV" x="297" y="199" w="12" h="22" hx="10" hy="4"/>
+  <sprite n="DecoRollerblades" x="312" y="184" w="15" h="12" hx="0" hy="0"/>
+  <sprite n="DecoGlasses" x="312" y="199" w="26" h="8" hx="13" hy="4"/>
+  <sprite n="BriefcaseOpen" x="177" y="167" w="16" h="19" hx="8" hy="7"/>
+  <sprite n="ChestOpen" x="488" y="225" w="23" h="29" hx="10" hy="18"/>
+  <sprite n="VialBubble" x="56" y="164" w="18" h="21" hx="9" hy="11"/>
+  <sprite n="VialBubble2" x="73" y="164" w="18" h="21" hx="9" hy="11"/>
+  <sprite n="VialBubble3" x="90" y="164" w="18" h="21" hx="9" hy="11"/>
+  <sprite n="VialEmpty" x="73" y="129" w="18" h="21" hx="9" hy="11"/>
+
+  <sprite n="InvTab" x="232" y="354" w="21" h="19"/>
+  <sprite n="InvTab2" x="254" y="354" w="21" h="19"/>
+  <sprite n="InvTab3" x="276" y="354" w="21" h="19"/>
+  <sprite n="InvTab4" x="298" y="354" w="21" h="19"/>
+  <sprite n="InvTrumpet" x="52" y="123" w="14" h="8"/>
+  <sprite n="InvLasso" x="117" y="87" w="15" h="13"/>
+  <sprite n="InvShovel" x="7" y="92" w="8" h="14"/>
+  <sprite n="InvGun" x="39" y="166" w="17" h="8"/>
+  <sprite n="InvFence" x="21" y="166" w="17" h="12"/>
+  <sprite n="InvBalloon" x="235" y="58" w="12" h="15"/>
+  <sprite n="InvSTrumpet" x="52" y="123" w="14" h="8"/>
+  <sprite n="InvSLasso" x="116" y="102" w="17" h="14"/>
+  <sprite n="InvSShovel" x="16" y="92" w="8" h="14"/>
+  <sprite n="InvSGun" x="39" y="174" w="17" h="8"/>
+  <sprite n="InvSFence" x="0" y="176" w="16" h="15"/>
+  <sprite n="InvSBalloon" x="248" y="57" w="14" h="17"/>
+
+  <sprite n="TinyGoldenShovel" x="26" y="125" w="3" h="6"/>
+  
+  <sprite n="PowStripe" x="126" y="72" w="11" h="11" hx="6" hy="6"/>
+  <sprite n="PowLift" x="137" y="72" w="11" h="11" hx="6" hy="6"/>
+  <sprite n="PowRambar" x="148" y="72" w="11" h="11" hx="6" hy="6"/>
+  <sprite n="PowStopwatch" x="158" y="72" w="13" h="13" hx="7" hy="7"/>
+  <sprite n="DisStripe" x="126" y="60" w="11" h="11" hx="6" hy="6"/>
+  <sprite n="DisLift" x="137" y="60" w="11" h="11" hx="6" hy="6"/>
+  <sprite n="DisRambar" x="148" y="60" w="11" h="11" hx="6" hy="6"/>
+  <sprite n="DisStopwatch" x="158" y="60" w="11" h="11" hx="6" hy="6"/>
+
+  <sprite n="StatusFoal" x="12" y="78" w="8" h="8" hy="8"/>
+  <sprite n="StatusOld" x="0" y="78" w="11" h="13" hy="11"/>
+  <sprite n="StatusTired" x="22" y="78" w="7" h="12" hx="-1" hy="10"/>
+  <sprite n="StatusHungry" x="0" y="125" w="8" h="9" hy="9"/>
+  <sprite n="StatusHungry2" x="18" y="125" w="7" h="7" hy="8"/>
+  <sprite n="StatusChamp" x="30" y="107" w="9" h="16" hy="13"/>
+  <sprite n="StatusDead" x="89" y="98" w="9" h="10" hy="9"/>
+  <sprite n="StatusTrophy" x="18" y="107" w="9" h="16" hy="13"/>
+  <sprite n="AgeWord" x="98" y="100" w="14" h="7" hy="5"/>
+  <sprite n="ThoughtTired" x="0" y="136" w="18" h="14" hx="1" hy="13"/>
+  <sprite n="ThoughtHungry" x="19" y="136" w="18" h="14" hx="1" hy="13"/>
+  <sprite n="ThoughtHungry2" x="19" y="151" w="18" h="14" hx="1" hy="13"/>
+  <sprite n="AnimSleep" x="22" y="78" w="7" h="13" hx="4" hy="12"/>
+  <sprite n="AnimSleep2" x="30" y="78" w="7" h="13" hx="4" hy="12"/>
+  <sprite n="SleepMoon" x="112" y="70" w="12" h="12"/>
+  <sprite n="MiniTrophy" x="0" y="109" w="4" h="7" hy="7"/>
+  <sprite n="MiniTrophy2" x="0" y="117" w="4" h="7" hy="7"/>
+  <sprite n="SumoBelt" x="123" y="180" w="13" h="8" hy="9"/>
+  <sprite n="GMO" x="109" y="180" w="13" h="6" hy="6"/>
+  <sprite n="Brain" x="101" y="154" w="13" h="8" hy="8"/>
+
+  <sprite n="Chromo" x="0" y="16" w="8" h="10" c="8"/>
+  <sprite n="Helix" x="0" y="27" w="52" h="8"/>
+
+  <sprite n="ExitIcon" x="243" y="89" w="32" h="14" hx="16" hy="7"/>
+  <sprite n="ExitIcon2" x="243" y="104" w="32" h="14" hx="16" hy="7"/>
+  <sprite n="PaddockIcon" x="286" y="220" w="52" h="11" hx="26" hy="5"/>
+  <sprite n="PaddockIcon2" x="286" y="232" w="52" h="11" hx="26" hy="5"/>
+  <sprite n="LostButton" x="277" y="90" w="16" h="17" hx="8" hy="8"/>
+  <sprite n="Newspaper" x="51" y="132" w="21" h="21"/>
+
+  <sprite n="GlueHaus" x="304" y="0" w="64" h="80" hy="80"/>
+  <sprite n="GlueHaus2" x="352" y="0" w="60" h="80" hy="80"/>
+  <sprite n="Conveyor" x="304" y="82" w="140" h="8" hx="88" hy="8"/>
+  <sprite n="Conveyor2" x="304" y="92" w="140" h="8" hx="88" hy="8"/>
+  <sprite n="Conveyor3" x="304" y="102" w="140" h="8" hx="88" hy="8"/>
+  <sprite n="Conveyor4" x="304" y="112" w="140" h="8" hx="88" hy="8"/>
+  <sprite n="WeightScale" x="417" y="0" w="95" h="62" hx="23" hy="54"/>
+  <sprite n="ScaleNeedle" x="413" y="0" w="3" h="7" hx="22" hy="47"/>
+
+  <sprite n="Barn" x="0" y="194" w="91" h="60" hx="45" hy="60"/>
+  <sprite n="BarnOpen" x="0" y="256" w="85" h="32" hx="42" hy="34"/>
+  <sprite n="BarnHi" x="96" y="194" w="91" h="60" hx="45" hy="60"/>
+  <sprite n="BarnHeart" x="172" y="139" w="4" h="7" hx="3" hy="53"/>
+  <sprite n="BarnHeart2" x="175" y="139" w="4" h="7" hx="0" hy="53"/>
+  <sprite n="TestTrack" x="96" y="256" w="128" h="24"/>
+  <sprite n="FarmHouse" x="224" y="256" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse1" x="272" y="256" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse2" x="320" y="256" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse3" x="368" y="256" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse4" x="224" y="288" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse5" x="272" y="288" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse6" x="320" y="288" w="44" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse7" x="366" y="288" w="50" h="32" hx="7" hy="32"/>
+  <sprite n="FarmHouse8" x="150" y="320" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse9" x="198" y="320" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse10" x="246" y="320" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse11" x="294" y="320" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="FarmHouse12" x="342" y="320" w="48" h="32" hx="5" hy="32"/>
+  <sprite n="DungCart" x="0" y="392" w="80" h="47"/>
+
+  <sprite n="Truck" x="0" y="300" w="34" h="13" hx="17" hy="8"/>
+  <sprite n="TruckTires" x="0" y="313" w="34" h="4" hx="17" hy="-3"/>
+  <sprite n="TruckTires2" x="0" y="316" w="34" h="4" hx="17" hy="-3"/>
+  <sprite n="TruckStripe" x="35" y="300" w="12" h="2" hx="-2" hy="0"/>
+  <sprite n="TruckRam" x="48" y="300" w="2" h="4" hx="-16" hy="1"/>
+  <sprite n="Balloon" x="216" y="47" w="18" h="27" hx="9" hy="27"/>
+  <sprite n="BalloonShadow" x="218" y="38" w="14" h="8" hx="7" hy="4"/>
+
+  <sprite n="Trailer" x="0" y="440" w="173" h="72"/>
+  <sprite n="TrailerO" x="358" y="440" w="154" h="65"/>
+  <sprite n="TrailerT" x="175" y="456" w="89" h="56"/>
+  <sprite n="TrailerB" x="265" y="463" w="20" h="16" hx="-46" hy="-4"/>
+  <sprite n="TrailerB2" x="265" y="479" w="20" h="16" hx="-46" hy="-4"/>
+  <sprite n="TrailerW" x="265" y="496" w="22" h="16" hx="-46" hy="-4"/>
+
+  <sprite n="Tear" x="320" y="362" w="7" h="26"/>
+  <sprite n="Tear2" x="328" y="362" w="7" h="26"/>
+  <sprite n="Tear3" x="336" y="362" w="7" h="26"/>
+  <sprite n="Tear4" x="344" y="362" w="7" h="26"/>
+  <sprite n="Shred" x="172" y="120" w="16" h="16" hx="8" hy="8"/>
+  <sprite n="Shred2" x="189" y="120" w="14" h="16" hx="7" hy="8"/>
+  <sprite n="Shred3" x="204" y="120" w="16" h="16" hx="8" hy="8"/>
+  <sprite n="Shred4" x="221" y="120" w="10" h="14" hx="5" hy="7"/>
+  <sprite n="PoofHeart" x="172" y="139" w="7" h="7" hx="3.5" hy="3.5"/>
+  <sprite n="PoofBlood" x="182" y="139" w="9" h="9" hx="4.5" hy="4.5"/>
+  <sprite n="PoofBubble" x="443" y="297" w="15" h="15" hx="5" hy="5"/>
+  <sprite n="PoofExclaim" x="160" y="60" w="5" h="15" hx="2.5" hy="15"/>
+  <sprite n="PoofExclaim2" x="166" y="60" w="3" h="13" hx="1.5" hy="14"/>
+
+  <sprite n="FinishPost" x="352" y="122" w="12" h="28" hx="4" hy="28"/>
+  <sprite n="GrandStand" x="367" y="122" w="89" h="30" hx="0" hy="30"/>
+  <sprite n="GrandStandOld" x="331" y="390" w="89" h="30" hx="0" hy="30"/>
+  <sprite n="Furlong8" x="458" y="128" w="47" h="10" hx="47" hy="10"/>
+  <sprite n="Furlong12" x="458" y="139" w="51" h="10" hx="51" hy="10"/>
+  <sprite n="Furlong20" x="458" y="150" w="52" h="10" hx="52" hy="10"/>
+  <sprite n="Furlong4" x="458" y="161" w="47" h="10" hx="47" hy="10"/>
+  <sprite n="Furlong6" x="458" y="172" w="47" h="10" hx="47" hy="10"/>
+  <sprite n="FurlongHalf" x="458" y="183" w="10" h="12" hx="4" hy="12"/>
+  <sprite n="SpelunkyRock" x="355" y="152" w="7" h="7" hx="3.5" hy="3.5"/>
+  <sprite n="RacerInfo" x="98" y="71" w="12" h="12" hx="6" hy="6"/>
+  <sprite n="RacerInfo2" x="98" y="84" w="14" h="14" hx="7" hy="7"/>
+  <sprite n="RaiseBet" x="120" y="120" w="23" h="11" hx="11.5" hy="5.5"/>
+  <sprite n="RaiseBet2" x="146" y="120" w="23" h="11" hx="11.5" hy="5.5"/>
+  <sprite n="WinningTicket" x="340" y="220" w="92" h="17" hx="46"/>
+  <sprite n="WinningTicket2" x="340" y="238" w="92" h="17" hx="46"/>
+  <sprite n="WinningHorse" x="194" y="160" w="156" h="22"/>
+  <sprite n="StakesIcon" x="367" y="153" w="8" h="9" hx="4"/>
+  <sprite n="StakesIcon2" x="376" y="153" w="17" h="10" hx="8.5"/>
+  <sprite n="StakesIcon3" x="362" y="164" w="31" h="9" hx="15.5"/>
+  <sprite n="KO" x="244" y="120" w="37" h="17"/>
+  <sprite n="KO2" x="281" y="120" w="37" h="17"/>
+  <sprite n="Draw" x="464" y="110" w="47" h="17" hx="23.5"/>
+  <sprite n="PaddockBarns" x="390" y="337" w="122" h="22" hx="61" hy="22"/>
+  <sprite n="ChampRing" x="421" y="377" w="91" h="32" hx="45"/>
+  <sprite n="ChampRingSign" x="426" y="360" w="81" h="16" hx="40" hy="13"/>
+  <sprite n="ChampRingHi" x="423" y="410" w="87" h="29" hx="43" hy="-3"/>
+  <sprite n="ChampSign" x="421" y="325" w="91" h="11" hx="45" hy="0"/>
+  <sprite n="PrizeBox" x="364" y="360" w="57" h="25" hx="28" hy="0"/>
+  <sprite n="DragHorseHere" x="188" y="214" w="54" h="40" hy="40"/>
+  <sprite n="DragHorseHere2" x="242" y="214" w="54" h="40" hy="40"/>
+  <sprite n="HintTrack" x="54" y="304" w="72" h="8"/>
+  <sprite n="HintBarn" x="128" y="304" w="92" h="10"/>
+  <sprite n="Jet" x="454" y="256" w="40" h="40"/>
+  <sprite n="JetTrail" x="453" y="256" w="1" h="40"/>
+  <sprite n="Poang" x="416" y="284" w="26" h="35"/>
+
+  <sprite n="ChevyStar" x="482" y="183" w="12" h="14" hx="6" hy="7"/>
+  <sprite n="WhiteStar" x="496" y="183" w="15" h="14" hx="7.5" hy="7"/>
+  <sprite n="WowStar" x="436" y="220" w="24" h="24" hx="12" hy="12"/>
+  <sprite n="WowStar2" x="460" y="220" w="24" h="24" hx="12" hy="12"/>
+  <sprite n="Plinth" x="156" y="148" w="19" h="25" hx="9" hy="3"/>
+  <sprite n="TrophyGrey" x="50" y="77" w="9" h="16" hx="4" hy="8"/>
+  <sprite n="PrizePresent" x="208" y="76" w="15" h="18" hx="7" hy="11"/>
+  <sprite n="PrizePresent2" x="222" y="76" w="15" h="18" hx="7" hy="11"/>
+
+  <sprite n="Meiosis" x="0" y="288" w="16" h="11"/>
+  <sprite n="Meiosis2" x="17" y="288" w="13" h="11"/>
+  <sprite n="Meiosis3" x="31" y="288" w="13" h="11"/>
+  <sprite n="Meiosis4" x="45" y="288" w="13" h="11"/>
+  <sprite n="Meiosis5" x="59" y="288" w="13" h="11"/>
+  <sprite n="Meiosis6" x="73" y="288" w="13" h="11"/>
+  <sprite n="Meiosis7" x="87" y="288" w="15" h="11" hx="1"/>
+  <sprite n="Meiosis8" x="103" y="288" w="15" h="11" hx="1"/>
+  <sprite n="Meiosis9" x="119" y="286" w="15" h="13" hx="1" hy="1"/>
+  <sprite n="Meiosis10" x="135" y="282" w="17" h="17" hx="2" hy="3"/>
+  <sprite n="Meiosis11" x="153" y="281" w="26" h="22" hx="6" hy="6"/>
+
+  <sprite n="Cas9b" x="232" y="0" w="36" h="24" hx="18" hy="12"/>
+  <sprite n="Cas9" x="269" y="0" w="34" h="24" hx="17" hy="12"/>
+  <sprite n="CasTires" x="241" y="24" w="16" h="4" hx="9" hy="-10"/>
+  <sprite n="CasTires2" x="241" y="27" w="16" h="4" hx="9" hy="-10"/>
+  <sprite n="CasStripe" x="258" y="25" w="12" h="6" hx="-1" hy="8"/>
+  <sprite n="CasRam" x="238" y="25" w="2" h="5" hx="20" hy="0"/>
+  <sprite n="CasWord" x="271" y="25" w="26" h="7" hx="12" hy="0"/>
+
+  <sprite n="Scissors" x="274" y="34" w="29" h="19"/>
+  <sprite n="Scissors2" x="244" y="34" w="29" h="19"/>
+
+  <sprite n="EcoBar" x="239" y="374" w="80" h="13"/>
+  <sprite n="EcoZoomOut" x="106" y="17" w="11" h="11"/>
+  <sprite n="EcoZoomOut2" x="106" y="29" w="11" h="13" hy="1"/>
+  <sprite n="EcoZoomIn" x="118" y="17" w="11" h="11"/>
+  <sprite n="EcoZoomIn2" x="118" y="29" w="11" h="13" hy="1"/>
+  <sprite n="EcoSlower" x="130" y="17" w="11" h="11"/>
+  <sprite n="EcoSlower2" x="129" y="29" w="13" h="13" hx="1" hy="1"/>
+  <sprite n="EcoFaster" x="142" y="17" w="11" h="11"/>
+  <sprite n="EcoFaster2" x="142" y="29" w="11" h="13" hy="1"/>
+
+  <sprite n="Compass" x="0" y="321" w="16" h="14"/>
+  <sprite n="NW" x="17" y="321" w="9" h="9"/>
+  <sprite n="W" x="27" y="321" w="11" h="7"/>
+  <sprite n="N" x="39" y="321" w="7" h="9"/>
+
+  <sprite n="PCMenu" x="97" y="315" w="52" h="52"/>
+  <sprite n="PCMenuText" x="52" y="315" w="43" h="29" hx="-4" hy="-5"/>
+
+
+</TextureAtlas>

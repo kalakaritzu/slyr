@@ -1,0 +1,668 @@
+<Sounds>
+
+  <!--
+    
+    Sound Properties:
+    vol="100"
+    pitch="100"
+    pitchlow="50"
+    pitchhigh="200"
+
+  -->
+
+  <!--############# CHANGES #############-->
+
+  <!--
+
+  New sounds:
+  DONE FillHole - plays when you drop an item into a hole, which fills it up and buries the item
+  DONE DestroyTree - using shovel
+  DONE DestroyMountain - using shovel
+  DONE ReclaimLand - surround <=4 water tiles with fences
+  DONE Fish
+  DONE EnterLocationAbandoned
+  DONE WhipCrack
+  DONE BalloonFly
+
+  
+  -->
+
+  
+  <!--############# LOCATION SOUNDS #############-->
+
+    <!--### WORLD ###-->
+
+      <music n="World" f="Music_Trotter.ogg" />
+      <music n="Sweetie" f="Music_Flumps.ogg" />
+
+    <!--### RACE TRACK ###-->
+
+      <music n="Betting" f="Music_BeforeTheBigRace.ogg" />
+      <music n="Racing" f="Music_TheBigRace2.ogg" />
+      <music n="Paddock" f="Music_BassAndPizz.ogg" />
+      <music n="Dung" f="Music_PooAndDung.ogg" />
+
+      <sound n="TitleCard" f="General_HorseyGameTitle.wav" />
+      <sound n="WinArrowAppear" f="General_InsertPinCorkboard.wav" vol="15" />
+      <sound n="EnterLocationPaddock" f="Location_Enter_Paddock.wav" />
+      <sound n="OnYourMark" f="Location_OnYourMark.wav" />
+      <sound n="StartNextRace" f="Location_ReturnToTrack.wav" />
+      <sound n="RaceGetSet" f="Location_GetSet.wav" />
+      <sound n="RaceGo" f="Location_StartRace.wav" />
+      <sound n="BetMore" f="Location_BetMore.wav" />
+      <sound n="BetMax" f="Location_BetMax.wav" />
+      <sound n="Tear" f="Location_TearPaper.wav" />
+      <sound n="CrossFinishLine" f="Location_CrossFinishLineFirst.wav" vol="75"/>
+      <sound n="WonRace" f="Location_WonRace.wav" />
+      <sound n="LoseRace" f="General_CrowdAw.wav" />
+      <sound n="BoothSlideIn" f="Location_BettingWindowMove.wav" vol="70"/>
+      <sound n="DungInCart" f="Item_SuccessfulDung.wav" />
+
+  
+    <!--### STABLES (OTHER) ###-->
+
+      <music n="Home" f="Music_Home.ogg" vol="70" />
+      <music n="Stable" f="Music_DownHomeGroove.ogg" /> <!-- all AI stables -->
+      <music n="Acres" f="Music_DownHomeGroove.ogg" />
+      <music n="Hutch" f="Music_DownHomeGroove.ogg" />
+
+      <sound n="EnterLocationHome" f="" />
+      <sound n="EnterLocationStable" f="Location_Enter_Ranch.wav" /> <!-- all AI stables -->
+
+      <sound n="Cuckoo" f="General_Cuckoo.wav" />
+      <sound n="HorsesAge" f="General_Complete.wav" />
+      <sound n="BarnDoorOpen" f="General_OpenBarnDoor.wav" />
+      <sound n="BarnDoorClose" f="General_CloseBarnDoor.wav" />
+      <sound n="BarnMating" f="General_BarnMating.wav" />
+
+      <!-- mating and eating sounds played by horses in the wild -->
+      <sound n="WildMating" f="General_CymbalCrashPop.wav" />
+      <sound vol="50" pitchlow="80" pitchhigh="120" n="WildChompVeg" f="Animal_Chomp1.wav" />
+      <sound vol="50" pitchlow="80" pitchhigh="120" n="WildChompVeg" f="Animal_Chomp2.wav" />
+      <sound vol="50" pitchlow="80" pitchhigh="120" n="WildChompMeat" f="Animal_Chomp1.wav" />
+      <sound vol="50" pitchlow="80" pitchhigh="120" n="WildChompMeat" f="Animal_Chomp2.wav" />
+
+  
+    <!--### CIRCUS ###-->
+
+      <music n="Circus" f="Music_Circus.ogg" />
+      <music n="CircusTimpani" f="Music_TimpaniTime.ogg" />
+      <sound n="EnterLocationCircus" f="Location_Enter_Circus.wav" />
+
+      <sound n="EnterTent" f="Location_EnterTent.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Bounce" f="Location_Bounce.wav" />
+      <sound n="LightsOn" f="Location_LightsOn.wav" />
+      <sound n="CurtainOpen" f="Location_CurtainOpen.wav" />
+      <sound n="CurtainClose" f="Location_CurtainClose.wav" />
+      <sound n="Drumroll" f="Location_Drumroll.wav" />
+      <sound n="Splash" f="Location_Splash.wav" />
+      <sound n="Cannon" f="Location_Cannon.wav" />
+      <sound n="LoneClap" f="Location_LoneClap.wav" pitch="75" vol="50"/>
+      <sound n="LockRattle" f="Location_LockRattle1.wav" />
+      <sound n="LockBreak" f="Location_UnlockLock.wav"/>
+
+  
+    <!--### CRISPR LAB ###-->
+
+      <music n="Crispr" f="Music_Crispr.ogg" />
+      <sound n="EnterLocationCrispr" f="Location_Enter_Lab.wav" />
+
+      <sound n="SwitchToGeneDrive" f="Location_SelectGeneDrive.wav" />
+      <sound n="SwitchToExtract" f="Location_SelectDNAExtract.wav" />
+      <sound n="ChamberContentsUpdated" f="Location_ChamberContentsUpdated.wav" />
+      <sound n="StartDNAExtract" f="Location_DNAExtract.wav" />
+      <sound n="StartGeneDrive" f="Location_GeneDrive.wav" />
+      <sound n="VialFill" f="Location_FillVial.wav" />
+      <sound n="InsertDisk" f="Location_InsertDisk.wav" />
+      <sound n="JustSwitch" f="Location_SwitchOn.wav" />
+
+      <!-- test this with test="Helix" in settings.xml -->
+      <music n="VialWorld" f="Music_SunnyUnderwaterNightmare.ogg" />
+      <sound n="VialExplode" f="Location_GlassExplode.wav" />
+      <sound n="VialZoomIn" f="Location_VialZoomIn.wav" />
+      <sound n="VialZoomOut" f="Location_VialZoomOut.wav" />
+      <sound n="Cas9Motor" vol="30" f="Location_Cas9Motor.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HelixPluck" f="Location_HelixPluck.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HelixAttach" f="Location_HelixAttach.wav" />
+      <sound n="ComputerBeep" f="Location_ComputerError.wav" />
+      <sound n="ComputerMenu" f="Location_ComputerBeepHigh.wav" />
+      <sound n="ComputerCopy" f="Location_GeneCopy.wav" />
+      <sound n="ComputerPaste" f="Location_GenePaste.wav" />
+
+
+    <!--### GLUE FACTORY ###-->
+
+      <music n="Glue" f="Music_SpookyBells.ogg" />
+      <sound n="EnterLocationGlue" f="Location_Enter_Glue.wav" />
+
+      <sound n="PlaceOnScale" f="Location_PlaceOnScale.wav" />
+      <sound n="RemoveFromScale" f="Location_RemoveFromScale.wav" />
+      <sound n="ConveyorStart" f="Location_ConveyorStart.wav" />
+      <sound n="ConveyorLoop" f="Location_ConveyorLoop.wav" />
+      <sound n="ConveyorStop" f="Location_ConveyorStop.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="ProcessHorse" f="Location_ProcessHorse.wav" />
+
+  
+    <!--### LASSO MART ###-->
+
+      <music n="Mart" f="Music_ThinkOnIt.ogg" />
+      <sound n="EnterLocationMart" f="Location_Enter_LassoMart.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="BuyShovel" f="General_BuyItem.wav" /> 
+      <sound pitchlow="80" pitchhigh="120" n="BuyLasso" f="General_BuyItem.wav" />
+
+
+    <!--### CAR LOT ###-->
+
+      <music n="CarLot" f="Music_BuySomething.ogg" />
+      <sound n="EnterLocationCarLot" f="Location_Enter_Carlot.wav" />
+
+
+    <!--### BIOHACKER ###-->
+
+      <music n="Biohacker" f="Music_TotallyChillHouseMusic.ogg" />
+      <music n="BiohackerDoorOpen" f="Music_TotallyNormalHouseMusic.ogg" />
+      
+      <sound n="EnterLocationBiohacker" f="Location_Enter_Biohacker.wav" />
+      <sound n="BushMove" f="Location_BushMove.wav" />
+      <sound n="GarageDoorOpen" f="Location_GarageDoorOpen.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="VatBurble" f="Location_VatBurble.wav" />
+      <sound n="SampleDNA" f="Location_SampleDNA.wav" />
+      <sound n="SimStartRace" f="Location_ComputerBeepHigh.wav" />
+      <sound pitchlow="70" pitchhigh="130" n="SimHorseFinished" f="Location_ComputerBeepLow.wav" />
+      <sound n="SimSavingToDisk" f="Location_SimSavingToDisk.wav" />
+      <sound n="SimSpawnDisk" f="Location_DiskEject.wav" />
+      <sound n="InsertRam" f="Item_AttachItem.wav" />
+      <sound n="Drain" f="Location_DrainWater.wav" />
+
+
+    <!--### SUMO ###-->
+
+      <music n="SumoBattle" f="Music_SumoBattle.ogg" />
+      <sound n="EnterLocationSumo" f="Location_Enter_Sumo.wav" />
+      <sound n="Gong" f="Location_Gong.wav" />
+      <sound n="GongWood" f="Location_DrumBassHit.wav" />
+      <sound n="GongWoodLight" f="Location_DrumTsuzumiStick.wav" />
+      <sound n="LerpHorse" f="Location_HorseEnterRing.wav" />
+      <sound n="NewChallenger" f="Location_PlayerPlacesHorse.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Ooh" f="General_CrowdOo.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Aah" f="General_CrowdAh.wav" />
+      
+
+
+    <!--### SALOON (OTHER) ###-->
+
+      <music n="Saloon" f="Music_Saloon.ogg" />
+      <sound n="EnterLocationSaloon" f="Location_Enter_Saloon.wav" />
+      <sound n="Pour" f="General_PourBeer.wav" />
+      <sound n="OpenNews" f="General_OpenNewspaper.wav" />
+      <sound n="CloseNews" f="General_CloseNewspaper.wav" />
+      <sound n="TVButton" f="Location_SelectGeneDrive.wav" />
+  
+
+  <!--### TENT (OTHER) ###-->
+
+      <music n="Tent" f="Music_EcologyEulogy.ogg" />
+      <sound n="EnterLocationTent" f="Location_Enter_Ecologist.wav" />            
+      <sound n="Check" f="General_CompleteCheckmark.wav" />
+      <sound n="Uncheck" f="General_UncheckCheckmark.wav" />
+
+
+    <!--### POWER PLANT (OTHER) ###-->  
+
+      <music n="PowerPlant" f="Music_PowerPlantPolka.ogg" />
+      <sound n="EnterLocationPowerPlant" f="Location_Enter_PowerPlant.wav" />
+      <sound n="HorseTouchingTurbine" f="General_DropHorseFail.wav" />
+      <sound n="PowerOn" f="Location_PowerOn.wav" />
+      <sound n="PowerOff" f="Location_PowerOff.wav" />
+      <sound n="TurbineSpin" f="Location_WheelLoop.wav"/>
+
+    <!--### ABANDONED TRACK ###-->  
+      <sound n="EnterLocationAbandoned" f="Location_Enter_AbandonedRaceTrack.wav" />
+
+  <!--############# OBJECT SOUNDS #############-->
+
+    <!--### GENERAL ###-->
+
+      <!--For interface and other sounds that aren't catagorized otherwise-->
+
+      <sound n="HorseyGame" f="General_HorseyGameTitle.wav" />
+      <sound n="ShowStatsScreen" f="General_ShowStatsScreen.wav" vol="80"/>
+      <sound n="Sweep" f="General_Sweep.wav" />
+      <sound n="Clapping" f="General_CrowdClappingFullIndie.wav" />
+      <sound pitchlow="90" pitchhigh="110" n="Aww" f="General_CrowdAw.wav" />
+      <sound n="DropHorseFail" f="General_DropHorseFail.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Dialog" f="General_DialoguePopup.wav" />
+      <sound n="SelectInv" f="General_PressInventoryButton.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GainMoney" f="General_GainMoney.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="LoseMoney" f="General_LoseMoney.wav" />
+      <sound n="BuyItem" f="General_BuyItem.wav" />
+      <sound n="NotEnoughMoney" f="General_NotEnoughMoney.wav" />
+      <sound n="Mutate" f="General_Mutate.wav" />
+      <sound n="WhipCrack" f="General_WhipCrack.wav" />
+
+    <!--### ITEM ###-->
+
+      <sound pitchlow="80" pitchhigh="120" n="GrabHorse" f="Item_GrabHorse.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabHay" f="Item_GrabHay.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabBale" f="Item_GrabBale.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabApple" f="Item_GrabFood.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabVial" f="Item_GrabGlassEmpty.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabHotSauce" f="Item_GrabBottleLiquid.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabPlutonium" f="Item_GrabPlutonium.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabBeer" f="Item_GrabGlassLiquid.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabTrophy" f="Item_GrabMetal.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabDung" f="Item_GrabDung.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabFossil" f="Item_GrabHollowThunk.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabCarcass" f="Item_GrabGoopy.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabCard" f="Item_GrabSmallPlastic.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabDisk" f="Item_GrabSmallPlastic.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabBriefcase" f="Item_Grab.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabFlowers" f="Item_GrabGlassEmpty.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabRacingStripes" f="Item_GrabSmallPlastic.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabSuspensionLift" f="Item_GrabMetal.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabRamBar" f="Item_GrabMetal.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabWatch" f="Item_GrabSmallPlastic.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabClothing" f="Item_GrabCloth.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabGlasses" f="Item_GrabSmallPlastic.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabBallAndChain" f="Item_GrabBallAndChain.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabRocket" f="Item_GrabMetal.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabBalloon" f="Item_GrabBalloon.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabStilts" f="Item_GrabWooden.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabClownNose" f="Item_GrabClownNose.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabCactus" f="Item_GrabCactus.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabCactus" f="Item_GrabCactusOw.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="GrabGATC" f="Item_GrabGoopy.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="BriefcaseOpen" f="Item_OpenSuitcase.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="JetEngineLoop" f="Item_JetEngineLoop.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="BalloonBoop" f="Item_BalloonBoop.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="ChainRattle" f="Item_ChainRattle.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="AttachItem" f="Item_AttachItem.wav" />
+
+      <sound n="PrizeAppear" f="General_CymbalCrashPop.wav" />
+      <sound n="OpenPrize" f="Item_OpenPrize.wav" />
+      <sound n="PutOnShelf" f="Location_LockRattle1.wav" /> 
+
+
+    <!--### Truck ###-->
+
+      <sound n="Honk" f="Truck_Horn.wav" />
+      <sound n="TruckIdle" f="Truck_Idle.wav" />
+      <sound n="TruckMotor" f="Truck_Driving.wav" />
+      <sound n="ZoomTruck" f="Truck_ZoomIn.wav" />
+      <sound n="UnzoomTruck" f="Truck_ZoomOut.wav" />
+      <sound n="TruckEnterLocation" f="Truck_ArriveLocation.wav" />
+      <sound n="TruckLeaveLocation" f="Truck_LeaveLocation.wav" />
+      <sound vol="60" n="TruckPotholeIn" f="Truck_PotholeEnter.wav" />
+      <sound vol="60" n="TruckPotholeOut" f="Truck_PotholeLeave.wav" />
+     
+      <sound n="Lasso" f="Truck_LassoSwing.wav" />
+      <sound n="LassoCapture" f="Truck_LassoCapture.wav" />
+      <sound n="LassoCastOutLoop" f="Truck_LassoCastOutLoop.wav" />
+      <sound n="LassoReturnInLoop" f="Truck_LassoReturnInLoop.wav" />
+      <sound n="LassoArriveWithHorse" f="Truck_LassoArriveWithHorse.wav" />
+      <sound n="LassoMiss" f="Truck_LassoMiss.wav" />
+      <sound n="Dig" f="Truck_ShovelDig.wav" />
+      <sound n="DigLoop" f="Truck_ShovelDigLoop.wav" />
+      <sound n="DigFinish" f="Truck_ShovelDigFinish.wav" />
+      <sound n="FillHole" f="Truck_FillHole.wav" />
+      <sound n="DestroyTree" f="Truck_ShovelFinishTree.wav" />
+      <sound n="DestroyMountain" f="Truck_ShovelFinishMountain.wav" />
+      <sound n="ReclaimLand" f="Truck_FencePlaceWater.wav" />
+      <sound n="Gun" f="Truck_Gunshot.wav" />
+      <sound n="Shot" f="Truck_GunshotImpact.wav" />
+      <sound n="FencePlace" f="Truck_FencePlace.wav" />
+      <sound n="UseSilver" f="Item_UseSilverTool.wav" vol="50"/>
+      <sound n="SmashFence" f="Truck_FenceSmash.wav" />
+      <sound n="StripesOn" f="Truck_StripesOn.wav" />
+      <sound n="LiftOn" f="Truck_LiftOn.wav" />
+      <sound n="LiftOff" f="Truck_LiftOff.wav" />
+      <sound n="RamOn" f="Truck_RamOn.wav" />
+      
+      
+      <sound pitchlow="80" pitchhigh="120" n="BalloonUp" f="Truck_BalloonUp.wav" /> <!-- when balloon is enabled, or goes higher -->
+      <sound pitchlow="80" pitchhigh="120" n="BalloonDown" f="Truck_BalloonDown.wav" /> <!-- when balloon goes lower -->
+      <sound pitchlow="80" pitchhigh="120" n="BalloonSimFaster" f="General_SimSpeedUp.wav" /> <!-- Start at pitchlow for speed lvl 1, pitchhigh for max speed -->
+      <sound pitchlow="80" pitchhigh="120" n="BalloonSimSlower" f="General_SimSlowDown.wav" /> <!-- Start at pitchlow for speed lvl 1, pitchhigh for max speed -->
+      <sound n="BalloonFly" f="Truck_BalloonMove.wav" />
+      
+      <sound n="BalloonDisabled" f="Truck_BalloonOff.wav" /> <!-- when balloon is disabled or lands on ground -->
+
+  <!--############# ANIMAL SOUNDS ############# -->  
+
+    <!--### Common to all animals ###-->
+      <sound pitchlow="80" pitchhigh="120" n="Chomp" f="Animal_Chomp1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Chomp" f="Animal_Chomp2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Glug" f="Animal_Glug1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Glug" f="Animal_Glug2.wav" />
+      <sound n="Drunk" f="Animal_Drunk1.wav" />
+      <sound n="Drunk" f="Animal_Drunk2.wav" />
+      <sound n="Sauced" f="Animal_Sauced1.wav" />
+      <sound n="ImpactHard" f="Animal_FallImpact.wav" />
+
+
+    <!--### Hoofs ###-->
+      <sound pitchlow="80" pitchhigh="120" n="Hoof" f="Animal_Hoof1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Hoof" f="Animal_Hoof2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Hoof" f="Animal_Hoof3.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Hoof" f="Animal_Hoof4.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Hoof" f="Animal_Hoof5.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Hoof" f="Animal_Hoof6.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofSneakers" f="Animal_HoofSneaker1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofSneakers" f="Animal_HoofSneaker2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofSneakers" f="Animal_HoofSneaker3.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofSneakers" f="Animal_HoofSneaker4.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofRollerblades" f="Animal_HoofWheels1.wav" vol="50" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofRollerblades" f="Animal_HoofWheels2.wav" vol="50" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofStilts" f="Animal_Stilts1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofStilts" f="Animal_Stilts2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofStilts" f="Animal_Stilts3.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="HoofStilts" f="Animal_Stilts4.wav" />
+  
+
+    <!--### HORSE (humans making horse sounds) ###-->
+      <sound n="Horse" f="Animal_HorseAndrew1.wav" />
+      <sound n="Horse" f="Animal_HorseAndrew2.wav" />
+      <sound n="Horse" f="Animal_HorseAndrew3.wav" />
+      <sound n="Horse" f="Animal_HorseHelen1.wav" />
+      <sound n="Horse" f="Animal_HorseHelen2.wav" />
+      <sound n="Horse" f="Animal_HorseHelen3.wav" />
+      <sound n="Horse" f="Animal_HorseDakota1.wav" />
+      <sound n="Horse" f="Animal_HorseDakota2.wav" />
+      <sound n="Horse" f="Animal_HorseDakota3.wav" />
+      <sound n="Horse" f="Animal_HorseDakota4.wav" />
+      <sound n="Horse" f="Animal_HorseKyle1.wav" />
+      <sound n="Horse" f="Animal_HorseKyle2.wav" />
+      <sound n="Horse" f="Animal_HorseKyle3.wav" />
+      <sound n="Horse" f="Animal_HorseMarlon1.wav" />
+      <sound n="Horse" f="Animal_HorseMarlon2.wav" />
+      <sound n="Horse" f="Animal_HorseMarlon3.wav" />
+      <sound n="Horse" f="Animal_HorseMatthew1.wav" />
+      <sound n="Horse" f="Animal_HorseMatthew2.wav" />
+      <sound n="Horse" f="Animal_HorseMatthew3.wav" />
+      <sound n="Horse" f="Animal_HorseRyan1.wav" />
+      <sound n="Horse" f="Animal_HorseRyan2.wav" />
+      <sound n="Horse" f="Animal_HorseRyan3.wav" />
+      <sound n="Horse" f="Animal_HorseDoc1.wav" />
+      <sound n="Horse" f="Animal_HorseDoc2.wav" />
+      <sound n="Horse" f="Animal_HorseJustin1.wav" />
+      <sound n="Horse" f="Animal_HorseJustin2.wav" />
+      <sound n="Horse" f="Animal_HorseJustin3.wav" />
+      <sound n="Horse" f="Animal_HorseKatie1.wav" />
+      <sound n="Horse" f="Animal_HorseAaron1.wav" />
+      <sound n="Horse" f="Animal_HorseAaron2.wav" />
+      <sound n="Horse" f="Animal_HorseAaron3.wav" />
+
+      <sound n="Horse" f="Animal_HorseSmartAndrew1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartAndrew2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartAndrew3.wav" />
+      <sound n="Horse" f="Animal_HorseSmartDakota1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartDakota2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartDoc1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartDoc2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartDoc3.wav" />
+      <sound n="Horse" f="Animal_HorseSmartHelen1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartHelen2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartJustin1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartJustin2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartJustin3.wav" />
+      <sound n="Horse" f="Animal_HorseSmartKatie1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartKatie2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartKatie3.wav" />
+      <sound n="Horse" f="Animal_HorseSmartKyle1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartKyle2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartRyan1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartRyan2.wav" />
+      <sound n="Horse" f="Animal_HorseSmartRyan3.wav" />
+      <sound n="Horse" f="Animal_HorseSmartAaron1.wav" />
+      <sound n="Horse" f="Animal_HorseSmartAaron2.wav" />
+    
+    <!--### SMART HORSE ("neigh!" "whinny!" etc.) ###-->
+      <sound n="SmartHorse" f="Animal_HorseSmartMatthew1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartMatthew2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartMarlon1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartMarlon2.wav" />
+      <!-- below are duplicates of some dumb horses that sound vaguely smart -->
+      <sound n="SmartHorse" f="Animal_HorseSmartAndrew1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartAndrew2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartAndrew3.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartDakota1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartDakota2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartDoc1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartDoc2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartDoc3.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartHelen1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartHelen2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartJustin1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartJustin2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartJustin3.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartKatie1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartKatie2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartKatie3.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartKyle1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartKyle2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartRyan1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartRyan2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartRyan3.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartAaron1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartAaron2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseRyan1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseMarlon2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseDakota1.wav" />
+      <sound n="SmartHorse" f="Animal_HorseDakota2.wav" />
+      <sound n="SmartHorse" f="Animal_HorseDakota3.wav" />
+      <sound n="SmartHorse" f="Animal_HorseDakota4.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartJustin3.wav" />
+      <sound n="SmartHorse" f="Animal_HorseSmartKyle1.wav" />
+
+
+    <!--### DUMB HUMAN (utterances "oh?" "uh..." etc.) ###-->
+      <sound n="Human" f="Animal_HumanMarlon1.wav" />
+      <sound n="Human" f="Animal_HumanMarlon2.wav" />
+      <!-- below are duplicates of some smart humans that sound kinda dumb -->
+      <sound n="Human" f="Animal_HumanAaron2.wav" />
+      <sound n="Human" f="Animal_HumanAaron3.wav" />
+      <sound n="Human" f="Animal_HumanAndrew1.wav" />
+      <sound n="Human" f="Animal_HumanAndrew2.wav" />
+      <sound n="Human" f="Animal_HumanAndrew3.wav" />
+      <sound n="Human" f="Animal_HumanAndrew4.wav" />
+      <sound n="Human" f="Animal_HumanDakota1.wav" />
+      <sound n="Human" f="Animal_HumanDakota2.wav" />
+      <sound n="Human" f="Animal_HumanDakota3.wav" />
+      <sound n="Human" f="Animal_HumanDoc1.wav" />
+      <sound n="Human" f="Animal_HumanDoc2.wav" />
+      <sound n="Human" f="Animal_HumanHelen1.wav" />
+      <sound n="Human" f="Animal_HumanHelen2.wav" />
+      <sound n="Human" f="Animal_HumanJustin4.wav" />
+      <sound n="Human" f="Animal_HumanKatie1.wav" />
+      <sound n="Human" f="Animal_HumanKatie2.wav" />
+      <sound n="Human" f="Animal_HumanKyle2.wav" />
+      <sound n="Human" f="Animal_HumanKyle3.wav" />
+      <sound n="Human" f="Animal_HumanMatthew1.wav" />
+      <sound n="Human" f="Animal_HumanRyan1.wav" />
+      <sound n="Human" f="Animal_HumanRyan2.wav" />
+      <sound n="Human" f="Animal_HumanRyan3.wav" />
+
+    
+    <!--### SMART HUMANS ("Good-hay!" "Hay-lo!" etc.) ###-->
+      <sound n="SweetieVoice" f="Animal_HorseHelenHelp1.wav" />
+      <sound n="SweetieVoice" f="Animal_HorseHelenHelp2.wav" />
+      <sound n="SweetieVoice" f="Animal_HorseHelenHelp3.wav" />
+
+      <sound n="SmartHuman" f="Animal_HumanAaron1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanAaron2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanAaron3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanAndrew1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanAndrew2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanAndrew3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanAndrew4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDakota1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDakota2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDakota3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDave1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDave2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDoc1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDoc2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanDoc3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanHelen1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanHelen2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanJustin1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanJustin2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanJustin3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanJustin4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanKatie1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanKatie2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanKyle1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanKyle2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanKyle3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanMarlon1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanMarlon2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanMatthew1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanMatthew2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanRyan1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanRyan2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanRyan3.wav" />
+
+      <sound n="SmartHuman" f="Animal_HumanSmartAaron1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAaron2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAaron3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAaron4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAaron5.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAndrew1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAndrew2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAndrew3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartAndrew4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDakota1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDakota2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDakota3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDakota4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDakota5.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDave1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDave2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDave3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDoc1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDoc2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDoc3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDoc4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartDoc5.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartHelen1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartHelen2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartHelen3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartJustin1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartJustin2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartJustin3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKatie1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKatie2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKatie3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKatie4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKatie5.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKyle1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKyle2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartKyle3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMarlon1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMarlon2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMarlon3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMarlon4.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMarlon5.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMarlon6.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMarlon7.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMatthew1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMatthew2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartMatthew3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartRyan1.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartRyan2.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartRyan3.wav" />
+      <sound n="SmartHuman" f="Animal_HumanSmartRyan4.wav" />
+      
+      
+      
+    <!--### Other Animals ###--> 
+      <sound pitchlow="80" pitchhigh="120" n="Moose" f="Animal_HerbavoreLarge1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Moose" f="Animal_HerbavoreLarge2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Moose" f="Animal_HerbavoreLarge3.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartMoose" f="Animal_HerbavoreLargeSmart1.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Car" f="Animal_Car1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartCar" f="Animal_CarSmart1.wav" />
+
+      <sound pitchlow="90" pitchhigh="110" n="Tiger" f="Animal_Carnivore1.wav" />
+      <sound pitchlow="90" pitchhigh="110" n="Tiger" f="Animal_Carnivore2.wav" />
+      <sound pitchlow="90" pitchhigh="110" n="Tiger" f="Animal_Carnivore3.wav" />
+      <sound pitchlow="90" pitchhigh="110" n="SmartTiger" f="Animal_CarnivoreSmart1.wav" />
+
+      <sound pitchlow="100" pitchhigh="130" n="Alligator" f="Animal_Carnivore1.wav" />
+      <sound pitchlow="100" pitchhigh="130" n="Alligator" f="Animal_Carnivore2.wav" />
+      <sound pitchlow="100" pitchhigh="130" n="Alligator" f="Animal_Carnivore3.wav" />
+      <sound pitchlow="100" pitchhigh="130" n="SmartAlligator" f="Animal_CarnivoreSmart1.wav" /> 
+
+      <sound pitchlow="80" pitchhigh="100" n="Dino" f="Animal_Carnivore1.wav" />
+      <sound pitchlow="80" pitchhigh="100" n="Dino" f="Animal_Carnivore2.wav" />
+      <sound pitchlow="80" pitchhigh="100" n="Dino" f="Animal_Carnivore3.wav" />
+      <sound pitchlow="80" pitchhigh="100" n="SmartDino" f="Animal_CarnivoreSmart1.wav" /> 
+
+      <sound pitchlow="80" pitchhigh="120" n="Cow" f="Animal_HerbavoreLarge1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Cow" f="Animal_HerbavoreLarge2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Cow" f="Animal_HerbavoreLarge3.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartCow" f="Animal_HerbavoreLargeSmart1.wav" />
+
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_Giraffe1.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseAaron1.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseDoc1.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseDoc2.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseHelen1.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseHelen2.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseHelen3.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseKatie1.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseKyle1.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="Giraffe" f="Animal_HorseMatthew1.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="SmartGiraffe" f="Animal_HorseSmartDoc3.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="SmartGiraffe" f="Animal_HorseSmartKyle2.wav" />
+      <sound pitchlow="105" pitchhigh="120" n="SmartGiraffe" f="Animal_HorseSmartMarlon3.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Rabbit" f="Animal_HerbavoreSmall1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Rabbit" f="Animal_HerbavoreSmall2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartRabbit" f="Animal_HerbavoreSmallSmart1.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Insect" f="Animal_Insect1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Insect" f="Animal_Insect2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartInsect" f="Animal_InsectSmart1.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Leprechaun" f="Animal_Leprechaun1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Leprechaun" f="Animal_Leprechaun2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartLeprechaun" f="Animal_Leprechaun1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartLeprechaun" f="Animal_Leprechaun2.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Dog" f="Animal_Dog.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartDog" f="Animal_DogSmart.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Duck" f="Animal_Duck.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartDuck" f="Animal_DuckSmart.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Fish" f="Animal_Fish1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Fish" f="Animal_Fish2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Fish" f="Animal_FishSmart.wav" />
+
+      <!-- SOUNDS FOR WHEN YOU GET TO IT:
+      <sound pitchlow="80" pitchhigh="120" n="Chicken" f="Animal_Chicken1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Chicken" f="Animal_Chicken2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartChicken" f="Animal_ChickenSmart.wav" />
+
+      <sound pitchlow="80" pitchhigh="120" n="Pig" f="Animal_Pig1.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Pig" f="Animal_Pig2.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="SmartPig" f="Animal_PigSmart.wav" />
+      -->
+
+      <!--Abominations: New and improved weird sounds that are fun rather than gross -->
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird01.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird02.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird03.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird04.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird05.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird06.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird07.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird08.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird09.wav" />
+      <sound pitchlow="80" pitchhigh="120" n="Abomination" f="Animal_Weird10.wav" />
+
+</Sounds>

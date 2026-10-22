@@ -1,0 +1,140 @@
+<TextureAtlas>
+  <sprite n="Bar" x="0" y="0" w="128" h="98"/>
+  <sprite n="Bar2" x="113" y="0" w="32" h="40"/>
+  <sprite n="Bar3" x="0" y="66" w="84" h="32" hx="-2"/>
+  <sprite n="TV" x="300" y="154" w="68" h="47" hx="2" hy="2"/>
+  <sprite n="TVOn" x="297" y="168" w="2" h="3" hx="-1" hy="-1"/>
+  <sprite n="TVPause" x="296" y="172" w="3" h="5" hx="-1" hy="-1"/>
+  <sprite n="TVPlay" x="296" y="178" w="3" h="5" hx="-1" hy="-1"/>
+  <sprite n="TVFF" x="294" y="184" w="5" h="5" hy="-1"/>
+  <sprite n="BeerSign" x="340" y="0" w="55" h="16"/>
+  <sprite n="BeerTap" x="280" y="65" w="12" h="38" hx="3" hy="9"/>
+  <sprite n="BeerTap2" x="292" y="65" w="12" h="38" hx="3" hy="9"/>
+  <sprite n="BeerTap3" x="304" y="65" w="14" h="38" hx="5" hy="9"/>
+  <sprite n="SumoRing" x="204" y="0" w="130" h="30" hx="65" hy="15"/>
+  <sprite n="Gong" x="218" y="168" w="72" h="56"/>
+  <sprite n="Dealer" x="152" y="36" w="294" h="28"/>
+  <sprite n="DealerLines" x="448" y="0" w="64" h="53"/>
+  <sprite n="DealerTag" x="148" y="66" w="64" h="34" hx="64" hy="22"/>
+  <sprite n="DealerTag2" x="214" y="66" w="64" h="34" hx="64" hy="22"/>
+  <sprite n="HorseMart" x="0" y="103" w="89" h="1"/>
+  <sprite n="HorseMartRack" x="0" y="104" w="38" h="51"/>
+  <sprite n="HorseMartRack2" x="38" y="104" w="48" h="39"/>
+  <sprite n="HorseMartLogo" x="86" y="104" w="130" h="20"/>
+  <sprite n="HorseMartTable" x="86" y="124" w="128" h="145"/>
+  <sprite n="AcresStable" x="360" y="370" w="152" h="142" hx="67" hy="38"/>
+  <sprite n="HutchHouse" x="466" y="56" w="45" h="56"/>
+  <sprite n="HutchHutch" x="408" y="113" w="47" h="33"/>
+  <sprite n="HutchPath" x="469" y="105" w="9" h="7"/>
+  <sprite n="Gallery" x="0" y="473" w="55" h="39"/>
+  <sprite n="GalleryClap" x="56" y="473" w="55" h="39"/>
+  <sprite n="GalleryClap2" x="112" y="473" w="55" h="39"/>
+  <sprite n="GalleryOoh" x="512" y="248" w="55" h="39"/>
+  <sprite n="Studs" x="458" y="113" w="40" h="33" hx="0" hy="33"/>
+  <sprite n="CrisprApparati" x="0" y="326" w="305" h="70" hx="10"/>
+  <sprite n="CrisprSwitch" x="199" y="302" w="15" h="16"/>
+  <sprite n="CrisprDial" x="164" y="302" w="16" h="16"/>
+  <sprite n="CrisprDial2" x="182" y="302" w="16" h="16"/>
+  <sprite n="CrisprDrive" x="182" y="286" w="65" h="7"/>
+  <sprite n="CrisprExtract" x="182" y="294" w="65" h="7"/>
+  <sprite n="CrisprBeam" x="164" y="279" w="75" h="5"/>
+  <sprite n="PCCrispr" x="318" y="226" w="48" h="38"/>
+  <sprite n="PCCrispr2" x="318" y="217" w="41" h="8" hy="4"/>
+  <sprite n="PCInsertDisk" x="218" y="226" w="48" h="38"/>
+  <sprite n="PCNoVial" x="268" y="226" w="48" h="38"/>
+  <sprite n="ArgonLight" x="86" y="270" w="72" h="17"/>
+  <sprite n="ArgonLight2" x="86" y="288" w="72" h="17"/>
+  <sprite n="CrisprSign" x="0" y="311" w="110" h="14"/>
+  <sprite n="GunRack" x="428" y="147" w="44" h="51"/>
+  <sprite n="ToolRack" x="0" y="216" w="44" h="66"/>
+  <sprite n="FenceRack" x="428" y="197" w="44" h="51"/>
+  <sprite n="ChartTable" x="722" y="406" w="76" h="16" hx="38"/>
+  <sprite n="ChartWord" x="0" y="283" w="39" h="6" hx="20"/>
+  <sprite n="ChartFat" x="22" y="290" w="10" h="9"/>
+  <sprite n="ChartThin" x="32" y="290" w="10" h="9"/>
+  <sprite n="ResearchGoals" x="0" y="300" w="81" h="10"/>
+  <sprite n="QuestBox" x="0" y="290" w="9" h="9"/>
+  <sprite n="QuestBox2" x="10" y="290" w="10" h="9"/>
+  <sprite n="Cork" x="804" y="0" w="220" h="140"/>
+  <sprite n="NowPaying" x="248" y="292" w="61" h="26"/>
+  <sprite n="Author" x="0" y="398" w="106" h="29" hx="53"/>
+  <sprite n="Booth" x="512" y="0" w="80" h="158" hy="13"/>
+  <sprite n="BoothBG" x="512" y="158" w="56" h="41" hx="-12" hy="-12"/>
+  <sprite n="Booth1" x="512" y="0" w="80" h="158" hy="13"/>
+  <sprite n="Booth1BG" x="512" y="158" w="56" h="41" hx="-12" hy="-12"/>
+  <sprite n="Booth2" x="596" y="0" w="80" h="158" hy="13"/>
+  <sprite n="Booth2BG" x="596" y="158" w="56" h="41" hx="-12" hy="-12"/>
+  <sprite n="Booth3" x="680" y="0" w="80" h="158" hy="13"/>
+  <sprite n="Booth3BG" x="680" y="158" w="56" h="41" hx="-12" hy="-12"/>
+  <sprite n="TentOpen" x="520" y="473" w="52" h="39" hy="-13"/>
+  <sprite n="TentFlap" x="563" y="463" w="9" h="9" hx="-25" hy="-43"/>
+  <sprite n="Tent" x="574" y="460" w="52" h="52"/>
+  <sprite n="Tent1" x="628" y="460" w="52" h="52"/>
+  <sprite n="Tent2" x="682" y="460" w="52" h="52"/>
+  <sprite n="Tent3" x="736" y="460" w="52" h="52"/>
+  <sprite n="Tent4" x="790" y="460" w="52" h="52"/>
+  <sprite n="Tent5" x="844" y="460" w="52" h="52"/>
+  <sprite n="Audience" x="0" y="434" w="160" h="39"/>
+  <sprite n="Audience2" x="168" y="434" w="160" h="39"/>
+  <sprite n="Audience3" x="168" y="473" w="160" h="39"/>
+  <sprite n="Guy" x="328" y="434" w="7" h="8"/>
+  <sprite n="Guy2" x="334" y="434" w="7" h="8"/>
+  <sprite n="Applause" x="168" y="414" w="64" h="20"/>
+  <sprite n="Applause2" x="229" y="414" w="64" h="20"/>
+  <sprite n="Applause3" x="290" y="414" w="64" h="20"/>
+  <sprite n="Spotlight" x="328" y="452" w="24" h="26" hx="7"/>
+  <sprite n="SpotlightLight" x="316" y="284" w="86" h="86" hx="-2" hy="-11"/>
+  <sprite n="Cannon" x="328" y="479" w="29" h="33" hy="33"/>
+  <sprite n="Netting" x="512" y="423" w="512" h="25"/>
+  <sprite n="BounceLight" x="531" y="463" w="15" h="8"/>
+  <sprite n="BounceLight2" x="547" y="463" w="15" h="8"/>
+  <sprite n="AcroFloor" x="928" y="450" w="96" h="8"/>
+  <sprite n="AcroHoop" x="758" y="159" w="128" h="128" hx="64" hy="64"/>
+  <sprite n="StrongHook" x="908" y="448" w="20" h="10" hx="15" hy="5"/>
+  <sprite n="DivePlat" x="430" y="356" w="80" h="8"/>
+  <sprite n="DiveLadder" x="500" y="226" w="10" h="128" hx="10" hy="8"/>
+  <sprite n="Curtain" x="428" y="260" w="64" h="82"/>
+  <sprite n="CurtainF" x="584" y="413" w="135" h="9"/>
+  <sprite n="FreakGlow" x="900" y="306" w="124" h="78" hx="62" hy="78"/>
+  <sprite n="CircusSign" x="932" y="460" w="92" h="52"/>
+  <sprite n="CircusSignBulb" x="512" y="508" w="4" h="4"/>
+  <sprite n="Bill" x="318" y="400" w="27" h="12" hx="13" hy="6"/>
+  <sprite n="Bill2" x="290" y="400" w="27" h="12" hx="13" hy="6"/>
+  <sprite n="Bill3" x="262" y="400" w="27" h="12" hx="13" hy="6"/>
+  <sprite n="Bill4" x="234" y="400" w="27" h="12" hx="13" hy="6"/>
+  <sprite n="TentLock" x="898" y="467" w="6" h="8"/>
+  <sprite n="TentLock1" x="898" y="476" w="6" h="8"/>
+  <sprite n="TentLock2" x="898" y="485" w="6" h="8"/>
+  <sprite n="TentLock3" x="898" y="494" w="6" h="8"/>
+  <sprite n="TentLock4" x="898" y="503" w="6" h="8"/>
+  <sprite n="WikiPin" x="0" y="156" w="48" h="58" hx="30" hy="56"/>
+  <sprite n="WikiPinHole" x="40" y="144" w="10" h="10" hx="5" hy="5"/>
+  <sprite n="Garage" x="512" y="288" w="320" h="96"/>
+  <sprite n="GarageT" x="512" y="288" w="320" h="1"/>
+  <sprite n="FakePlant" x="832" y="340" w="58" h="44"/>
+  <sprite n="SimButton" x="512" y="384" w="12" h="12"/>
+  <sprite n="SimButtonD" x="524" y="384" w="12" h="12"/>
+  <sprite n="SimTrack" x="512" y="199" w="70" h="48"/>
+  <sprite n="SimHorse" x="536" y="384" w="12" h="8"/>
+  <sprite n="Burble" x="550" y="384" w="36" h="4"/>
+  <sprite n="Burble2" x="554" y="384" w="36" h="4"/>
+  <sprite n="Burble3" x="558" y="384" w="36" h="4"/>
+  <sprite n="Shelf" x="218" y="104" w="80" h="62" hy="62"/>
+  <sprite n="Bed" x="298" y="104" w="96" h="48" hy="48"/>
+  <sprite n="BedsideTable" x="404" y="147" w="23" h="20" hy="20"/>
+  <sprite n="HermitCave" x="887" y="142" w="137" h="162"/>
+  <sprite n="NewsTop" x="651" y="203" w="88" h="4" hx="-68" hy="4"/>
+  <sprite n="NewsBottom" x="583" y="207" w="156" h="5"/>
+  <sprite n="NewsSports" x="584" y="213" w="123" h="22"/>
+  <sprite n="NewsStats" x="584" y="238" w="92" h="22"/>
+  <sprite n="NewsTilde" x="708" y="214" w="23" h="5"/>
+  <sprite n="Lightbulb" x="397" y="0" w="29" h="17"/>
+  <sprite n="Lightbulb2" x="397" y="17" w="29" h="17"/>
+  <sprite n="Volts" x="398" y="79" w="67" h="23"/>
+  <sprite n="Volts2" x="398" y="67" w="45" h="12" hx="37" hy="12"/>
+  <sprite n="VoltsNeedle" x="394" y="67" w="3" h="30" hx="1.5" hy="29"/>
+  <sprite n="VoltsBGOn" x="366" y="67" w="27" h="11" hx="-20" hy="-21"/>
+  <sprite n="VoltsBGOff" x="366" y="79" w="27" h="11" hx="-20" hy="-21"/>
+  <sprite n="Comp2" x="381" y="168" w="46" h="52"/>
+
+</TextureAtlas>

@@ -1,0 +1,9 @@
+<TextureAtlas>
+  <sprite n="Grass" x="0" y="0" w="32" h="32" c="5"/>
+  <sprite n="Reeds" x="0" y="32" w="32" h="32" c="5"/>
+  <sprite n="Acacia" x="0" y="64" w="32" h="32" c="5"/>
+  <sprite n="Apple" x="0" y="96" w="32" h="32" c="5"/>
+  <sprite n="Palm" x="0" y="128" w="32" h="32" c="5"/>
+  <sprite n="Cactus" x="0" y="160" w="32" h="32" c="5"/>
+  <sprite n="NGrass" x="0" y="192" w="32" h="32" c="5"/>
+</TextureAtlas>

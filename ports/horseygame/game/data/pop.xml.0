@@ -1,0 +1,2714 @@
+<pops>
+    <pop name="default">
+        <gene name="SIZE" p0="1" />
+        <gene name="ASPECT" p0="1" />
+        <gene name="SKINNY" p0="1" />
+        <gene name="BONES" p0="17" p1="1" p2="1" />
+        <gene name="BONES2" p0="1" p1="1" p2="1" />
+        <gene name="CHEST_BIG" p0="17" p1="1" />
+        <gene name="CHEST_SMALL" p0="17" p1="1" />
+        <gene name="GIANT_DWARF" p0="1" p1="20" p2="20" />
+        <gene name="QUADRUPED" p0="1" p2="12" />
+        <gene name="BIPED" p0="1" p2="12" />
+        <gene name="SPLAY" p0="1" p1="16" p2="16" />
+        <gene name="LEG_IN" p0="1" p1="18" />
+        <gene name="LEG_IN2" p0="1" p1="18" />
+        <gene name="OSTODERM" p1="1" />
+        <gene name="TAIL_EXISTS" p0="1" p1="19" />
+        <gene name="TAIL_SIZE" p0="1" p1="8" p2="8" p3="15" />
+        <gene name="TAIL_SHORT" p0="1" p1="17" />
+        <gene name="TAIL_ASPECT" p0="1" p1="17" p2="14" />
+        <gene name="TAIL_JOINT_TYPE" p0="1" />
+        <gene name="TAIL_SHAPE" p0="1" p1="11" />
+        <gene name="TAIL_BOTTOM" p0="1" p3="16" />
+        <gene name="TAIL_SEGMENTS" p1="1" />
+        <gene name="LEG_LENGTH" p0="1" p1="19" p2="19" />
+        <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+        <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+        <gene name="LEG_STRENGTH" p0="1" p1="1" p2="1" p3="1" />
+        <gene name="LEG_HAS_FOOT" p0="1" p1="1" p2="17" />
+        <gene name="LEG_COUNT" p0="1" p1="1" />
+        <gene name="KNEE_MIN" p0="1" p2="9" />
+        <gene name="KNEE_MAX" p0="1" p2="17" />
+        <gene name="ARM_TAG" p0="1" />
+        <gene name="ARM_LENGTH" p0="1" p1="19" p2="19" />
+        <gene name="ARM_STRETCH" p0="1" p1="1" p2="1" />
+        <gene name="ARM_STRETCH2" p0="1" p1="1" p2="1" />
+        <gene name="ARM_STRENGTH" p0="1" p1="1" p2="1" p3="1" />
+        <gene name="ARM_JOINT_TYPE" p0="1" />
+        <gene name="ARM_FORWARD" p1="1" />
+        <gene name="ELBOW_RANGE" p0="1" p1="20" p2="18" />
+        <gene name="UPARM_Y" p0="1" p1="1" p3="1" />
+        <gene name="UPARM_ANGLE" p0="1" p1="12" p2="10" p3="19" />
+        <gene name="NECK_TYPE" p0="1" p1="1" />
+        <gene name="NECK_LENGTH" p0="1" p1="1" />
+        <gene name="NECK_GIRAFFE" p1="1" />
+        <gene name="NECK_THICKNESS" p0="1" p1="1" p2="1" p3="1" />
+        <gene name="NECK_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+        <gene name="NECK_JOINT_TYPE" p1="1" />
+        <gene name="NECK_FLEXIBILITY" p0="1" p1="15" p2="15" />
+        <gene name="NECK_STIFF" p0="1" p1="18" />
+        <gene name="HAS_FOOT" p0="1" />
+        <gene name="FOOT_SIZE" p0="1" p2="17" />
+        <gene name="FOOT_TOE" p0="18" p1="1" />
+        <gene name="FOOT_IS_CIRCLE" p0="1" p1="1" />
+        <gene name="HEAD_SIZE" p0="1" p2="16" p3="16" />
+        <gene name="HEAD_ASPECT" p0="1" p1="17" p2="17" />
+        <gene name="HEAD_SHRUNK" p0="1" />
+        <gene name="HEAD_CHIMERA" p0="1" p1="18" />
+        <gene name="EYE_STYLE" p0="1" />
+        <gene name="EYEBOX_X" p0="1" />
+        <gene name="EYEBOX_Y" p0="19" p2="1" />
+        <gene name="EYEBOX_SIZE" p0="15" p1="1" p2="19" />
+        <gene name="BROW_SLANT" p0="14" p1="12" p2="9" />
+        <gene name="EAR_STYLE" p0="1" />
+        <gene name="EAR_SHAPE" p0="1" />
+        <gene name="EAR_X" p0="1" />
+        <gene name="EAR_SIZE" p0="1" p1="11" p2="11" />
+        <gene name="EAR_SLANT" p0="15" p2="18" p3="1" />
+        <gene name="EAR_INTERIOR" p1="1" />
+        <gene name="TEETH_SHAPE" p1="1" />
+        <gene name="HAS_MOUTH" p0="1" />
+        <gene name="MOUTH_Y" p0="1" p1="18" p2="17" />
+        <gene name="MOUTH_SIZE" p0="1" p1="19" p2="19" />
+        <gene name="JAW" p0="1" p1="18" p2="18" />
+        <gene name="TEETH_UPPER" p0="1" p1="5" />
+        <gene name="TEETH_UPPER2" p0="1" p1="1" />
+        <gene name="TONGUE" p0="1" />
+        <gene name="TONGUE_SEGS" p0="1" />
+        <gene name="NOSE_STYLE" p0="1" />
+        <gene name="NOSE_Y" p0="1" p2="19" />
+        <gene name="NOSE_SIZE" p0="1" p1="19" />
+        <gene name="HAS_ANTLERS" p1="1" />
+        <gene name="ANTLER_X" p3="1" />
+        <gene name="ANTLER_W" p3="1" />
+        <gene name="ANTLER_H" p3="1" />
+        <gene name="ANTLER_TAPER" p3="1" />
+        <gene name="ANTLER_POM" p3="1" />
+        <gene name="ANTLER_COLOR" p0="1" />
+        <gene name="POM_COLOR" p0="1" />
+        <gene name="POM_USECOLOR" p3="1" />
+        <gene name="ANTLER_REC" p3="1" />
+        <gene name="ANTLER_REC2" p3="1" />
+        <gene name="ANTLER_FLIP" p3="1" />
+        <gene name="ANTLER_MOD" p1="19" p2="18" p3="1" />
+        <gene name="ANTLER_SCALEH" p3="1" />
+        <gene name="ANTLER_SCALEW" p3="1" />
+        <gene name="ANTLER_ANGLE" p3="1" />
+        <gene name="ANTLER_ANGLE2" p3="1" />
+        <gene name="ANTLER_ANGLE_RAND" p3="1" />
+        <gene name="ANTLER_T1" p3="1" />
+        <gene name="ANTLER_T2" p3="1" />
+        <gene name="HAT_EXISTS" p3="1" />
+        <gene name="HAT_SIZE" p3="1" />
+        <gene name="HAT_RAKE" p3="1" />
+        <gene name="HAT_ASPECT" p3="1" />
+        <gene name="HAT_TAPER" p3="1" />
+        <gene name="HAT_POM" p3="1" />
+        <gene name="HAT_POM_IS_LID" p3="1" />
+        <gene name="HAT_CLONE" p3="1" />
+        <gene name="HAT_BACK_SCALE" p3="1" />
+        <gene name="HAT_FRONT_SCALE" p3="1" />
+        <gene name="HAT_BACK_ANGLE" p3="1" />
+        <gene name="HAT_FRONT_ANGLE" p3="1" />
+        <gene name="HAT_ANGLE_RAND" p3="1" />
+        <gene name="HAT_FLIP" p3="1" />
+        <gene name="HAT_T" p3="1" />
+        <gene name="BASE_BLACK" p0="1" p1="1" />
+        <gene name="BASE_CREAM" p0="1" p1="17" />
+        <gene name="SWAP_BASE_SPOT" p0="1" p1="16" />
+        <gene name="SWAP_ALT_SPOT" p0="1" p1="15" />
+        <gene name="WHITE" p1="1" p2="1" p3="1" />
+        <gene name="EYE_HUE" p0="1" p1="1" p2="12" p3="1" />
+        <gene name="NOSE_HUE" p2="1" />
+        <gene name="AGOUTI" p0="15" p1="1" />
+        <gene name="SKIN_HANDS" p1="1" />
+        <gene name="FOOT_IS_HOOF" p1="1" />
+        <gene name="EAR_COMP" p0="1" p3="19" />
+        <gene name="PAT_SPLIT" p0="1" />
+        <gene name="PAT_STRIPE" p0="1" />
+        <gene name="PAT_PERLIN" p0="1" p1="1" />
+        <gene name="PAT_PERLIN2" p0="1" p1="1" />
+        <gene name="PAT_PERLIN_SIZE" p0="1" p1="1" />
+        <gene name="BRAIN_SPASTIC" p0="1" p1="18" p2="18" />
+        <gene name="HIGH_INTELLECT" p0="1" p2="5" />
+        <gene name="TAIL_WAG" p1="1" />
+        <gene name="L_LEG_BTOF_REACT" p0="1" />
+        <gene name="L_ARM_FTOB_EVENT" p0="1" />
+        <gene name="L_ARM_BTOF_REACT" p0="1" />
+        <gene name="L_TAIL_FTOB_REACT" p0="1" />
+        <gene name="L_TAIL_BTOF_REACT" p0="1" />
+        <gene name="L_NECK_FTOB_REACT" p0="1" />
+        <gene name="L_NECK_BTOF_REACT" p0="1" />
+        <pop name="scratch">
+            <gene name="SIZE" p0="1" p3="1" />
+            <gene name="ASPECT" p1="1" p2="1" />
+            <gene name="SKINNY" p0="1" />
+            <gene name="BONES" p1="1" p2="1" />
+            <gene name="BONES2" p0="1" p2="1" />
+            <gene name="CHEST_BIG" p1="1" />
+            <gene name="CHEST_SMALL" p1="1" />
+            <gene name="GIANT_DWARF" p0="1" />
+            <gene name="MUSCLE_USE" p0="1" />
+            <gene name="QUADRUPED" p0="1" />
+            <gene name="BIPED" p0="1" p2="1" />
+            <gene name="SPLAY" p3="1" />
+            <gene name="LEG_IN" p1="1" />
+            <gene name="LEG_IN2" p1="1" />
+            <gene name="GUT" p0="1" p1="1" />
+            <gene name="GUT_IS_UDDER" p0="1" />
+            <gene name="OSTODERM" p3="1" />
+            <gene name="OSTO_SIZE" p2="1" p3="1" />
+            <gene name="DERRIERE" p0="1" p1="1" />
+            <gene name="SPEED_FACTOR" p0="1" />
+            <gene name="BREAK_FORCE" p0="1" />
+            <gene name="TAIL_TAG" p0="1" />
+            <gene name="TAIL_EXISTS" p0="1" />
+            <gene name="TAIL_SIZE" p2="1" p3="1" />
+            <gene name="TAIL_SHORT" p0="1" p1="1" />
+            <gene name="TAIL_ASPECT" p2="1" />
+            <gene name="TAIL_ANGLE" p1="1" p2="1" />
+            <gene name="TAIL_JOINT_TYPE" p0="1" />
+            <gene name="TAIL_STIFF" p0="1" p1="1" />
+            <gene name="TAIL_SPEED" p1="1" />
+            <gene name="TAIL_FLEXIBILITY" p2="1" p3="1" />
+            <gene name="TAIL_SHAPE" p0="1" />
+            <gene name="TAIL_BOTTOM" p0="1" />
+            <gene name="TAIL_SEGMENTS" p1="1" />
+            <gene name="LEG_TAG" p1="1" />
+            <gene name="LEG_TYPE" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="1" p2="1" />
+            <gene name="LEG_STRETCH2" p1="1" />
+            <gene name="LEG_STRENGTH" p1="1" p3="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" p1="1" />
+            <gene name="LEG_JOINT_TYPE" p0="1" />
+            <gene name="LEG_FLEXIBILITY" p2="1" />
+            <gene name="LEG_FLEX_BIAS" p3="1" />
+            <gene name="LEG_THRUST_BACK" p0="1" />
+            <gene name="LEG_IS_CIRCLE" p0="1" />
+            <gene name="LEG_COUNT" p0="1" p2="1" />
+            <gene name="LEG_SKEW" p0="1" />
+            <gene name="LEG_PENCIL" p0="1" />
+            <gene name="LEG_AND_ARM_LIMP" p0="1" />
+            <gene name="HAS_KNEE" p0="1" />
+            <gene name="KNEE_MIN" p0="1" p2="1" />
+            <gene name="KNEE_MAX" p0="1" />
+            <gene name="ARM_TAG" p1="1" />
+            <gene name="ARM_TYPE" p1="1" />
+            <gene name="ARM_LENGTH" p1="1" p3="1" />
+            <gene name="ARM_STRETCH" p0="1" p2="1" />
+            <gene name="ARM_STRETCH2" p0="1" p1="1" />
+            <gene name="ARM_STRENGTH" p1="1" p3="1" />
+            <gene name="ARM_HAS_HAND" p0="1" />
+            <gene name="ARM_JOINT_TYPE" p0="1" />
+            <gene name="ARM_FLEXIBILITY" p2="1" />
+            <gene name="ARM_FLEX_BIAS" p0="1" />
+            <gene name="ARM_FORWARD" p1="1" />
+            <gene name="ARM_SKEW" p0="1" />
+            <gene name="ARM_NODE_SCALE" p1="1" />
+            <gene name="HAS_ELBOW" p0="1" />
+            <gene name="ELBOW_RANGE" p0="1" />
+            <gene name="UPARM_TAG" p0="1" />
+            <gene name="UPARM_Y" p0="1" p3="1" />
+            <gene name="UPARM_ANGLE" p0="1" p1="1" />
+            <gene name="UPARM_GOOFY" p0="1" />
+            <gene name="NECK_TAG" p0="1" />
+            <gene name="NECK_TYPE" p2="1" />
+            <gene name="NECK_LENGTH" p3="1" />
+            <gene name="NECK_GIRAFFE" p1="1" />
+            <gene name="NECK_THICKNESS" p1="1" />
+            <gene name="NECK_ANGLE" p1="1" p3="1" />
+            <gene name="NECK_COCK" p0="1" />
+            <gene name="NECK_JOINT_TYPE" p1="1" />
+            <gene name="NECK_FLEXIBILITY" p0="1" p1="1" />
+            <gene name="NECK_FLEX_BIAS" p0="1" />
+            <gene name="NECK_SLOUCH" p1="1" />
+            <gene name="NECK_ONTOP" p0="1" />
+            <gene name="NECK_STIFF" p1="1" />
+            <gene name="NECK_SPEED" p0="1" />
+            <gene name="HAS_FOOT" p0="1" />
+            <gene name="FOOT_SIZE" p1="1" />
+            <gene name="FOOT_CLOWN" p0="1" />
+            <gene name="FOOT_THICKNESS" p0="1" />
+            <gene name="FOOT_TOE" p0="1" />
+            <gene name="FOOT_IS_CIRCLE" p0="1" />
+            <gene name="FOOT_BACKWARDS" p0="1" p1="1" />
+            <gene name="HAS_HAND" p1="1" />
+            <gene name="HAND_WIDTH" p0="1" />
+            <gene name="HAND_LENGTH" p1="1" />
+            <gene name="HAND_FINGER" p1="1" />
+            <gene name="HEAD_SIZE" p2="1" />
+            <gene name="HEAD_THICK_SKULL" p0="1" />
+            <gene name="HEAD_X_GROWTH" p0="1" />
+            <gene name="HEAD_Y_GROWTH" p0="1" p1="1" />
+            <gene name="HEAD_ASPECT" p0="1" p2="1" />
+            <gene name="HEAD_SQUARE" p0="1" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="HEAD_GIANT" p0="1" />
+            <gene name="HEAD_SHRUNK" p0="1" />
+            <gene name="HEAD_JOINTED" p0="1" />
+            <gene name="HEAD_CHIMERA" p0="1" />
+            <gene name="EYE_STYLE" p0="1" />
+            <gene name="BUGEYE" p1="1" />
+            <gene name="EYEBOX_X" p2="1" />
+            <gene name="EYEBOX_Y" p1="1" />
+            <gene name="EYEBOX_SIZE" p2="1" />
+            <gene name="EYE_SIZE" p0="1" p1="1" />
+            <gene name="PUPIL_SIZE" p0="1" />
+            <gene name="HAS_PUPIL" p0="1" />
+            <gene name="BROW_SIZE" p0="1" />
+            <gene name="BROW_SLANT" p2="1" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="EAR_SHAPE" p0="1" />
+            <gene name="EAR_FLOP" p0="1" />
+            <gene name="EAR_X" p0="1" />
+            <gene name="EAR_SIZE" p0="1" p1="1" />
+            <gene name="EAR_ASPECT" p0="1" />
+            <gene name="EAR_SLANT" p0="1" p3="1" />
+            <gene name="EAR_INTERIOR" p1="1" />
+            <gene name="TEETH_SHAPE" p0="1" p3="1" />
+            <gene name="HAS_MOUTH" p0="1" />
+            <gene name="MOUTH_Y" p0="1" p1="1" />
+            <gene name="MOUTH_SIZE" p1="1" />
+            <gene name="JAW" p0="1" />
+            <gene name="TEETH_UPPER" p0="1" />
+            <gene name="TEETH_UPPER2" p0="1" />
+            <gene name="TONGUE" p0="1" />
+            <gene name="TONGUE_SEGS" p0="1" />
+            <gene name="NOSE_STYLE" p1="1" />
+            <gene name="NOSE_INNY" p0="1" />
+            <gene name="NOSE_Y" p2="1" />
+            <gene name="NOSE_SIZE" p2="1" p3="1" />
+            <gene name="NOSE_INTERIOR" p0="1" />
+            <gene name="HAS_ANTLERS" p1="1" />
+            <gene name="ANTLER_X" p3="1" />
+            <gene name="ANTLER_W" p3="1" />
+            <gene name="ANTLER_H" p3="1" />
+            <gene name="ANTLER_TAPER" p3="1" />
+            <gene name="ANTLER_POM" p3="1" />
+            <gene name="ANTLER_COLOR" p0="1" />
+            <gene name="POM_COLOR" p0="1" />
+            <gene name="POM_USECOLOR" p3="1" />
+            <gene name="ANTLER_REC" p3="1" />
+            <gene name="ANTLER_REC2" p3="1" />
+            <gene name="ANTLER_FLIP" p3="1" />
+            <gene name="ANTLER_MOD" p3="1" />
+            <gene name="ANTLER_SCALEH" p3="1" />
+            <gene name="ANTLER_SCALEW" p3="1" />
+            <gene name="ANTLER_ANGLE" p3="1" />
+            <gene name="ANTLER_ANGLE2" p3="1" />
+            <gene name="ANTLER_ANGLE_RAND" p3="1" />
+            <gene name="ANTLER_T1" p3="1" />
+            <gene name="ANTLER_T2" p3="1" />
+            <gene name="HAT_EXISTS" p3="1" />
+            <gene name="HAT_SIZE" p3="1" />
+            <gene name="HAT_RAKE" p3="1" />
+            <gene name="HAT_ASPECT" p3="1" />
+            <gene name="HAT_TAPER" p3="1" />
+            <gene name="HAT_POM" p3="1" />
+            <gene name="HAT_POM_IS_LID" p3="1" />
+            <gene name="HAT_CLONE" p3="1" />
+            <gene name="HAT_BACK_SCALE" p3="1" />
+            <gene name="HAT_FRONT_SCALE" p3="1" />
+            <gene name="HAT_BACK_ANGLE" p3="1" />
+            <gene name="HAT_FRONT_ANGLE" p3="1" />
+            <gene name="HAT_ANGLE_RAND" p3="1" />
+            <gene name="HAT_FLIP" p3="1" />
+            <gene name="HAT_T" p3="1" />
+            <gene name="BASE_BROWN" p0="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_RED" p0="1" />
+            <gene name="BASE_GREEN" p0="1" />
+            <gene name="GREEN_KNOCKOUT" p0="1" />
+            <gene name="BASE_CREAM" p0="1" p1="1" />
+            <gene name="ALT_BLUE" p1="1" />
+            <gene name="SPOT_YELLOW" p1="1" />
+            <gene name="SKIN_HUE" p3="1" />
+            <gene name="SKIN_HUE2" p3="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="WHITE" p2="1" p3="1" />
+            <gene name="WHITE_IS_LETHAL" p0="1" />
+            <gene name="EYE_HUE" p1="1" />
+            <gene name="NOSE_HUE" p2="1" />
+            <gene name="HOOF_COLOR" p0="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="BELLY_ALT" p0="1" />
+            <gene name="SKIN_HEAD" p3="1" />
+            <gene name="SKIN_HANDS" p3="1" />
+            <gene name="FOOT_IS_HOOF" p0="1" />
+            <gene name="RACCOON_EYE" p0="1" p2="1" />
+            <gene name="EAR_COMP" p0="1" />
+            <gene name="TAIL_ALT" p0="1" />
+            <gene name="PAT_SPLIT" p0="1" />
+            <gene name="PAT_BELLY" p0="1" />
+            <gene name="PAT_STRIPE" p0="1" />
+            <gene name="PAT_SPOT" />
+            <gene name="PAT_PERLIN" p1="1" />
+            <gene name="PAT_PERLIN2" p0="1" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="RAMPAGE" p0="1" />
+            <gene name="SPINAL_LOCO" p1="1" />
+            <gene name="BRAIN_SPASTIC" p0="1" />
+            <gene name="HIGH_INTELLECT" p2="1" />
+            <gene name="OMNIVORE" p0="1" />
+            <gene name="LITTER_SIZE" p0="1" />
+            <gene name="OLD_AGE" p0="1" />
+            <gene name="LIMP" p0="1" />
+            <gene name="NARCOLEPSY" p0="1" />
+            <gene name="FLU_IMMUNITY" p0="1" />
+            <gene name="TAIL_WAG" p0="1" />
+            <gene name="STIFF_JOINTS" p0="1" />
+            <gene name="L_LEG_SIGNAL" p0="1" />
+            <gene name="L_LEG_FTOB_REACT" p0="1" />
+            <gene name="L_LEG_FTOB_EVENT" p0="1" />
+            <gene name="L_LEG_BTOF_REACT" p0="1" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" />
+            <gene name="L_ARM_SIGNAL" p0="1" />
+            <gene name="L_ARM_FTOB_REACT" p0="1" />
+            <gene name="L_ARM_FTOB_EVENT" p0="1" />
+            <gene name="L_ARM_BTOF_REACT" p0="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" />
+            <gene name="L_TAIL_SIGNAL" p0="1" />
+            <gene name="L_TAIL_FTOB_REACT" p2="1" />
+            <gene name="L_TAIL_FTOB_EVENT" p0="1" />
+            <gene name="L_TAIL_BTOF_REACT" p2="1" />
+            <gene name="L_TAIL_BTOF_EVENT" p0="1" />
+            <gene name="L_NECK_SIGNAL" p0="1" />
+            <gene name="L_NECK_FTOB_REACT" p2="1" />
+            <gene name="L_NECK_FTOB_EVENT" p0="1" />
+            <gene name="L_NECK_BTOF_REACT" p2="1" />
+            <gene name="L_NECK_BTOF_EVENT" p0="1" />
+            <gene name="LOCO_SYNC" p0="1" />
+        </pop>
+        <pop name="fest horse">
+            <gene name="ASPECT" p0="1" p1="20" p2="19" />
+            <gene name="SKINNY" p0="1" p3="20" />
+            <gene name="CHEST_BIG" p0="18" p1="1" />
+            <gene name="CHEST_SMALL" p0="18" p1="1" p2="20" />
+            <gene name="GUT" p0="1" p1="17" p2="19" />
+            <gene name="DERRIERE" p0="1" p1="18" />
+            <gene name="BREAK_FORCE" p0="2" p1="18" p3="20" />
+            <gene name="TAIL_TAG" p0="1" p3="20" />
+            <gene name="TAIL_SIZE" p0="1" p1="8" p2="8" p3="15" />
+            <gene name="TAIL_ANGLE" p0="1" p1="16" />
+            <gene name="TAIL_JOINT_TYPE" p0="1" p1="18" />
+            <gene name="TAIL_STIFF" p0="1" p1="20" />
+            <gene name="TAIL_SPEED" p0="1" p1="20" />
+            <gene name="TAIL_FLEXIBILITY" p2="20" p3="1" />
+            <gene name="TAIL_SHAPE" p0="1" p1="13" />
+            <gene name="LEG_TAG" p0="1" />
+            <gene name="LEG_FLEXIBILITY" p0="1" p1="18" p2="18" />
+            <gene name="LEG_FLEX_BIAS" p0="1" p1="17" p2="17" />
+            <gene name="LEG_SKEW" p0="1" p1="19" p2="20" />
+            <gene name="HAS_KNEE" p0="1" p1="20" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_FLEXIBILITY" p0="1" p1="18" p2="18" />
+            <gene name="ARM_FLEX_BIAS" p0="1" p1="18" p2="18" />
+            <gene name="ARM_SKEW" p0="1" p1="19" p2="19" />
+            <gene name="ARM_NODE_SCALE" p0="1" />
+            <gene name="HAS_ELBOW" p0="1" p1="20" />
+            <gene name="NECK_LENGTH" p0="1" p1="1" p2="19" p3="20" />
+            <gene name="NECK_COCK" p0="1" p2="16" p3="17" />
+            <gene name="NECK_FLEX_BIAS" p0="1" p1="20" />
+            <gene name="NECK_SLOUCH" p0="1" p1="20" />
+            <gene name="HAS_FOOT" p0="1" p1="20" />
+            <gene name="FOOT_SIZE" p0="1" p2="17" />
+            <gene name="FOOT_CLOWN" p0="1" p1="20" />
+            <gene name="FOOT_THICKNESS" p0="8" p1="11" p2="19" />
+            <gene name="FOOT_TOE" p0="1" p1="17" p2="1" />
+            <gene name="HAS_HAND" p1="1" p2="19" />
+            <gene name="HAND_WIDTH" p0="1" p1="19" p2="17" />
+            <gene name="HAND_LENGTH" p0="1" p1="16" p2="18" />
+            <gene name="HEAD_THICK_SKULL" p0="1" p1="17" />
+            <gene name="HEAD_X_GROWTH" p0="1" p1="13" p2="17" p3="11" />
+            <gene name="HEAD_Y_GROWTH" p0="1" p1="14" p2="15" />
+            <gene name="HEAD_SQUARE" p0="1" p1="20" />
+            <gene name="HEAD_GIANT" p0="1" p1="19" />
+            <gene name="HEAD_SHRUNK" p0="1" p1="19" />
+            <gene name="HEAD_JOINTED" p0="1" p1="20" />
+            <gene name="EYE_STYLE" p0="1" />
+            <gene name="BUGEYE" p0="1" p1="20" />
+            <gene name="EYEBOX_X" p0="1" p2="20" />
+            <gene name="EYEBOX_Y" p0="16" p1="20" p2="1" />
+            <gene name="EYE_SIZE" p0="1" p1="16" />
+            <gene name="EAR_STYLE" p0="1" p1="19" />
+            <gene name="EAR_SHAPE" p0="1" p1="17" />
+            <gene name="EAR_X" p0="1" p2="20" />
+            <gene name="EAR_ASPECT" p0="1" p1="20" />
+            <gene name="EAR_SLANT" p0="18" p2="19" p3="1" />
+            <gene name="TEETH_SHAPE" p1="1" p2="20" />
+            <gene name="MOUTH_Y" p0="1" p1="18" p2="17" />
+            <gene name="JAW" p0="1" p1="18" p2="18" p3="20" />
+            <gene name="TONGUE" p0="1" />
+            <gene name="NOSE_SIZE" p0="1" p1="19" p2="19" />
+            <gene name="ANTLER_H" p1="1" p3="1" />
+            <gene name="ANTLER_TAPER" p2="14" p3="1" />
+            <gene name="ANTLER_COLOR" p0="1" p1="1" p2="1" />
+            <gene name="POM_COLOR" p0="1" p1="1" p2="1" />
+            <gene name="ANTLER_REC" p1="1" p3="1" />
+            <gene name="ANTLER_REC2" p1="1" p3="1" />
+            <gene name="ANTLER_FLIP" p3="1" />
+            <gene name="ANTLER_MOD" p2="10" p3="1" />
+            <gene name="ANTLER_ANGLE" p2="13" p3="1" />
+            <gene name="ANTLER_ANGLE2" p1="1" p2="16" />
+            <gene name="ANTLER_ANGLE_RAND" p2="16" p3="1" />
+            <gene name="ANTLER_T1" p1="1" p3="12" />
+            <gene name="ANTLER_T2" p2="1" />
+            <gene name="BASE_BROWN" p0="1" p1="9" />
+            <gene name="WHITE" p0="20" p1="1" p2="1" />
+            <gene name="WHITE_IS_LETHAL" p1="1" />
+            <gene name="NOSE_HUE" p1="20" p2="1" />
+            <gene name="HOOF_COLOR" p0="1" />
+            <gene name="AGOUTI" p0="1" p1="1" />
+            <gene name="SKIN_HANDS" p0="1" p1="1" />
+            <gene name="RACCOON_EYE" p0="1" p1="17" />
+            <gene name="PAT_SPLIT" p0="1" p1="17" />
+            <gene name="PAT_BELLY" p0="1" p1="16" />
+            <gene name="PAT_STRIPE" p0="1" />
+            <gene name="PAT_PERLIN" p0="1" p1="1" p2="1" />
+            <gene name="PAT_PERLIN2" p0="1" p1="8" />
+            <gene name="PAT_PERLIN_SIZE" p0="1" p1="1" p2="1" />
+            <gene name="L_LEG_FTOB_REACT" p0="1" p1="17" />
+            <gene name="L_LEG_FTOB_EVENT" p0="1" p1="17" />
+            <gene name="L_LEG_BTOF_REACT" p0="1" p1="17" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" p1="17" p2="17" />
+            <gene name="L_ARM_FTOB_REACT" p0="1" p1="17" />
+            <gene name="L_ARM_FTOB_EVENT" p0="1" p1="17" />
+            <gene name="L_ARM_BTOF_REACT" p0="1" p1="17" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" p1="17" p2="17" />
+            <gene name="L_TAIL_FTOB_REACT" p0="1" p1="19" p3="20" />
+            <gene name="L_TAIL_FTOB_EVENT" p0="1" p1="20" />
+            <gene name="L_TAIL_BTOF_REACT" p0="1" p1="19" p3="20" />
+            <gene name="L_TAIL_BTOF_EVENT" p0="1" p1="20" />
+            <gene name="L_NECK_FTOB_REACT" p0="1" p1="19" p3="20" />
+            <gene name="L_NECK_FTOB_EVENT" p0="1" p1="20" />
+            <gene name="L_NECK_BTOF_REACT" p0="1" p1="19" p3="20" />
+            <gene name="L_NECK_BTOF_EVENT" p0="1" p1="20" />
+            <gene name="LOCO_SYNC" p0="1" p1="17" />
+            <pop name="crazy horse">
+                <gene name="ASPECT" p0="1" p1="20" p2="19" />
+                <gene name="SKINNY" p0="1" p3="20" />
+                <gene name="CHEST_BIG" p0="18" p1="1" />
+                <gene name="CHEST_SMALL" p0="18" p1="1" p2="20" />
+                <gene name="MUSCLE_USE" p0="1" p1="20" />
+                <gene name="QUADRUPED" p0="1" p2="11" p3="19" />
+                <gene name="BIPED" p0="1" p2="11" p3="19" />
+                <gene name="SPLAY" p0="1" p1="16" p2="16" p3="19" />
+                <gene name="GUT" p0="1" p1="17" p2="19" />
+                <gene name="DERRIERE" p0="1" p1="18" p2="20" />
+                <gene name="SPEED_FACTOR" p0="1" p2="20" p3="20" />
+                <gene name="BREAK_FORCE" p0="4" p1="17" p3="20" />
+                <gene name="TAIL_TAG" p0="1" p1="20" p2="20" p3="20" />
+                <gene name="TAIL_SIZE" p0="1" p1="8" p2="8" p3="15" />
+                <gene name="TAIL_ANGLE" p0="1" p1="15" p2="19" />
+                <gene name="TAIL_JOINT_TYPE" p0="1" p1="18" />
+                <gene name="TAIL_STIFF" p0="1" p1="16" />
+                <gene name="TAIL_SPEED" p0="1" p1="20" />
+                <gene name="TAIL_FLEXIBILITY" p1="19" p2="18" p3="1" />
+                <gene name="TAIL_SHAPE" p0="1" p1="13" p2="20" />
+                <gene name="TAIL_SEGMENTS" p1="1" p2="12" />
+                <gene name="LEG_TAG" p0="1" p2="20" p3="20" />
+                <gene name="LEG_TYPE" p0="1" p1="20" p2="20" />
+                <gene name="LEG_LENGTH" p0="1" p1="18" p2="18" />
+                <gene name="LEG_JOINT_TYPE" p0="1" p1="18" p2="18" />
+                <gene name="LEG_FLEXIBILITY" p0="1" p1="18" p2="18" />
+                <gene name="LEG_FLEX_BIAS" p0="1" p1="17" p2="17" />
+                <gene name="LEG_THRUST_BACK" p0="1" p3="17" />
+                <gene name="LEG_COUNT" p0="1" p1="5" p2="18" />
+                <gene name="LEG_SKEW" p0="1" p1="18" p2="18" />
+                <gene name="LEG_PENCIL" p0="1" p1="20" />
+                <gene name="HAS_KNEE" p0="1" p1="19" />
+                <gene name="ARM_TAG" p0="1" p2="20" p3="20" />
+                <gene name="ARM_TYPE" p0="1" p1="20" p2="20" />
+                <gene name="ARM_LENGTH" p0="1" p1="18" p2="18" />
+                <gene name="ARM_HAS_HAND" p0="1" p1="17" />
+                <gene name="ARM_JOINT_TYPE" p0="1" p1="18" p2="18" />
+                <gene name="ARM_FLEXIBILITY" p0="1" p1="18" p2="18" />
+                <gene name="ARM_FLEX_BIAS" p0="1" p1="18" p2="18" />
+                <gene name="ARM_FORWARD" p1="1" />
+                <gene name="ARM_SKEW" p0="1" p1="19" p2="17" />
+                <gene name="ARM_NODE_SCALE" p0="1" p1="19" p2="18" />
+                <gene name="HAS_ELBOW" p0="1" p1="19" />
+                <gene name="UPARM_TAG" p0="1" p2="20" />
+                <gene name="NECK_TAG" p0="1" p1="20" p2="20" p3="20" />
+                <gene name="NECK_TYPE" p0="1" p1="1" p2="17" p3="18" />
+                <gene name="NECK_LENGTH" p0="1" p1="1" p2="17" p3="17" />
+                <gene name="NECK_GIRAFFE" p1="1" p2="18" />
+                <gene name="NECK_COCK" p0="1" p1="20" p2="16" p3="16" />
+                <gene name="NECK_JOINT_TYPE" p0="20" p1="1" />
+                <gene name="NECK_FLEX_BIAS" p0="1" p1="18" p3="20" />
+                <gene name="NECK_SLOUCH" p0="1" p1="20" p2="19" />
+                <gene name="NECK_ONTOP" p0="1" p3="19" />
+                <gene name="HAS_FOOT" p0="1" p1="20" />
+                <gene name="FOOT_SIZE" p0="1" p2="17" />
+                <gene name="FOOT_CLOWN" p0="1" p1="19" />
+                <gene name="FOOT_THICKNESS" p0="8" p1="11" p2="18" p3="19" />
+                <gene name="FOOT_TOE" p0="1" p1="17" p2="1" />
+                <gene name="FOOT_BACKWARDS" p0="1" p1="20" />
+                <gene name="HAS_HAND" p1="1" p2="20" />
+                <gene name="HAND_WIDTH" p0="1" p1="19" p2="19" />
+                <gene name="HAND_LENGTH" p0="1" p1="18" p2="19" />
+                <gene name="HEAD_SIZE" p0="1" p1="19" p2="16" p3="16" />
+                <gene name="HEAD_THICK_SKULL" p0="1" p1="17" />
+                <gene name="HEAD_X_GROWTH" p0="1" p1="13" p2="17" p3="11" />
+                <gene name="HEAD_Y_GROWTH" p0="1" p1="14" p2="15" />
+                <gene name="HEAD_SQUARE" p0="1" p1="20" />
+                <gene name="HEAD_HAS_BACK" p0="1" p1="19" />
+                <gene name="HEAD_GIANT" p0="1" p1="19" />
+                <gene name="HEAD_SHRUNK" p0="1" p1="19" />
+                <gene name="HEAD_JOINTED" p0="1" p1="19" />
+                <gene name="EYE_STYLE" p0="1" />
+                <gene name="BUGEYE" p0="1" p1="19" />
+                <gene name="EYEBOX_X" p0="1" p2="20" p3="19" />
+                <gene name="EYEBOX_Y" p0="16" p1="20" p2="1" />
+                <gene name="EYEBOX_SIZE" p0="15" p1="1" p2="19" p3="19" />
+                <gene name="EYE_SIZE" p0="1" p1="16" />
+                <gene name="HAS_PUPIL" p0="1" p1="19" />
+                <gene name="BROW_SIZE" p0="1" p1="19" p2="19" />
+                <gene name="EAR_X" p0="1" p2="20" />
+                <gene name="EAR_ASPECT" p0="1" p1="20" />
+                <gene name="EAR_SLANT" p0="18" p2="19" p3="1" />
+                <gene name="TEETH_SHAPE" p0="20" p1="1" />
+                <gene name="MOUTH_Y" p0="1" p1="18" p2="15" p3="20" />
+                <gene name="JAW" p0="1" p1="18" p2="19" p3="20" />
+                <gene name="TONGUE" p0="1" p1="20" />
+                <gene name="NOSE_STYLE" p0="1" p1="19" p2="19" />
+                <gene name="NOSE_INNY" p0="1" p1="18" />
+                <gene name="NOSE_Y" p0="1" p1="20" p2="19" />
+                <gene name="NOSE_SIZE" p0="1" p1="19" p2="19" p3="20" />
+                <gene name="BASE_BROWN" p0="1" p1="16" />
+                <gene name="BASE_RED" p0="1" p1="20" />
+                <gene name="BASE_GREEN" p0="1" p1="20" p2="20" />
+                <gene name="ALT_BLUE" p0="1" p1="20" />
+                <gene name="SPOT_YELLOW" p0="1" p1="20" />
+                <gene name="SKIN_HUE" p0="1" p1="20" p2="20" p3="20" />
+                <gene name="SKIN_HUE2" p0="1" p1="20" p2="20" />
+                <gene name="WHITE" p0="20" p1="1" p2="1" p3="1" />
+                <gene name="WHITE_IS_LETHAL" p1="1" />
+                <gene name="NOSE_HUE" p0="20" p1="20" p2="1" p3="19" />
+                <gene name="AGOUTI" p0="1" p1="1" />
+                <gene name="BELLY_ALT" p0="1" p1="20" />
+                <gene name="SKIN_HEAD" p0="1" />
+                <gene name="FOOT_IS_HOOF" p1="1" p2="19" />
+                <gene name="RACCOON_EYE" p0="1" p1="17" p2="19" />
+                <gene name="TAIL_ALT" p0="1" p1="19" />
+                <gene name="PAT_SPLIT" p0="1" p1="17" />
+                <gene name="PAT_BELLY" p0="1" p1="16" />
+                <gene name="PAT_STRIPE" p0="1" p1="20" p2="20" />
+                <gene name="PAT_PERLIN" p0="1" p1="13" p2="6" />
+                <gene name="PAT_PERLIN2" p0="1" p1="8" p2="14" />
+                <gene name="PAT_PERLIN_SIZE" p0="1" p1="1" p2="1" p3="4" />
+                <gene name="LIMP" p0="1" p1="20" p3="19" />
+                <gene name="NARCOLEPSY" p0="1" p2="20" />
+                <gene name="STIFF_JOINTS" p0="1" p1="20" p2="20" />
+                <gene name="L_TAIL_SIGNAL" p0="1" p1="19" p2="18" />
+                <gene name="L_TAIL_FTOB_REACT" p0="1" p1="19" p3="19" />
+                <gene name="L_TAIL_FTOB_EVENT" p0="1" p1="19" />
+                <gene name="L_TAIL_BTOF_REACT" p0="1" p1="19" p3="19" />
+                <gene name="L_TAIL_BTOF_EVENT" p0="1" p1="19" />
+                <gene name="L_NECK_SIGNAL" p0="1" p1="19" p2="19" />
+                <gene name="L_NECK_FTOB_REACT" p0="1" p1="18" p3="19" />
+                <gene name="L_NECK_FTOB_EVENT" p0="1" p1="19" />
+                <gene name="L_NECK_BTOF_REACT" p0="1" p1="18" p3="19" />
+                <gene name="L_NECK_BTOF_EVENT" p0="1" p1="19" />
+                <gene name="LOCO_SYNC" p0="1" p1="17" />
+            </pop>
+        </pop>
+        <pop name="impala">
+            <gene name="SIZE" p1="15" p3="1" />
+            <gene name="ASPECT" p3="1" />
+            <gene name="CHEST_SMALL" p0="1" />
+            <gene name="GIANT_DWARF" p0="1" />
+            <gene name="LEG_IN" p2="1" />
+            <gene name="LEG_IN2" p0="1" />
+            <gene name="GUT" p0="1" p1="18" />
+            <gene name="SPEED_FACTOR" p0="1" />
+            <gene name="TAIL_SIZE" p0="17" p2="1" />
+            <gene name="TAIL_ANGLE" p1="1" />
+            <gene name="TAIL_FLEXIBILITY" p3="1" />
+            <gene name="TAIL_SHAPE" p0="1" />
+            <gene name="LEG_STRENGTH" p0="1" p2="1" />
+            <gene name="LEG_JOINT_TYPE" p2="1" />
+            <gene name="LEG_FLEXIBILITY" p0="1" p2="1" p3="1" />
+            <gene name="LEG_FLEX_BIAS" p0="1" />
+            <gene name="LEG_SKEW" p0="1" />
+            <gene name="HAS_KNEE" p0="1" />
+            <gene name="ARM_JOINT_TYPE" p2="1" />
+            <gene name="ARM_FLEXIBILITY" p2="1" />
+            <gene name="ARM_FLEX_BIAS" p0="1" />
+            <gene name="NECK_THICKNESS" p0="1" p3="1" />
+            <gene name="NECK_ANGLE" p3="1" />
+            <gene name="NECK_JOINT_TYPE" p2="1" />
+            <gene name="NECK_FLEXIBILITY" p0="13" p1="1" />
+            <gene name="HAS_FOOT" p0="1" />
+            <gene name="FOOT_SIZE" p0="1" p2="7" />
+            <gene name="FOOT_THICKNESS" p1="1" />
+            <gene name="FOOT_TOE" p0="12" p1="1" p2="9" />
+            <gene name="HEAD_SIZE" p1="18" p3="12" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="TEETH_SHAPE" p2="1" />
+            <gene name="NOSE_Y" p0="1" />
+            <gene name="NOSE_SIZE" p0="19" p1="1" />
+            <gene name="HAS_ANTLERS" p0="1" />
+            <gene name="ANTLER_X" p1="1" />
+            <gene name="ANTLER_W" p0="18" p1="1" />
+            <gene name="ANTLER_H" p0="19" p1="3" p3="10" />
+            <gene name="ANTLER_TAPER" p1="1" />
+            <gene name="ANTLER_POM" p0="1" />
+            <gene name="ANTLER_REC" p0="1" p1="18" p2="10" />
+            <gene name="ANTLER_FLIP" p0="1" p3="18" />
+            <gene name="ANTLER_SCALEH" p1="1" />
+            <gene name="ANTLER_SCALEW" p1="1" />
+            <gene name="ANTLER_ANGLE" p0="1" p2="17" />
+            <gene name="ANTLER_T1" p0="1" p3="1" />
+            <gene name="HAT_TAPER" p2="1" />
+            <gene name="HAT_FRONT_SCALE" p2="18" p3="1" />
+            <gene name="HAT_BACK_ANGLE" p1="18" p3="1" />
+            <gene name="HAT_T" p1="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="ALT_BLUE" p0="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" p1="17" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="BELLY_ALT" p0="1" />
+            <gene name="PAT_BELLY" p0="1" p2="11" />
+            <gene name="PAT_PERLIN" p0="9" p1="19" p2="1" />
+            <gene name="PAT_PERLIN2" p0="1" p2="14" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="LOCO_SYNC" p1="1" />
+        </pop>
+        <pop name="alligator">
+            <gene name="SIZE" p1="19" p3="1" />
+            <gene name="ASPECT" p0="12" p3="1" />
+            <gene name="SKINNY" p1="1" />
+            <gene name="BONES" p0="1" />
+            <gene name="BONES2" p0="1" p2="1" />
+            <gene name="GIANT_DWARF" p0="1" p1="20" />
+            <gene name="OSTODERM" p1="1" p2="1" />
+            <gene name="OSTO_SIZE" p1="1" />
+            <gene name="TAIL_EXISTS" p0="1" />
+            <gene name="TAIL_SIZE" p2="7" p3="1" />
+            <gene name="TAIL_SHORT" p0="1" />
+            <gene name="TAIL_ASPECT" p0="14" p2="1" />
+            <gene name="TAIL_ANGLE" p1="1" />
+            <gene name="TAIL_JOINT_TYPE" p0="1" p1="19" />
+            <gene name="TAIL_STIFF" p0="1" p1="12" />
+            <gene name="TAIL_FLEXIBILITY" p2="1" />
+            <gene name="TAIL_SHAPE" p0="18" p1="1" />
+            <gene name="LEG_TYPE" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRENGTH" p0="9" p2="1" />
+            <gene name="LEG_JOINT_TYPE" p0="20" p1="1" />
+            <gene name="LEG_FLEXIBILITY" p3="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_TYPE" p1="1" />
+            <gene name="ARM_LENGTH" p1="19" p3="1" />
+            <gene name="ARM_STRENGTH" p0="9" p2="1" />
+            <gene name="ARM_JOINT_TYPE" p1="1" p3="16" />
+            <gene name="ARM_FLEXIBILITY" p2="1" />
+            <gene name="NECK_LENGTH" p3="1" />
+            <gene name="NECK_THICKNESS" p2="1" />
+            <gene name="NECK_ANGLE" p0="19" p1="1" />
+            <gene name="NECK_COCK" p0="1" p3="7" />
+            <gene name="NECK_FLEXIBILITY" p0="17" p1="1" />
+            <gene name="NECK_FLEX_BIAS" p0="1" p2="18" />
+            <gene name="NECK_STIFF" p0="1" p1="9" />
+            <gene name="NECK_SPEED" p1="1" />
+            <gene name="HAS_FOOT" p0="1" />
+            <gene name="FOOT_SIZE" p1="1" p2="1" p3="1" />
+            <gene name="FOOT_CLOWN" p0="1" p1="20" />
+            <gene name="FOOT_TOE" p0="19" p1="1" />
+            <gene name="FOOT_BACKWARDS" p0="1" p1="20" />
+            <gene name="HAS_HAND" p1="1" />
+            <gene name="HAND_LENGTH" p0="1" />
+            <gene name="HAND_FINGER" p1="1" />
+            <gene name="HEAD_SIZE" p0="1" p1="19" p2="9" />
+            <gene name="HEAD_ASPECT" p0="20" p2="1" p3="1" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="EYE_STYLE" p0="1" />
+            <gene name="EYEBOX_X" p0="1" p2="16" p3="1" />
+            <gene name="EYEBOX_Y" p0="1" p2="4" />
+            <gene name="EYEBOX_SIZE" p0="1" p1="16" p2="16" />
+            <gene name="EYE_SIZE" p0="1" p1="15" />
+            <gene name="EAR_STYLE" p0="17" p3="1" />
+            <gene name="EAR_SHAPE" p0="1" />
+            <gene name="EAR_X" p0="1" />
+            <gene name="EAR_SIZE" p0="16" p2="1" />
+            <gene name="EAR_ASPECT" p0="1" />
+            <gene name="EAR_SLANT" p0="1" />
+            <gene name="TEETH_SHAPE" p3="1" />
+            <gene name="MOUTH_Y" p0="1" p1="4" p2="16" />
+            <gene name="MOUTH_SIZE" p1="17" p3="1" />
+            <gene name="JAW" p0="15" p2="1" p3="17" />
+            <gene name="NOSE_STYLE" p3="1" />
+            <gene name="NOSE_Y" p0="1" />
+            <gene name="NOSE_SIZE" p0="1" />
+            <gene name="HAS_ANTLERS" p1="1" />
+            <gene name="ANTLER_X" p2="1" />
+            <gene name="ANTLER_H" p1="1" p2="20" p3="1" />
+            <gene name="ANTLER_POM" p0="1" />
+            <gene name="ANTLER_REC" p1="1" p3="1" />
+            <gene name="ANTLER_REC2" p1="1" p3="1" />
+            <gene name="ANTLER_FLIP" p3="1" />
+            <gene name="HAT_EXISTS" p3="1" />
+            <gene name="BASE_BLACK" p0="1" p1="18" />
+            <gene name="BASE_GREEN" p2="1" p3="1" />
+            <gene name="BASE_CREAM" p0="1" p1="9" />
+            <gene name="ALT_BLUE" p0="1" p1="18" />
+            <gene name="SPOT_YELLOW" p1="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" p1="15" />
+            <gene name="PAT_BELLY" p1="1" />
+            <gene name="PAT_STRIPE" p0="19" p1="1" />
+            <gene name="PAT_SPOT" />
+            <gene name="PAT_PERLIN" p0="1" />
+            <gene name="PAT_PERLIN2" p0="1" />
+            <gene name="L_LEG_FTOB_REACT" p0="1" />
+            <gene name="L_LEG_FTOB_EVENT" p0="1" />
+            <gene name="L_LEG_BTOF_REACT" p0="1" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" p2="18" />
+            <gene name="L_ARM_FTOB_REACT" p0="1" />
+            <gene name="L_ARM_FTOB_EVENT" p0="1" />
+            <gene name="L_ARM_BTOF_REACT" p0="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" p2="18" />
+            <gene name="L_TAIL_FTOB_REACT" p2="1" />
+            <gene name="L_TAIL_FTOB_EVENT" p0="1" />
+            <gene name="L_TAIL_BTOF_REACT" p2="1" />
+            <gene name="L_TAIL_BTOF_EVENT" p0="1" />
+            <gene name="L_NECK_FTOB_REACT" p0="1" p2="1" />
+            <gene name="L_NECK_BTOF_REACT" p0="1" p2="1" />
+        </pop>
+        <pop name="giraffe">
+            <gene name="SIZE" p0="1" />
+            <gene name="ASPECT" p0="1" p2="17" p3="16" />
+            <gene name="CHEST_BIG" p0="17" p1="1" />
+            <gene name="CHEST_SMALL" p0="17" p1="1" />
+            <gene name="GIANT_DWARF" p0="1" />
+            <gene name="SPLAY" p0="1" p1="16" p2="16" />
+            <gene name="GUT" p0="1" p1="18" />
+            <gene name="TAIL_ASPECT" p0="8" p1="1" />
+            <gene name="TAIL_SHAPE" p0="1" p1="13" />
+            <gene name="LEG_LENGTH" p0="1" p1="19" p2="10" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRENGTH" p0="1" p1="18" p2="1" />
+            <gene name="LEG_FLEXIBILITY" p0="11" p1="1" p2="16" p3="20" />
+            <gene name="LEG_FLEX_BIAS" p0="1" p1="14" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="NECK_LENGTH" p2="1" />
+            <gene name="NECK_GIRAFFE" p0="1" p2="1" p3="1" />
+            <gene name="NECK_THICKNESS" p0="1" p3="1" />
+            <gene name="NECK_ANGLE" p0="17" p2="1" p3="18" />
+            <gene name="NECK_COCK" p2="1" />
+            <gene name="NECK_FLEXIBILITY" p0="19" p1="1" />
+            <gene name="NECK_FLEX_BIAS" p0="18" p1="1" />
+            <gene name="FOOT_SIZE" p0="1" />
+            <gene name="HEAD_SIZE" p1="13" p3="1" />
+            <gene name="HEAD_ASPECT" p2="1" p3="1" />
+            <gene name="EYE_STYLE" p0="1" />
+            <gene name="EYEBOX_X" p0="1" />
+            <gene name="EYEBOX_Y" p0="1" p2="12" />
+            <gene name="EYEBOX_SIZE" p0="15" p1="1" p2="19" />
+            <gene name="EAR_STYLE" p0="1" />
+            <gene name="EAR_X" p1="1" />
+            <gene name="EAR_SIZE" p0="1" p1="11" p2="11" />
+            <gene name="EAR_SLANT" p1="1" p2="15" />
+            <gene name="TEETH_SHAPE" p2="1" />
+            <gene name="MOUTH_Y" p0="1" p1="18" />
+            <gene name="MOUTH_SIZE" p0="1" p1="19" p2="19" />
+            <gene name="NOSE_STYLE" p3="1" />
+            <gene name="NOSE_Y" p0="1" p2="19" />
+            <gene name="NOSE_SIZE" p0="1" p1="19" />
+            <gene name="HAS_ANTLERS" p0="1" />
+            <gene name="ANTLER_X" p1="1" />
+            <gene name="ANTLER_W" p2="1" />
+            <gene name="ANTLER_H" p3="1" />
+            <gene name="ANTLER_TAPER" p0="1" />
+            <gene name="ANTLER_POM" p1="1" p2="1" />
+            <gene name="ANTLER_COLOR" p0="1" p2="18" />
+            <gene name="POM_USECOLOR" p1="1" />
+            <gene name="ANTLER_MOD" p2="10" p3="1" />
+            <gene name="ANTLER_ANGLE" p3="1" />
+            <gene name="ANTLER_ANGLE2" p1="1" />
+            <gene name="ANTLER_ANGLE_RAND" p3="1" />
+            <gene name="ANTLER_T1" p1="1" />
+            <gene name="ANTLER_T2" p2="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="SPOT_YELLOW" p1="1" p2="19" />
+            <gene name="SWAP_BASE_SPOT" p0="20" p1="1" />
+            <gene name="EYE_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="FOOT_IS_HOOF" p1="1" />
+            <gene name="PAT_STRIPE" p1="1" />
+            <gene name="PAT_SPOT" p1="1" />
+            <gene name="PAT_PERLIN" p0="1" p2="14" />
+            <gene name="PAT_PERLIN2" p0="1" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="L_LEG_FTOB_EVENT" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p1="1" />
+            <gene name="L_ARM_FTOB_EVENT" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p1="1" />
+            <gene name="LOCO_SYNC" p0="1" p1="1" />
+        </pop>
+        <pop name="rabbit">
+            <gene name="SIZE" p2="1" />
+            <gene name="ASPECT" p0="14" p2="1" />
+            <gene name="SPEED_FACTOR" p0="1" />
+            <gene name="TAIL_EXISTS" p0="1" />
+            <gene name="TAIL_SIZE" p0="1" />
+            <gene name="TAIL_ASPECT" p0="1" p2="11" />
+            <gene name="TAIL_ANGLE" p1="1" p2="7" />
+            <gene name="TAIL_FLEXIBILITY" p2="1" />
+            <gene name="TAIL_SHAPE" p2="1" />
+            <gene name="LEG_TYPE" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRENGTH" p2="1" />
+            <gene name="LEG_FLEXIBILITY" p0="1" />
+            <gene name="LEG_FLEX_BIAS" p0="1" />
+            <gene name="LEG_THRUST_BACK" p1="1" />
+            <gene name="ARM_TAG" p1="1" />
+            <gene name="ARM_LENGTH" p1="1" p3="19" />
+            <gene name="ARM_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="ARM_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="ARM_STRENGTH" p2="1" />
+            <gene name="ARM_HAS_HAND" p1="1" />
+            <gene name="ARM_FLEXIBILITY" p0="17" p1="1" />
+            <gene name="ARM_FLEX_BIAS" p3="1" />
+            <gene name="ARM_FORWARD" p2="1" />
+            <gene name="NECK_LENGTH" p3="1" />
+            <gene name="NECK_ANGLE" p2="1" />
+            <gene name="NECK_COCK" p0="1" />
+            <gene name="NECK_FLEXIBILITY" p2="1" />
+            <gene name="HAS_FOOT" p0="1" />
+            <gene name="FOOT_SIZE" p3="1" />
+            <gene name="FOOT_CLOWN" p1="1" />
+            <gene name="FOOT_THICKNESS" p1="1" />
+            <gene name="HAS_HAND" p0="1" />
+            <gene name="HAND_WIDTH" p1="1" />
+            <gene name="HAND_LENGTH" p2="1" />
+            <gene name="HEAD_SIZE" p0="11" p3="1" />
+            <gene name="HEAD_ASPECT" />
+            <gene name="HEAD_SQUARE" p1="1" />
+            <gene name="EYE_STYLE" p0="1" />
+            <gene name="EYEBOX_X" p0="12" p1="1" />
+            <gene name="EYEBOX_Y" p1="1" />
+            <gene name="EYEBOX_SIZE" p0="1" p2="1" />
+            <gene name="EAR_STYLE" p0="1" />
+            <gene name="EAR_SHAPE" p1="1" />
+            <gene name="EAR_FLOP" p1="1" p2="18" />
+            <gene name="EAR_X" p0="1" />
+            <gene name="EAR_SIZE" p0="1" p1="18" />
+            <gene name="EAR_ASPECT" p2="1" />
+            <gene name="EAR_INTERIOR" p0="1" />
+            <gene name="TEETH_SHAPE" p1="1" />
+            <gene name="MOUTH_Y" p0="2" />
+            <gene name="MOUTH_SIZE" p2="1" />
+            <gene name="JAW" p2="17" p3="1" />
+            <gene name="NOSE_STYLE" p0="1" />
+            <gene name="NOSE_Y" p2="1" />
+            <gene name="NOSE_SIZE" p0="1" />
+            <gene name="BASE_BROWN" p0="1" />
+            <gene name="BASE_BLACK" p0="1" p1="13" />
+            <gene name="BASE_CREAM" p0="1" p1="16" />
+            <gene name="WHITE" p0="17" p1="1" />
+            <gene name="EAR_COMP" p0="1" p3="16" />
+            <gene name="PAT_PERLIN" p0="1" p1="1" />
+            <gene name="PAT_PERLIN2" p0="1" p1="1" />
+            <gene name="PAT_PERLIN_SIZE" p0="9" p1="1" />
+            <gene name="LITTER_SIZE" p1="8" p2="1" />
+        </pop>
+        <pop name="duck">
+            <gene name="SIZE" p1="1" />
+            <gene name="ASPECT" p2="1" />
+            <gene name="BONES" p0="1" />
+            <gene name="BONES2" p0="1" />
+            <gene name="CHEST_BIG" p1="1" />
+            <gene name="CHEST_SMALL" p1="1" />
+            <gene name="GIANT_DWARF" p0="1" />
+            <gene name="MUSCLE_USE" p1="1" />
+            <gene name="QUADRUPED" p0="1" />
+            <gene name="BIPED" p0="1" />
+            <gene name="SPLAY" p0="6" />
+            <gene name="LEG_IN" p1="2" />
+            <gene name="LEG_IN2" p1="3" />
+            <gene name="DERRIERE" p1="1" />
+            <gene name="SPEED_FACTOR" p2="1" />
+            <gene name="TAIL_SIZE" p1="1" />
+            <gene name="TAIL_SHORT" p1="1" />
+            <gene name="TAIL_ASPECT" p2="1" />
+            <gene name="TAIL_ANGLE" p1="4" />
+            <gene name="TAIL_STIFF" p1="1" />
+            <gene name="TAIL_FLEXIBILITY" p2="2" />
+            <gene name="TAIL_SHAPE" p0="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="1" />
+            <gene name="LEG_STRETCH2" p0="1" />
+            <gene name="LEG_STRENGTH" p0="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" />
+            <gene name="LEG_JOINT_TYPE" p1="1" />
+            <gene name="LEG_FLEXIBILITY" p1="1" />
+            <gene name="LEG_FLEX_BIAS" p1="1" />
+            <gene name="LEG_THRUST_BACK" p1="1" />
+            <gene name="LEG_COUNT" p0="1" />
+            <gene name="KNEE_MIN" p0="1" />
+            <gene name="KNEE_MAX" p0="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_TYPE" p2="1" />
+            <gene name="ARM_LENGTH" p0="1" />
+            <gene name="ARM_STRETCH" p0="1" />
+            <gene name="ARM_STRETCH2" p0="1" />
+            <gene name="ARM_STRENGTH" p0="1" />
+            <gene name="ARM_JOINT_TYPE" p1="4" />
+            <gene name="ELBOW_RANGE" p0="1" />
+            <gene name="UPARM_Y" p0="1" />
+            <gene name="UPARM_ANGLE" p0="1" />
+            <gene name="NECK_TYPE" p1="1" />
+            <gene name="NECK_LENGTH" p1="1" />
+            <gene name="NECK_THICKNESS" p3="1" />
+            <gene name="NECK_ANGLE" p2="1" />
+            <gene name="NECK_COCK" p1="4" />
+            <gene name="NECK_FLEXIBILITY" p1="1" />
+            <gene name="NECK_FLEX_BIAS" p1="1" />
+            <gene name="NECK_STIFF" p0="1" />
+            <gene name="NECK_SPEED" p1="1" />
+            <gene name="FOOT_SIZE" p1="1" />
+            <gene name="FOOT_CLOWN" p1="1" />
+            <gene name="FOOT_THICKNESS" p1="1" />
+            <gene name="FOOT_TOE" p0="1" />
+            <gene name="FOOT_IS_CIRCLE" p0="1" />
+            <gene name="HEAD_SIZE" p1="1" />
+            <gene name="HEAD_ASPECT" p2="1" />
+            <gene name="HEAD_SQUARE" p0="1" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="EYEBOX_X" p1="1" />
+            <gene name="EYEBOX_Y" p3="1" />
+            <gene name="EYEBOX_SIZE" p3="1" />
+            <gene name="PUPIL_SIZE" p2="1" />
+            <gene name="BROW_SLANT" p2="1" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="TEETH_SHAPE" p0="1" />
+            <gene name="MOUTH_Y" p2="1" />
+            <gene name="MOUTH_SIZE" p0="1" />
+            <gene name="JAW" p0="1" />
+            <gene name="TEETH_UPPER" p1="5" />
+            <gene name="TEETH_UPPER2" p1="1" />
+            <gene name="NOSE_STYLE" p3="1" />
+            <gene name="NOSE_Y" p1="1" />
+            <gene name="NOSE_SIZE" p2="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_GREEN" p2="1" />
+            <gene name="BASE_CREAM" p0="1" />
+            <gene name="SKIN_HUE" p2="1" />
+            <gene name="SKIN_HUE2" p1="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p1="1" />
+            <gene name="EYE_HUE" p1="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="BELLY_ALT" p1="1" />
+            <gene name="SKIN_HEAD" p1="1" />
+            <gene name="FOOT_IS_HOOF" p0="2" />
+            <gene name="RACCOON_EYE" p1="1" />
+            <gene name="TAIL_ALT" p1="2" />
+            <gene name="PAT_SPLIT" p0="1" />
+            <gene name="PAT_BELLY" p3="1" />
+            <gene name="PAT_PERLIN" p0="1" />
+            <gene name="PAT_PERLIN2" p0="1" />
+            <gene name="PAT_PERLIN_SIZE" p0="1" />
+            <gene name="BRAIN_SPASTIC" p0="1" />
+            <gene name="LITTER_SIZE" p1="1" />
+            <gene name="L_LEG_FTOB_EVENT" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p0="1" />
+            <gene name="L_LEG_BTOF_EVENT" p2="1" />
+            <gene name="L_ARM_FTOB_EVENT" p0="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" />
+        </pop>
+        <pop name="dino">
+            <gene name="ASPECT" p2="1" />
+            <gene name="QUADRUPED" p1="1" />
+            <gene name="BIPED" p1="1" />
+            <gene name="SPLAY" p0="1" p1="1" />
+            <gene name="GUT" p0="1" p1="20" />
+            <gene name="OSTODERM" p0="1" />
+            <gene name="OSTO_SIZE" p0="1" p1="8" p2="11" />
+            <gene name="SPEED_FACTOR" p1="1" />
+            <gene name="TAIL_EXISTS" p0="1" />
+            <gene name="TAIL_SIZE" p3="1" />
+            <gene name="TAIL_ASPECT" p2="1" />
+            <gene name="TAIL_ANGLE" p0="1" />
+            <gene name="TAIL_JOINT_TYPE" p0="1" />
+            <gene name="TAIL_FLEXIBILITY" p1="15" p2="11" p3="1" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="TAIL_BOTTOM" p0="1" />
+            <gene name="TAIL_SEGMENTS" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRENGTH" p1="1" />
+            <gene name="LEG_FLEXIBILITY" p0="13" p1="1" />
+            <gene name="LEG_SKEW" p0="1" p2="17" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_LENGTH" p3="1" />
+            <gene name="ARM_STRENGTH" p2="1" />
+            <gene name="ARM_FORWARD" p1="5" p3="1" />
+            <gene name="HAS_ELBOW" p0="1" p1="19" />
+            <gene name="UPARM_TAG" p1="1" />
+            <gene name="UPARM_Y" p0="1" p3="1" />
+            <gene name="UPARM_ANGLE" p0="17" p1="14" p2="1" />
+            <gene name="UPARM_GOOFY" p0="1" p1="1" p2="19" p3="19" />
+            <gene name="NECK_TYPE" p2="1" />
+            <gene name="NECK_LENGTH" p0="1" />
+            <gene name="NECK_THICKNESS" p2="1" />
+            <gene name="NECK_ANGLE" p2="1" />
+            <gene name="NECK_COCK" p0="1" />
+            <gene name="NECK_JOINT_TYPE" p1="1" p2="20" />
+            <gene name="NECK_FLEXIBILITY" p0="1" p1="1" />
+            <gene name="NECK_FLEX_BIAS" p0="1" p2="1" />
+            <gene name="NECK_SLOUCH" p0="1" p2="20" />
+            <gene name="NECK_ONTOP" p0="1" p1="19" p3="10" />
+            <gene name="NECK_STIFF" p0="1" p1="1" />
+            <gene name="FOOT_SIZE" p1="17" p3="1" />
+            <gene name="FOOT_CLOWN" p0="1" p1="20" />
+            <gene name="FOOT_THICKNESS" p0="17" p2="1" />
+            <gene name="FOOT_TOE" p0="1" p2="19" />
+            <gene name="HAS_HAND" p1="1" p2="18" />
+            <gene name="HAND_WIDTH" p0="1" />
+            <gene name="HAND_LENGTH" p0="1" />
+            <gene name="HAND_FINGER" p0="1" p1="11" />
+            <gene name="HEAD_SIZE" p2="1" />
+            <gene name="HEAD_THICK_SKULL" p1="1" />
+            <gene name="HEAD_X_GROWTH" p3="1" />
+            <gene name="HEAD_Y_GROWTH" p0="17" p1="1" />
+            <gene name="HEAD_ASPECT" p0="1" p1="1" />
+            <gene name="HEAD_GIANT" p0="1" p1="14" />
+            <gene name="BUGEYE" p0="1" p1="18" />
+            <gene name="EYEBOX_X" p2="1" />
+            <gene name="EYEBOX_Y" p1="18" p2="1" />
+            <gene name="EYEBOX_SIZE" p0="18" p2="1" />
+            <gene name="EYE_SIZE" p0="1" />
+            <gene name="EAR_SIZE" p0="18" p1="1" />
+            <gene name="TEETH_SHAPE" p3="1" />
+            <gene name="MOUTH_Y" p0="1" p2="1" />
+            <gene name="MOUTH_SIZE" p0="20" p3="1" />
+            <gene name="JAW" p0="1" p1="1" p2="1" />
+            <gene name="NOSE_SIZE" p0="1" p2="20" />
+            <gene name="HAS_ANTLERS" p1="1" p2="8" />
+            <gene name="ANTLER_W" p0="1" p1="1" />
+            <gene name="ANTLER_H" p0="1" p1="1" />
+            <gene name="ANTLER_TAPER" p1="1" />
+            <gene name="ANTLER_POM" p0="1" />
+            <gene name="ANTLER_COLOR" p0="19" p1="19" p2="1" />
+            <gene name="POM_COLOR" p2="1" />
+            <gene name="ANTLER_REC" p1="14" p3="1" />
+            <gene name="ANTLER_REC2" p1="14" p3="1" />
+            <gene name="ANTLER_ANGLE" p0="1" />
+            <gene name="ANTLER_ANGLE2" p1="1" />
+            <gene name="ANTLER_T1" p0="1" p3="1" />
+            <gene name="ANTLER_T2" p2="1" p3="1" />
+            <gene name="HAT_EXISTS" p0="1" />
+            <gene name="HAT_SIZE" p0="1" />
+            <gene name="HAT_RAKE" p3="1" />
+            <gene name="HAT_ASPECT" p0="1" />
+            <gene name="HAT_TAPER" p1="1" />
+            <gene name="HAT_CLONE" p3="1" />
+            <gene name="HAT_BACK_ANGLE" p0="1" />
+            <gene name="HAT_FRONT_ANGLE" p0="1" />
+            <gene name="HAT_FLIP" p1="1" p3="1" />
+            <gene name="HAT_T" p2="1" p3="10" />
+            <gene name="BASE_BROWN" p1="1" />
+            <gene name="BASE_BLACK" p0="1" p1="12" />
+            <gene name="BASE_RED" p1="1" p2="1" p3="17" />
+            <gene name="BASE_GREEN" p2="1" p3="1" />
+            <gene name="GREEN_KNOCKOUT" p0="1" p1="1" />
+            <gene name="BASE_CREAM" p0="1" p1="17" />
+            <gene name="SPOT_YELLOW" p0="1" />
+            <gene name="SKIN_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SKIN_HUE2" p2="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p1="1" p2="13" />
+            <gene name="EYE_HUE" p0="1" p2="16" />
+            <gene name="NOSE_HUE" p0="16" p1="12" p3="10" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="FOOT_IS_HOOF" p0="1" />
+            <gene name="EAR_COMP" p0="1" p3="14" />
+            <gene name="TAIL_ALT" p0="1" p1="16" />
+            <gene name="PAT_SPLIT" p0="1" p2="18" />
+            <gene name="PAT_STRIPE" p0="1" p2="19" />
+            <gene name="PAT_PERLIN" p0="1" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="RAMPAGE" p3="1" />
+            <gene name="L_LEG_FTOB_REACT" p0="1" p1="20" />
+            <gene name="L_LEG_FTOB_EVENT" p0="20" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p0="20" p1="1" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" p1="20" />
+            <gene name="L_ARM_FTOB_REACT" p0="1" p1="20" />
+            <gene name="L_ARM_FTOB_EVENT" p0="20" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p0="20" p1="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" p1="20" />
+            <gene name="L_TAIL_SIGNAL" p0="1" p1="19" p2="19" />
+            <gene name="L_TAIL_FTOB_REACT" p0="1" p1="19" p3="19" />
+            <gene name="L_TAIL_FTOB_EVENT" p0="1" p1="19" />
+            <gene name="L_TAIL_BTOF_REACT" p0="1" p1="19" p3="19" />
+            <gene name="L_TAIL_BTOF_EVENT" p0="1" p1="19" />
+            <gene name="L_NECK_SIGNAL" p0="1" p1="19" p2="19" />
+            <gene name="L_NECK_FTOB_REACT" p0="1" p1="19" p3="19" />
+            <gene name="L_NECK_FTOB_EVENT" p0="1" p1="19" />
+            <gene name="L_NECK_BTOF_REACT" p0="1" p1="19" p3="19" />
+            <gene name="L_NECK_BTOF_EVENT" p0="1" p1="19" />
+        </pop>
+        <pop name="centipede">
+            <gene name="SIZE" p1="1" />
+            <gene name="ASPECT" p3="1" />
+            <gene name="SKINNY" p1="1" />
+            <gene name="CHEST_BIG" p1="4" />
+            <gene name="MUSCLE_USE" p1="1" />
+            <gene name="SPEED_FACTOR" p2="1" />
+            <gene name="TAIL_EXISTS" p0="1" />
+            <gene name="TAIL_SIZE" p1="1" />
+            <gene name="TAIL_SHORT" p1="1" />
+            <gene name="TAIL_ASPECT" p0="1" p1="10" />
+            <gene name="TAIL_ANGLE" p2="1" />
+            <gene name="TAIL_FLEXIBILITY" p2="1" />
+            <gene name="TAIL_SHAPE" p2="1" />
+            <gene name="LEG_TAG" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRENGTH" p2="1" />
+            <gene name="LEG_FLEXIBILITY" p1="1" />
+            <gene name="LEG_FLEX_BIAS" p3="1" />
+            <gene name="LEG_COUNT" p3="1" />
+            <gene name="HAS_KNEE" p0="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_LENGTH" p0="13" p1="1" p3="1" />
+            <gene name="ARM_STRENGTH" p2="1" />
+            <gene name="ARM_FLEXIBILITY" p1="1" />
+            <gene name="ARM_FLEX_BIAS" p1="1" />
+            <gene name="ARM_FORWARD" p2="1" />
+            <gene name="ARM_NODE_SCALE" p1="1" />
+            <gene name="NECK_TYPE" p2="1" />
+            <gene name="NECK_LENGTH" p0="1" />
+            <gene name="NECK_FLEXIBILITY" p1="1" />
+            <gene name="NECK_SLOUCH" p1="1" />
+            <gene name="HAS_FOOT" p0="1" />
+            <gene name="FOOT_SIZE" p1="3" />
+            <gene name="FOOT_THICKNESS" p3="1" />
+            <gene name="FOOT_TOE" p2="1" />
+            <gene name="FOOT_BACKWARDS" p1="1" />
+            <gene name="HAS_HAND" p1="1" />
+            <gene name="HAND_WIDTH" p0="1" />
+            <gene name="HAND_LENGTH" p2="1" />
+            <gene name="HAND_FINGER" p1="1" />
+            <gene name="HEAD_SIZE" p3="1" />
+            <gene name="HEAD_ASPECT" />
+            <gene name="HEAD_SQUARE" p2="1" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="BUGEYE" p1="1" />
+            <gene name="EYEBOX_X" p2="1" />
+            <gene name="EYEBOX_Y" p0="1" p2="1" />
+            <gene name="EYEBOX_SIZE" p0="1" />
+            <gene name="EYE_SIZE" p1="2" />
+            <gene name="PUPIL_SIZE" p2="1" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="TEETH_SHAPE" p1="1" />
+            <gene name="MOUTH_Y" p1="1" />
+            <gene name="MOUTH_SIZE" p0="1" />
+            <gene name="JAW" p2="1" />
+            <gene name="NOSE_STYLE" p0="1" />
+            <gene name="NOSE_Y" p0="1" p1="1" p2="1" />
+            <gene name="NOSE_SIZE" p0="1" />
+            <gene name="BASE_BROWN" p0="1" />
+            <gene name="BASE_BLACK" p0="1" p1="1" />
+            <gene name="BASE_GREEN" p1="1" p2="1" />
+            <gene name="BASE_CREAM" p0="1" />
+            <gene name="SKIN_HUE" p1="1" p3="1" />
+            <gene name="SWAP_ALT_SPOT" p0="16" p1="1" />
+            <gene name="EYE_HUE" p0="1" />
+            <gene name="HOOF_COLOR" p0="1" />
+            <gene name="PAT_STRIPE" p0="1" p1="1" />
+            <gene name="PAT_PERLIN" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="OMNIVORE" p1="1" />
+            <gene name="L_LEG_FTOB_EVENT" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p1="1" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" />
+            <gene name="L_ARM_FTOB_EVENT" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p1="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" />
+        </pop>
+        <pop name="tiger">
+            <gene name="SIZE" p1="1" />
+            <gene name="ASPECT" p1="1" />
+            <gene name="TAIL_SIZE" p0="1" />
+            <gene name="TAIL_ASPECT" p1="1" />
+            <gene name="TAIL_ANGLE" p0="1" />
+            <gene name="TAIL_FLEXIBILITY" p0="1" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="TAIL_SEGMENTS" p0="1" p3="17" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRENGTH" p1="1" />
+            <gene name="HAS_KNEE" p1="1" />
+            <gene name="KNEE_MAX" p0="1" p1="20" p2="15" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="NECK_LENGTH" p3="1" />
+            <gene name="NECK_THICKNESS" p2="1" />
+            <gene name="FOOT_SIZE" p1="1" />
+            <gene name="FOOT_THICKNESS" p1="2" />
+            <gene name="FOOT_TOE" p1="10" p2="1" />
+            <gene name="HEAD_SIZE" p3="1" />
+            <gene name="HEAD_ASPECT" />
+            <gene name="HEAD_SQUARE" p1="1" />
+            <gene name="EYEBOX_Y" p1="1" />
+            <gene name="TEETH_SHAPE" p3="1" />
+            <gene name="MOUTH_SIZE" p0="1" />
+            <gene name="JAW" p0="1" />
+            <gene name="NOSE_Y" p2="1" />
+            <gene name="NOSE_SIZE" p0="1" p1="19" p3="20" />
+            <gene name="BASE_BROWN" p1="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_RED" p1="1" p2="20" p3="15" />
+            <gene name="BASE_GREEN" p0="1" p1="1" />
+            <gene name="GREEN_KNOCKOUT" p0="1" p1="18" />
+            <gene name="BASE_CREAM" p0="1" p1="20" />
+            <gene name="SPOT_YELLOW" p1="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" p1="16" />
+            <gene name="SWAP_ALT_SPOT" p1="1" p2="1" />
+            <gene name="NOSE_HUE" p0="1" p1="1" p2="19" />
+            <gene name="HOOF_COLOR" p0="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="SKIN_HANDS" p0="1" />
+            <gene name="FOOT_IS_HOOF" p0="1" />
+            <gene name="RACCOON_EYE" p0="1" p1="18" />
+            <gene name="TAIL_ALT" p0="1" p1="11" />
+            <gene name="PAT_SPLIT" p0="1" p1="19" />
+            <gene name="PAT_BELLY" p0="1" p3="9" />
+            <gene name="PAT_STRIPE" p1="1" />
+            <gene name="PAT_SPOT" p0="1" p1="15" />
+            <gene name="PAT_PERLIN" p0="1" p1="19" />
+            <gene name="PAT_PERLIN2" p0="1" p1="19" />
+            <gene name="PAT_PERLIN_SIZE" p2="1" />
+        </pop>
+        <pop name="moose">
+            <gene name="SIZE" p0="1" />
+            <gene name="ASPECT" p0="1" />
+            <gene name="CHEST_BIG" p2="1" />
+            <gene name="CHEST_SMALL" p0="17" p1="1" />
+            <gene name="GIANT_DWARF" p2="1" />
+            <gene name="LEG_IN" p1="1" />
+            <gene name="LEG_IN2" p0="1" p1="17" />
+            <gene name="GUT" p0="1" p1="13" />
+            <gene name="SPEED_FACTOR" p0="1" />
+            <gene name="TAIL_SHORT" p0="20" p1="1" p2="15" />
+            <gene name="TAIL_ASPECT" p0="1" p1="1" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="LEG_LENGTH" p2="1" p3="1" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="LEG_FLEXIBILITY" p1="1" />
+            <gene name="LEG_FLEX_BIAS" p2="1" />
+            <gene name="HAS_KNEE" p0="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_FLEXIBILITY" p1="1" />
+            <gene name="ARM_FLEX_BIAS" p2="1" />
+            <gene name="NECK_THICKNESS" p0="9" p2="1" />
+            <gene name="HAS_FOOT" p0="1" />
+            <gene name="FOOT_SIZE" p0="1" />
+            <gene name="FOOT_THICKNESS" p1="1" />
+            <gene name="HEAD_ASPECT" p0="17" p2="1" p3="1" />
+            <gene name="TEETH_SHAPE" p1="1" />
+            <gene name="NOSE_SIZE" p0="1" p1="19" p3="20" />
+            <gene name="HAS_ANTLERS" p0="1" />
+            <gene name="ANTLER_X" p0="1" />
+            <gene name="ANTLER_W" p1="1" />
+            <gene name="ANTLER_H" p0="1" p1="20" p2="9" />
+            <gene name="ANTLER_TAPER" p2="1" p3="17" />
+            <gene name="ANTLER_POM" p0="1" />
+            <gene name="POM_USECOLOR" p1="1" />
+            <gene name="ANTLER_REC" p0="17" p2="1" />
+            <gene name="ANTLER_REC2" p0="17" p2="1" />
+            <gene name="ANTLER_FLIP" p0="1" p1="1" />
+            <gene name="ANTLER_MOD" p0="1" p1="13" p2="1" />
+            <gene name="ANTLER_SCALEH" p1="1" p2="13" p3="15" />
+            <gene name="ANTLER_SCALEW" p1="1" />
+            <gene name="ANTLER_ANGLE" p1="17" p2="1" p3="13" />
+            <gene name="ANTLER_ANGLE2" p0="1" p3="16" />
+            <gene name="ANTLER_ANGLE_RAND" p1="1" />
+            <gene name="ANTLER_T2" p0="18" p1="1" />
+            <gene name="HAT_EXISTS" p0="1" />
+            <gene name="HAT_SIZE" p3="1" />
+            <gene name="HAT_ASPECT" p0="1" />
+            <gene name="HAT_TAPER" p0="1" />
+            <gene name="HAT_POM_IS_LID" p1="1" />
+            <gene name="HAT_CLONE" p0="1" />
+            <gene name="HAT_BACK_SCALE" p0="1" />
+            <gene name="HAT_FRONT_SCALE" p2="1" />
+            <gene name="HAT_BACK_ANGLE" p0="17" p1="17" p3="1" />
+            <gene name="HAT_FRONT_ANGLE" p0="19" p3="1" />
+            <gene name="HAT_ANGLE_RAND" p0="1" p1="4" />
+            <gene name="HAT_FLIP" p0="1" p1="18" />
+            <gene name="HAT_T" p1="1" />
+            <gene name="BASE_BROWN" p1="1" p2="12" />
+            <gene name="BASE_BLACK" p0="1" p1="4" />
+            <gene name="BASE_CREAM" p0="1" p1="19" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="EYE_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="FOOT_IS_HOOF" p1="1" />
+            <gene name="LOCO_SYNC" p1="1" />
+        </pop>
+        <pop name="dachshund">
+            <gene name="SIZE" p1="1" p2="20" />
+            <gene name="ASPECT" p1="1" />
+            <gene name="LEG_IN" p1="9" p2="1" />
+            <gene name="LEG_IN2" p0="1" />
+            <gene name="SPEED_FACTOR" p3="1" />
+            <gene name="TAIL_SIZE" p0="1" p2="8" />
+            <gene name="TAIL_ASPECT" p1="1" />
+            <gene name="TAIL_FLEXIBILITY" p3="1" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="7" p2="1" />
+            <gene name="LEG_STRETCH2" p0="7" p1="1" />
+            <gene name="LEG_STRENGTH" p1="1" p3="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" p1="1" />
+            <gene name="LEG_JOINT_TYPE" p0="1" />
+            <gene name="LEG_FLEXIBILITY" p1="1" />
+            <gene name="LEG_FLEX_BIAS" p2="1" />
+            <gene name="NECK_LENGTH" p3="1" />
+            <gene name="NECK_THICKNESS" p1="1" p2="1" />
+            <gene name="NECK_ANGLE" p2="1" p3="1" />
+            <gene name="NECK_COCK" p0="1" p1="12" p2="13" />
+            <gene name="NECK_FLEXIBILITY" p1="1" />
+            <gene name="FOOT_SIZE" p2="1" />
+            <gene name="FOOT_TOE" p2="1" />
+            <gene name="EYEBOX_X" p0="9" p2="1" />
+            <gene name="EYEBOX_Y" p2="1" />
+            <gene name="EYEBOX_SIZE" p0="1" p2="1" />
+            <gene name="EAR_STYLE" p1="1" />
+            <gene name="EAR_SHAPE" p1="1" />
+            <gene name="EAR_FLOP" p2="1" />
+            <gene name="EAR_X" p0="1" />
+            <gene name="EAR_SIZE" p1="1" />
+            <gene name="EAR_INTERIOR" p0="1" />
+            <gene name="TEETH_SHAPE" p3="1" />
+            <gene name="MOUTH_Y" p0="1" />
+            <gene name="MOUTH_SIZE" p0="1" />
+            <gene name="JAW" p0="1" />
+            <gene name="TEETH_UPPER" p0="1" />
+            <gene name="TEETH_UPPER2" p0="1" />
+            <gene name="TONGUE" p1="1" />
+            <gene name="TONGUE_SEGS" p0="1" />
+            <gene name="NOSE_Y" p2="1" />
+            <gene name="NOSE_SIZE" p0="1" />
+            <gene name="BASE_BLACK" p0="13" p1="1" />
+            <gene name="BASE_CREAM" p0="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="HOOF_COLOR" p1="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="FOOT_IS_HOOF" p0="10" p2="12" />
+            <gene name="EAR_COMP" p2="1" />
+            <gene name="PAT_PERLIN" p0="1" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" p2="1" />
+            <gene name="BRAIN_SPASTIC" p0="1" />
+            <gene name="LITTER_SIZE" p1="1" />
+            <gene name="LIMP" p0="1" p3="20" />
+            <gene name="TAIL_WAG" p0="1" />
+            <gene name="L_LEG_FTOB_EVENT" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p1="1" />
+            <gene name="L_ARM_FTOB_EVENT" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p1="1" />
+            <gene name="LOCO_SYNC" p1="3" />
+        </pop>
+        <pop name="bear">
+            <gene name="ASPECT" p2="1" />
+            <gene name="BONES" p2="1" />
+            <gene name="BONES2" p0="1" p1="1" />
+            <gene name="CHEST_BIG" p2="1" />
+            <gene name="CHEST_SMALL" p1="1" />
+            <gene name="GUT" p1="1" />
+            <gene name="DERRIERE" p1="1" p2="18" />
+            <gene name="TAIL_SIZE" p0="1" p1="8" />
+            <gene name="TAIL_SHORT" p1="1" />
+            <gene name="TAIL_ASPECT" p0="1" p2="14" />
+            <gene name="TAIL_ANGLE" p0="1" p1="11" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" />
+            <gene name="LEG_STRENGTH" p1="1" p3="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" p1="1" />
+            <gene name="LEG_FLEXIBILITY" p1="1" />
+            <gene name="ARM_LENGTH" p1="1" />
+            <gene name="ARM_STRETCH2" p0="1" p1="1" />
+            <gene name="ARM_STRENGTH" p1="1" p3="1" />
+            <gene name="ARM_FLEXIBILITY" p1="1" />
+            <gene name="NECK_LENGTH" p0="1" />
+            <gene name="NECK_THICKNESS" p1="1" p2="1" />
+            <gene name="NECK_ANGLE" p1="1" />
+            <gene name="NECK_COCK" p3="3" />
+            <gene name="NECK_FLEXIBILITY" p0="1" p1="15" />
+            <gene name="NECK_SLOUCH" p0="1" p2="12" />
+            <gene name="NECK_SPEED" p1="1" />
+            <gene name="FOOT_SIZE" p2="1" />
+            <gene name="HEAD_SIZE" p0="1" p2="1" />
+            <gene name="HEAD_THICK_SKULL" p0="1" p1="1" />
+            <gene name="HEAD_Y_GROWTH" p1="1" />
+            <gene name="HEAD_ASPECT" p1="1" />
+            <gene name="EYEBOX_X" p2="1" />
+            <gene name="EYEBOX_Y" p2="1" p3="14" />
+            <gene name="EYEBOX_SIZE" p0="15" p1="1" />
+            <gene name="BROW_SLANT" p2="1" />
+            <gene name="EAR_STYLE" p0="1" />
+            <gene name="EAR_SHAPE" p1="1" />
+            <gene name="EAR_FLOP" p1="1" />
+            <gene name="EAR_SIZE" p0="1" p2="11" />
+            <gene name="EAR_SLANT" p0="1" />
+            <gene name="EAR_INTERIOR" p1="1" />
+            <gene name="TEETH_SHAPE" p3="1" />
+            <gene name="MOUTH_Y" p0="1" p2="17" />
+            <gene name="MOUTH_SIZE" p0="1" p2="19" />
+            <gene name="TEETH_UPPER" p1="1" />
+            <gene name="TEETH_UPPER2" p1="1" />
+            <gene name="NOSE_STYLE" p2="1" />
+            <gene name="NOSE_SIZE" p0="1" />
+            <gene name="BASE_BROWN" p2="1" />
+            <gene name="BASE_BLACK" p0="7" p1="1" />
+            <gene name="BASE_CREAM" p0="1" p1="19" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="NOSE_HUE" p0="1" p1="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="FOOT_IS_HOOF" p0="1" />
+            <gene name="PAT_PERLIN" p0="1" p2="19" />
+            <gene name="PAT_PERLIN2" p0="1" p2="19" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="RAMPAGE" p3="1" />
+            <gene name="OMNIVORE" p1="1" />
+        </pop>
+        <pop name="cow">
+            <gene name="BONES" p0="17" p2="1" />
+            <gene name="BONES2" p0="1" p1="1" />
+            <gene name="CHEST_BIG" p2="1" />
+            <gene name="GIANT_DWARF" p2="1" />
+            <gene name="MUSCLE_USE" p2="1" />
+            <gene name="GUT" p0="20" p1="1" p2="20" />
+            <gene name="GUT_IS_UDDER" p1="1" />
+            <gene name="LEG_STRENGTH" p2="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" p1="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="NECK_LENGTH" p3="1" />
+            <gene name="NECK_THICKNESS" p2="1" />
+            <gene name="NECK_ANGLE" p1="1" />
+            <gene name="NECK_COCK" p0="1" />
+            <gene name="FOOT_TOE" p2="1" />
+            <gene name="HEAD_SIZE" p2="1" />
+            <gene name="HEAD_THICK_SKULL" p1="1" />
+            <gene name="HEAD_ASPECT" p1="1" />
+            <gene name="HEAD_SQUARE" p0="1" />
+            <gene name="EYEBOX_Y" p1="19" p2="18" p3="1" />
+            <gene name="EAR_STYLE" p1="1" />
+            <gene name="EAR_SHAPE" p1="1" />
+            <gene name="EAR_SLANT" p0="1" />
+            <gene name="EAR_INTERIOR" p0="1" />
+            <gene name="TEETH_SHAPE" p0="1" />
+            <gene name="MOUTH_Y" p0="1" />
+            <gene name="JAW" p0="1" />
+            <gene name="NOSE_STYLE" p0="1" p1="19" />
+            <gene name="NOSE_INNY" p1="1" />
+            <gene name="NOSE_SIZE" p0="18" p2="1" />
+            <gene name="BASE_BROWN" p1="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_CREAM" p0="1" p1="5" />
+            <gene name="WHITE" p0="1" p1="1" />
+            <gene name="EYE_HUE" p0="4" p1="1" p2="1" p3="1" />
+            <gene name="NOSE_HUE" p1="1" />
+            <gene name="AGOUTI" p0="16" p1="1" />
+            <gene name="RACCOON_EYE" p0="1" p1="16" p2="17" />
+            <gene name="EAR_COMP" p2="18" p3="1" />
+            <gene name="TAIL_ALT" p0="1" />
+            <gene name="PAT_PERLIN" p1="1" p2="1" />
+            <gene name="PAT_PERLIN2" p1="1" p2="1" />
+            <gene name="PAT_PERLIN_SIZE" p0="1" p2="1" />
+            <gene name="OLD_AGE" p3="1" />
+        </pop>
+        <pop name="human">
+            <gene name="SIZE" p0="1" />
+            <gene name="CHEST_BIG" p0="18" p1="3" />
+            <gene name="CHEST_SMALL" p1="1" p2="12" />
+            <gene name="GIANT_DWARF" p0="1" p1="14" p2="18" p3="20" />
+            <gene name="QUADRUPED" p1="1" />
+            <gene name="BIPED" p1="1" />
+            <gene name="SPLAY" p0="14" p1="1" />
+            <gene name="LEG_IN" p0="1" />
+            <gene name="LEG_IN2" p0="1" />
+            <gene name="GUT" p0="1" />
+            <gene name="DERRIERE" p0="7" p1="1" p2="19" p3="16" />
+            <gene name="SPEED_FACTOR" p2="2" />
+            <gene name="TAIL_EXISTS" p1="1" />
+            <gene name="TAIL_BOTTOM" p0="1" />
+            <gene name="LEG_TAG" p0="1" />
+            <gene name="LEG_LENGTH" p0="1" p1="7" p3="8" />
+            <gene name="LEG_STRETCH" p0="1" p1="14" />
+            <gene name="LEG_HAS_FOOT" p0="1" p1="1" />
+            <gene name="LEG_JOINT_TYPE" p0="1" p1="1" p2="7" />
+            <gene name="LEG_SKEW" p0="1" p2="9" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_LENGTH" p0="1" p1="7" p2="17" />
+            <gene name="ARM_JOINT_TYPE" p0="1" p1="1" />
+            <gene name="ARM_SKEW" p0="1" p1="19" p2="17" />
+            <gene name="ARM_NODE_SCALE" p0="1" />
+            <gene name="HAS_ELBOW" p0="15" p1="1" />
+            <gene name="UPARM_TAG" p1="1" />
+            <gene name="UPARM_Y" p0="1" p1="1" p3="18" />
+            <gene name="NECK_LENGTH" p0="17" p3="1" />
+            <gene name="NECK_THICKNESS" p0="1" p2="1" p3="1" />
+            <gene name="NECK_ANGLE" p2="1" />
+            <gene name="NECK_COCK" p1="1" p3="17" />
+            <gene name="NECK_FLEXIBILITY" p0="19" p1="1" />
+            <gene name="NECK_ONTOP" p1="1" p2="15" p3="16" />
+            <gene name="FOOT_SIZE" p1="1" p2="13" p3="1" />
+            <gene name="FOOT_CLOWN" p0="1" p1="13" />
+            <gene name="FOOT_THICKNESS" p0="1" p2="9" />
+            <gene name="FOOT_TOE" p0="1" p1="15" />
+            <gene name="HAS_HAND" p1="1" p2="20" />
+            <gene name="HAND_WIDTH" p0="1" p1="8" />
+            <gene name="HAND_LENGTH" p0="1" p1="3" />
+            <gene name="HAND_FINGER" p0="1" p1="1" p3="15" />
+            <gene name="HEAD_SIZE" p0="1" p2="4" p3="11" />
+            <gene name="HEAD_ASPECT" />
+            <gene name="HEAD_SQUARE" p1="19" p2="1" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="HEAD_CHIMERA" p0="1" p1="12" />
+            <gene name="EYEBOX_X" p0="1" p1="7" />
+            <gene name="EYEBOX_Y" p1="6" p3="1" />
+            <gene name="EYEBOX_SIZE" p0="18" p2="1" p3="16" />
+            <gene name="EYE_SIZE" p0="1" />
+            <gene name="BROW_SIZE" p0="1" p1="18" p2="17" />
+            <gene name="BROW_SLANT" p0="14" p1="4" />
+            <gene name="EAR_STYLE" p0="18" p3="1" />
+            <gene name="EAR_SHAPE" p0="1" />
+            <gene name="EAR_SIZE" p0="1" p1="19" p2="19" />
+            <gene name="EAR_SLANT" p0="1" p2="1" />
+            <gene name="TEETH_SHAPE" p1="1" p2="1" />
+            <gene name="MOUTH_Y" p0="1" p1="3" p2="9" />
+            <gene name="MOUTH_SIZE" p0="1" p1="8" p2="18" p3="16" />
+            <gene name="JAW" p0="1" p1="4" p2="1" />
+            <gene name="NOSE_STYLE" p0="1" p1="18" p2="11" />
+            <gene name="NOSE_Y" p0="19" p1="19" p2="1" />
+            <gene name="NOSE_SIZE" p0="1" p2="1" p3="17" />
+            <gene name="HAS_ANTLERS" p0="1" p1="18" />
+            <gene name="ANTLER_X" p0="1" p1="1" p2="1" />
+            <gene name="ANTLER_W" p0="1" p1="1" p2="1" />
+            <gene name="ANTLER_H" p0="1" p1="1" p2="4" p3="9" />
+            <gene name="ANTLER_TAPER" p0="1" p1="4" p2="1" />
+            <gene name="ANTLER_POM" p0="1" p1="12" p2="19" />
+            <gene name="ANTLER_COLOR" p0="14" p1="12" p2="3" />
+            <gene name="POM_COLOR" p0="15" p1="13" p2="3" />
+            <gene name="POM_USECOLOR" p0="1" />
+            <gene name="ANTLER_REC" p0="6" p1="14" p2="20" p3="1" />
+            <gene name="ANTLER_REC2" p0="7" p1="14" p2="20" p3="1" />
+            <gene name="ANTLER_FLIP" p0="1" p1="1" />
+            <gene name="ANTLER_MOD" p0="1" p1="17" p2="17" />
+            <gene name="ANTLER_SCALEH" p0="18" p1="1" p2="13" />
+            <gene name="ANTLER_SCALEW" p0="1" />
+            <gene name="ANTLER_ANGLE" p0="12" p1="1" />
+            <gene name="ANTLER_ANGLE2" p0="11" p1="1" p2="16" p3="6" />
+            <gene name="ANTLER_ANGLE_RAND" p0="1" p1="1" p2="1" />
+            <gene name="ANTLER_T1" p0="20" p1="1" p2="13" />
+            <gene name="ANTLER_T2" p0="8" p1="1" p2="17" />
+            <gene name="HAT_EXISTS" p0="1" p1="20" />
+            <gene name="HAT_SIZE" p0="1" p1="11" />
+            <gene name="HAT_RAKE" p0="1" p1="14" p2="9" />
+            <gene name="HAT_ASPECT" p0="1" p1="17" p2="12" />
+            <gene name="HAT_TAPER" p0="14" p1="14" p2="1" />
+            <gene name="HAT_POM" p0="1" p1="1" />
+            <gene name="HAT_POM_IS_LID" p0="1" p1="1" />
+            <gene name="HAT_CLONE" p0="1" p1="1" p2="1" />
+            <gene name="HAT_BACK_SCALE" p0="1" p1="19" p2="13" />
+            <gene name="HAT_FRONT_SCALE" p0="2" p1="19" p2="11" />
+            <gene name="HAT_BACK_ANGLE" p0="18" p1="1" p2="17" />
+            <gene name="HAT_FRONT_ANGLE" p0="19" p1="1" p2="19" />
+            <gene name="HAT_ANGLE_RAND" p0="1" p1="1" p2="1" />
+            <gene name="HAT_FLIP" p1="1" p3="5" />
+            <gene name="HAT_T" p0="1" p1="18" p2="12" />
+            <gene name="BASE_BROWN" p0="1" p1="1" p2="12" />
+            <gene name="BASE_BLACK" p0="1" p1="1" />
+            <gene name="BASE_RED" p0="4" p1="1" p2="1" p3="1" />
+            <gene name="BASE_GREEN" p0="1" p1="5" p2="5" p3="1" />
+            <gene name="GREEN_KNOCKOUT" p0="1" p1="10" />
+            <gene name="BASE_CREAM" p0="1" p1="15" />
+            <gene name="ALT_BLUE" p0="1" p1="1" />
+            <gene name="SPOT_YELLOW" p0="1" p1="9" />
+            <gene name="SKIN_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SKIN_HUE2" p0="1" p1="1" p2="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" p1="4" />
+            <gene name="SWAP_ALT_SPOT" p0="5" p1="1" />
+            <gene name="EYE_HUE" p0="10" p1="7" p2="5" p3="1" />
+            <gene name="NOSE_HUE" p0="20" p1="1" p2="20" p3="20" />
+            <gene name="HOOF_COLOR" p0="1" />
+            <gene name="AGOUTI" p0="17" p1="1" />
+            <gene name="BELLY_ALT" p1="1" />
+            <gene name="SKIN_HEAD" p1="1" />
+            <gene name="SKIN_HANDS" p1="1" />
+            <gene name="FOOT_IS_HOOF" p0="17" p1="1" />
+            <gene name="PAT_SPLIT" p0="1" p1="17" />
+            <gene name="PAT_BELLY" p1="1" p2="17" p3="1" />
+            <gene name="PAT_STRIPE" p0="4" p2="1" />
+            <gene name="PAT_SPOT" p0="3" p1="1" />
+            <gene name="PAT_PERLIN" p0="1" p1="18" p2="18" />
+            <gene name="PAT_PERLIN2" p0="1" p1="18" p2="18" />
+            <gene name="PAT_PERLIN_SIZE" p0="1" p1="1" p2="1" />
+            <gene name="HIGH_INTELLECT" p1="1" />
+            <gene name="OMNIVORE" p1="1" />
+            <gene name="L_LEG_FTOB_REACT" p1="1" />
+            <gene name="L_LEG_FTOB_EVENT" p1="1" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" p2="1" />
+            <gene name="L_ARM_FTOB_REACT" p1="1" />
+            <gene name="L_ARM_FTOB_EVENT" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p0="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" p2="1" />
+            <gene name="L_NECK_SIGNAL" p0="1" />
+            <gene name="L_NECK_FTOB_REACT" p0="1" p1="1" p3="1" />
+            <gene name="L_NECK_FTOB_EVENT" p0="1" p1="1" />
+            <gene name="L_NECK_BTOF_REACT" p0="1" p1="1" p3="1" />
+            <gene name="L_NECK_BTOF_EVENT" p0="1" p1="1" />
+            <gene name="LOCO_SYNC" p1="17" />
+            <pop name="centaur test">
+                <gene name="QUADRUPED" p0="1" />
+                <gene name="TAIL_EXISTS" p0="1" />
+                <gene name="BASE_BROWN" p0="1" p1="15" />
+                <gene name="BASE_BLACK" p0="1" p1="1" />
+                <gene name="BASE_RED" p0="1" />
+                <gene name="BASE_GREEN" p0="1" />
+                <gene name="ALT_BLUE" p0="1" />
+                <gene name="SPOT_YELLOW" p0="1" />
+                <gene name="SKIN_HUE" p0="1" p1="8" p2="1" p3="1" />
+                <gene name="SKIN_HUE2" p0="1" p1="1" />
+                <gene name="SWAP_ALT_SPOT" p0="1" p1="1" />
+                <gene name="PAT_BELLY" p0="1" p1="13" p2="17" p3="15" />
+            </pop>
+            <pop name="jockey">
+                <gene name="SIZE" p1="1" />
+                <gene name="ASPECT" p2="1" />
+                <gene name="SKINNY" p0="1" />
+                <gene name="CHEST_BIG" p1="3" />
+                <gene name="GIANT_DWARF" p1="1" p3="17" />
+                <gene name="LEG_LENGTH" p0="1" p1="7" />
+                <gene name="LEG_STRETCH2" p0="1" p1="1" />
+                <gene name="NECK_COCK" p0="1" p3="12" />
+                <gene name="NECK_ONTOP" p1="16" p3="1" />
+                <gene name="HAS_ANTLERS" p0="1" />
+                <gene name="ANTLER_TAPER" p0="1" />
+                <gene name="ANTLER_POM" p0="1" />
+                <gene name="ANTLER_REC" p1="7" />
+                <gene name="HAT_ASPECT" p0="1" p3="18" />
+                <gene name="HAT_POM" p0="1" />
+                <gene name="HAT_CLONE" p0="1" />
+                <gene name="HAT_BACK_SCALE" p1="1" />
+                <gene name="HAT_FRONT_SCALE" p0="1" />
+                <gene name="HAT_FRONT_ANGLE" p0="18" p1="1" p2="17" />
+            </pop>
+            <pop name="leprechaun">
+                <gene name="SIZE" p2="4" />
+                <gene name="ASPECT" p2="3" />
+                <gene name="GIANT_DWARF" p0="1" />
+                <gene name="SPLAY" p1="1" />
+                <gene name="LEG_IN" p0="1" />
+                <gene name="LEG_IN2" p0="1" />
+                <gene name="GUT" p0="1" />
+                <gene name="DERRIERE" p1="1" />
+                <gene name="SPEED_FACTOR" p0="1" />
+                <gene name="TAIL_EXISTS" p1="1" />
+                <gene name="TAIL_SIZE" p0="1" p1="8" />
+                <gene name="TAIL_SHORT" p1="6" />
+                <gene name="TAIL_ASPECT" p0="1" p2="14" />
+                <gene name="TAIL_ANGLE" p0="2" />
+                <gene name="LEG_LENGTH" p1="1" />
+                <gene name="LEG_STRENGTH" p0="1" p2="1" p3="1" />
+                <gene name="LEG_HAS_FOOT" p0="1" p1="1" />
+                <gene name="LEG_SKEW" p2="1" />
+                <gene name="HAS_KNEE" p1="1" />
+                <gene name="KNEE_MAX" p0="1" />
+                <gene name="ARM_LENGTH" p0="1" />
+                <gene name="ARM_STRENGTH" p0="1" p3="1" />
+                <gene name="ARM_JOINT_TYPE" p0="1" />
+                <gene name="HAS_ELBOW" p1="1" />
+                <gene name="ELBOW_RANGE" p1="1" />
+                <gene name="UPARM_Y" p1="1" />
+                <gene name="UPARM_ANGLE" p1="1" />
+                <gene name="NECK_LENGTH" p0="1" />
+                <gene name="NECK_THICKNESS" p0="1" p1="1" p2="1" />
+                <gene name="NECK_ANGLE" p1="1" />
+                <gene name="NECK_JOINT_TYPE" p2="1" />
+                <gene name="NECK_FLEXIBILITY" p1="1" />
+                <gene name="NECK_ONTOP" p1="1" p2="15" />
+                <gene name="NECK_STIFF" p0="8" />
+                <gene name="FOOT_SIZE" p3="1" />
+                <gene name="FOOT_CLOWN" p0="1" />
+                <gene name="FOOT_THICKNESS" p1="1" />
+                <gene name="FOOT_TOE" p2="1" />
+                <gene name="HAND_WIDTH" p0="1" />
+                <gene name="HAND_LENGTH" p0="1" />
+                <gene name="HAND_FINGER" p0="1" />
+                <gene name="HEAD_CHIMERA" p0="1" />
+                <gene name="EYEBOX_X" p1="1" />
+                <gene name="EYEBOX_Y" p1="1" />
+                <gene name="EYEBOX_SIZE" p2="1" />
+                <gene name="EAR_STYLE" p0="1" />
+                <gene name="EAR_SHAPE" p0="1" />
+                <gene name="EAR_SLANT" p2="1" />
+                <gene name="TEETH_SHAPE" p3="3" />
+                <gene name="MOUTH_Y" p1="1" />
+                <gene name="MOUTH_SIZE" p3="1" />
+                <gene name="JAW" p1="2" />
+                <gene name="TEETH_UPPER" p0="1" />
+                <gene name="TEETH_UPPER2" p0="1" />
+                <gene name="NOSE_STYLE" p2="1" />
+                <gene name="NOSE_SIZE" p2="1" />
+                <gene name="HAS_ANTLERS" p0="6" />
+                <gene name="BASE_BROWN" p0="1" />
+                <gene name="BASE_BLACK" p0="1" />
+                <gene name="BASE_RED" p0="1" />
+                <gene name="BASE_GREEN" p2="1" />
+                <gene name="GREEN_KNOCKOUT" p0="1" />
+                <gene name="BASE_CREAM" p0="1" />
+                <gene name="ALT_BLUE" p0="1" />
+                <gene name="SPOT_YELLOW" p1="1" />
+                <gene name="SKIN_HUE" p2="1" />
+                <gene name="SKIN_HUE2" p1="1" />
+                <gene name="SWAP_BASE_SPOT" p0="1" />
+                <gene name="SWAP_ALT_SPOT" p0="19" p1="1" />
+                <gene name="NOSE_HUE" p3="1" />
+                <gene name="AGOUTI" p1="1" />
+                <gene name="BELLY_ALT" p0="1" />
+                <gene name="SKIN_HEAD" p0="1" />
+                <gene name="FOOT_IS_HOOF" p0="1" />
+                <gene name="EAR_COMP" p0="1" />
+                <gene name="PAT_SPLIT" p0="1" />
+                <gene name="PAT_BELLY" p2="1" />
+                <gene name="PAT_STRIPE" p1="1" />
+                <gene name="PAT_SPOT" p0="3" />
+                <gene name="PAT_PERLIN" p0="1" />
+                <gene name="PAT_PERLIN2" p0="1" />
+            </pop>
+            <pop name="pepper">
+                <gene name="SIZE" p1="17" p2="1" />
+                <gene name="ASPECT" p0="18" p2="1" />
+                <gene name="LEG_IN" p1="1" />
+                <gene name="GUT" p1="18" p2="1" />
+                <gene name="DERRIERE" p0="1" />
+                <gene name="TAIL_EXISTS" p1="1" />
+                <gene name="LEG_TYPE" p2="1" />
+                <gene name="LEG_LENGTH" p1="1" />
+                <gene name="LEG_HAS_FOOT" p2="1" />
+                <gene name="LEG_JOINT_TYPE" p1="1" />
+                <gene name="ARM_TYPE" p2="2" />
+                <gene name="NECK_TYPE" p2="1" />
+                <gene name="NECK_LENGTH" p3="1" />
+                <gene name="NECK_THICKNESS" p2="1" />
+                <gene name="NECK_FLEXIBILITY" p1="1" />
+                <gene name="NECK_FLEX_BIAS" p1="1" />
+                <gene name="NECK_ONTOP" p2="1" />
+                <gene name="NECK_STIFF" p1="1" />
+                <gene name="HEAD_SIZE" p3="1" />
+                <gene name="HEAD_X_GROWTH" p1="1" />
+                <gene name="HEAD_Y_GROWTH" p0="1" />
+                <gene name="HEAD_ASPECT" p2="1" />
+                <gene name="HEAD_SQUARE" p0="5" />
+                <gene name="HEAD_HAS_BACK" p1="1" />
+                <gene name="HEAD_SHRUNK" p2="1" />
+                <gene name="EYE_STYLE" p3="1" />
+                <gene name="EYEBOX_X" p1="1" />
+                <gene name="EYEBOX_Y" p1="1" />
+                <gene name="EYEBOX_SIZE" p1="1" />
+                <gene name="EAR_STYLE" p3="1" />
+                <gene name="HAS_MOUTH" p2="1" />
+                <gene name="MOUTH_Y" p3="1" />
+                <gene name="TEETH_UPPER" p1="1" />
+                <gene name="TEETH_UPPER2" p1="1" />
+                <gene name="NOSE_STYLE" p3="1" />
+                <gene name="HAS_ANTLERS" p0="1" />
+                <gene name="ANTLER_X" p3="1" />
+                <gene name="ANTLER_W" p2="1" />
+                <gene name="ANTLER_H" p0="1" p1="16" />
+                <gene name="ANTLER_TAPER" p0="1" />
+                <gene name="ANTLER_POM" p0="1" />
+                <gene name="ANTLER_COLOR" p0="1" />
+                <gene name="POM_COLOR" p2="1" />
+                <gene name="POM_USECOLOR" p0="1" />
+                <gene name="ANTLER_REC" p0="6" p1="14" p2="20" />
+                <gene name="ANTLER_REC2" p0="7" p1="14" p2="20" />
+                <gene name="ANTLER_SCALEH" p3="1" />
+                <gene name="ANTLER_SCALEW" p3="1" />
+                <gene name="ANTLER_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+                <gene name="ANTLER_ANGLE2" p0="1" p1="1" p3="1" />
+                <gene name="ANTLER_T1" p0="1" p1="1" p2="1" />
+                <gene name="ANTLER_T2" p0="1" p1="1" p2="1" />
+                <gene name="HAT_SIZE" p0="1" />
+                <gene name="HAT_RAKE" p3="1" />
+                <gene name="HAT_ASPECT" p3="1" />
+                <gene name="HAT_TAPER" p1="1" p2="6" />
+                <gene name="HAT_POM" p3="1" />
+                <gene name="HAT_CLONE" p0="1" />
+                <gene name="HAT_BACK_SCALE" p2="1" />
+                <gene name="HAT_FRONT_SCALE" p2="1" />
+                <gene name="HAT_BACK_ANGLE" p3="1" />
+                <gene name="HAT_FRONT_ANGLE" p3="1" />
+                <gene name="HAT_T" p0="1" p2="1" />
+                <gene name="BASE_BROWN" p0="1" />
+                <gene name="BASE_BLACK" p0="1" />
+                <gene name="BASE_RED" p1="1" p2="1" p3="1" />
+                <gene name="BASE_GREEN" p0="1" p1="19" p2="19" p3="18" />
+                <gene name="GREEN_KNOCKOUT" p0="1" />
+                <gene name="BASE_CREAM" p0="1" p1="12" />
+                <gene name="ALT_BLUE" p3="1" />
+                <gene name="SPOT_YELLOW" p1="1" />
+                <gene name="SKIN_HUE" p0="3" />
+                <gene name="SKIN_HUE2" p2="3" />
+                <gene name="SWAP_BASE_SPOT" p0="1" />
+                <gene name="SWAP_ALT_SPOT" p0="1" p1="10" />
+                <gene name="EYE_HUE" p2="1" />
+                <gene name="AGOUTI" p1="1" />
+                <gene name="BELLY_ALT" p0="1" />
+                <gene name="SKIN_HEAD" p1="1" />
+                <gene name="SKIN_HANDS" p0="1" />
+                <gene name="FOOT_IS_HOOF" p1="1" />
+                <gene name="PAT_SPLIT" p0="1" />
+                <gene name="PAT_BELLY" p0="1" />
+                <gene name="PAT_STRIPE" p0="1" />
+                <gene name="PAT_SPOT" p0="1" />
+                <gene name="PAT_PERLIN" p0="1" />
+                <gene name="PAT_PERLIN2" p0="1" />
+                <gene name="HIGH_INTELLECT" p0="1" />
+            </pop>
+        </pop>
+        <pop name="car">
+            <gene name="ASPECT" p1="1" />
+            <gene name="SKINNY" p0="6" />
+            <gene name="CHEST_SMALL" p1="1" p3="5" />
+            <gene name="GIANT_DWARF" p0="1" p2="20" />
+            <gene name="QUADRUPED" p0="1" />
+            <gene name="BIPED" p0="1" />
+            <gene name="LEG_IN" p0="1" p2="16" />
+            <gene name="LEG_IN2" p3="1" />
+            <gene name="SPEED_FACTOR" p2="1" />
+            <gene name="TAIL_SIZE" p1="1" />
+            <gene name="TAIL_SHORT" p2="1" />
+            <gene name="TAIL_ASPECT" p0="19" p1="1" />
+            <gene name="TAIL_ANGLE" p1="1" />
+            <gene name="TAIL_STIFF" p1="1" />
+            <gene name="TAIL_SPEED" p3="1" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="TAIL_BOTTOM" p1="1" />
+            <gene name="LEG_TYPE" p0="1" />
+            <gene name="LEG_LENGTH" p2="1" />
+            <gene name="LEG_HAS_FOOT" p2="1" />
+            <gene name="LEG_JOINT_TYPE" p1="1" />
+            <gene name="LEG_IS_CIRCLE" p1="1" />
+            <gene name="LEG_AND_ARM_LIMP" p3="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_LENGTH" p1="19" p2="19" p3="1" />
+            <gene name="ARM_HAS_HAND" p0="1" />
+            <gene name="ARM_JOINT_TYPE" p1="1" />
+            <gene name="ARM_FLEXIBILITY" p2="1" />
+            <gene name="NECK_TYPE" p2="1" />
+            <gene name="NECK_JOINT_TYPE" p1="1" />
+            <gene name="NECK_FLEXIBILITY" p3="1" />
+            <gene name="NECK_FLEX_BIAS" p1="1" />
+            <gene name="NECK_ONTOP" p1="16" p2="1" p3="19" />
+            <gene name="NECK_STIFF" p1="1" />
+            <gene name="HAS_HAND" p0="1" />
+            <gene name="HAND_LENGTH" p0="1" p2="1" />
+            <gene name="HEAD_SIZE" p2="1" />
+            <gene name="HEAD_ASPECT" p1="1" />
+            <gene name="HEAD_SQUARE" p2="1" />
+            <gene name="EYE_STYLE" p3="1" />
+            <gene name="BUGEYE" p3="1" />
+            <gene name="EYEBOX_X" p2="1" />
+            <gene name="EYEBOX_Y" p1="1" />
+            <gene name="EYEBOX_SIZE" p3="1" />
+            <gene name="EYE_SIZE" p1="1" />
+            <gene name="HAS_PUPIL" p0="1" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="HAS_MOUTH" p2="1" />
+            <gene name="MOUTH_Y" p3="1" />
+            <gene name="NOSE_STYLE" p0="19" p1="1" />
+            <gene name="NOSE_Y" p0="1" />
+            <gene name="NOSE_SIZE" p3="1" />
+            <gene name="NOSE_INTERIOR" p1="1" />
+            <gene name="HAS_ANTLERS" p0="1" />
+            <gene name="ANTLER_X" p0="1" p2="19" p3="16" />
+            <gene name="ANTLER_W" p2="1" />
+            <gene name="ANTLER_H" p3="1" />
+            <gene name="ANTLER_TAPER" p0="1" p2="18" />
+            <gene name="ANTLER_POM" p0="17" p2="1" />
+            <gene name="ANTLER_COLOR" p0="1" p1="1" p2="17" p3="17" />
+            <gene name="POM_COLOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="POM_USECOLOR" p0="1" p3="9" />
+            <gene name="ANTLER_REC" p1="18" p3="1" />
+            <gene name="ANTLER_REC2" p1="18" p3="1" />
+            <gene name="ANTLER_FLIP" p0="1" p3="1" />
+            <gene name="ANTLER_MOD" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE" p2="1" />
+            <gene name="ANTLER_ANGLE2" p0="2" />
+            <gene name="ANTLER_T1" p1="1" />
+            <gene name="ANTLER_T2" p0="1" />
+            <gene name="HAT_ASPECT" p2="1" />
+            <gene name="HAT_TAPER" p1="1" p2="1" />
+            <gene name="HAT_POM" p2="11" p3="1" />
+            <gene name="HAT_T" p1="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_RED" p0="16" p1="1" p2="1" />
+            <gene name="BASE_GREEN" p0="1" p1="15" p2="15" />
+            <gene name="BASE_CREAM" p0="1" p1="18" />
+            <gene name="ALT_BLUE" p0="1" p1="19" />
+            <gene name="SPOT_YELLOW" p0="1" p1="18" />
+            <gene name="SKIN_HUE" p1="1" p2="1" p3="1" />
+            <gene name="SKIN_HUE2" p3="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" p1="19" />
+            <gene name="SWAP_ALT_SPOT" p0="1" p1="19" />
+            <gene name="NOSE_HUE" p3="1" />
+            <gene name="BELLY_ALT" p1="1" />
+            <gene name="TAIL_ALT" p1="1" />
+            <gene name="PAT_SPLIT" p0="1" />
+            <gene name="PAT_BELLY" p0="1" />
+            <gene name="PAT_PERLIN" p0="1" />
+            <gene name="PAT_PERLIN2" p0="1" />
+            <gene name="L_LEG_FTOB_EVENT" p0="1" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" p2="19" />
+            <gene name="L_ARM_FTOB_EVENT" p0="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" p2="19" />
+        </pop>
+        <pop name="appletree">
+            <gene name="ASPECT" p1="1" />
+            <gene name="QUADRUPED" p1="1" />
+            <gene name="BIPED" p1="1" />
+            <gene name="TAIL_EXISTS" p1="1" />
+            <gene name="LEG_TYPE" p2="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_LENGTH" p2="1" />
+            <gene name="ARM_STRETCH" p0="1" p1="1" />
+            <gene name="ARM_STRETCH2" p0="1" p2="1" />
+            <gene name="HAS_ELBOW" p1="1" />
+            <gene name="ELBOW_RANGE" p0="1" p1="1" p2="1" />
+            <gene name="UPARM_TAG" p1="1" />
+            <gene name="UPARM_Y" p0="1" />
+            <gene name="UPARM_ANGLE" p2="1" />
+            <gene name="NECK_TYPE" p2="1" />
+            <gene name="NECK_THICKNESS" p2="1" />
+            <gene name="NECK_ANGLE" p2="1" />
+            <gene name="NECK_COCK" p1="1" />
+            <gene name="NECK_FLEXIBILITY" p3="1" />
+            <gene name="NECK_ONTOP" p2="1" />
+            <gene name="HEAD_SIZE" p2="1" p3="16" />
+            <gene name="HEAD_SQUARE" p2="1" />
+            <gene name="EYE_STYLE" p3="1" />
+            <gene name="EYEBOX_Y" p1="1" />
+            <gene name="EAR_STYLE" p3="3" />
+            <gene name="TEETH_SHAPE" p0="1" />
+            <gene name="HAS_MOUTH" p0="20" p2="1" />
+            <gene name="NOSE_STYLE" p3="3" />
+            <gene name="HAS_ANTLERS" p0="1" />
+            <gene name="ANTLER_W" p0="1" />
+            <gene name="ANTLER_H" p0="1" />
+            <gene name="ANTLER_TAPER" p2="1" />
+            <gene name="ANTLER_POM" p2="1" />
+            <gene name="ANTLER_COLOR" p0="1" />
+            <gene name="POM_COLOR" p3="1" />
+            <gene name="POM_USECOLOR" p0="1" />
+            <gene name="ANTLER_REC" p2="1" />
+            <gene name="ANTLER_REC2" p2="1" />
+            <gene name="ANTLER_FLIP" p0="1" />
+            <gene name="ANTLER_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE_RAND" p2="1" p3="1" />
+            <gene name="ANTLER_T1" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_T2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_EXISTS" p0="1" />
+            <gene name="HAT_SIZE" p2="1" />
+            <gene name="HAT_TAPER" p1="1" p2="1" />
+            <gene name="HAT_POM" p1="1" />
+            <gene name="HAT_CLONE" p2="1" />
+            <gene name="HAT_T" p2="1" />
+            <gene name="BASE_BROWN" p0="1" p1="14" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_GREEN" p0="1" />
+            <gene name="BASE_CREAM" p0="1" />
+            <gene name="ALT_BLUE" p3="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="EYE_HUE" p2="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="PAT_PERLIN" p0="1" />
+            <gene name="PAT_PERLIN2" p0="1" />
+            <gene name="PAT_PERLIN_SIZE" p0="1" p2="1" />
+        </pop>
+        <pop name="yeast">
+            <gene name="SIZE" p2="1" />
+            <gene name="ASPECT" p2="1" />
+            <gene name="BONES" p0="1" p1="1" p2="1" />
+            <gene name="CHEST_BIG" p1="1" />
+            <gene name="CHEST_SMALL" p1="1" />
+            <gene name="GUT" p1="1" />
+            <gene name="OSTODERM" p2="1" />
+            <gene name="DERRIERE" p0="1" />
+            <gene name="TAIL_EXISTS" p0="2" />
+            <gene name="TAIL_SIZE" p3="1" />
+            <gene name="TAIL_ASPECT" p1="1" />
+            <gene name="TAIL_ANGLE" p0="1" p1="1" p2="1" />
+            <gene name="TAIL_JOINT_TYPE" p0="1" p1="1" />
+            <gene name="TAIL_STIFF" p1="1" />
+            <gene name="TAIL_SPEED" p1="2" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="TAIL_SEGMENTS" p0="1" />
+            <gene name="LEG_TAG" p0="1" />
+            <gene name="LEG_TYPE" p2="1" />
+            <gene name="LEG_LENGTH" p2="1" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" />
+            <gene name="LEG_STRETCH2" p0="1" p2="1" />
+            <gene name="LEG_STRENGTH" p1="1" />
+            <gene name="LEG_HAS_FOOT" p2="1" />
+            <gene name="LEG_JOINT_TYPE" p0="1" />
+            <gene name="LEG_FLEXIBILITY" p3="1" />
+            <gene name="LEG_COUNT" p0="1" p2="13" />
+            <gene name="LEG_SKEW" p0="1" />
+            <gene name="HAS_KNEE" p1="1" />
+            <gene name="KNEE_MIN" p1="1" />
+            <gene name="KNEE_MAX" p1="1" />
+            <gene name="ARM_TAG" p0="1" />
+            <gene name="ARM_LENGTH" p2="1" />
+            <gene name="ARM_STRETCH" p1="1" />
+            <gene name="ARM_STRETCH2" p2="1" />
+            <gene name="ARM_STRENGTH" p1="1" />
+            <gene name="ARM_HAS_HAND" p1="1" />
+            <gene name="ARM_FLEXIBILITY" p2="1" />
+            <gene name="HAS_ELBOW" p1="1" />
+            <gene name="ELBOW_RANGE" p1="1" />
+            <gene name="NECK_TYPE" p3="1" />
+            <gene name="NECK_LENGTH" p2="1" />
+            <gene name="NECK_GIRAFFE" p3="1" />
+            <gene name="NECK_THICKNESS" p3="1" />
+            <gene name="NECK_ANGLE" p0="1" p1="1" p2="1" />
+            <gene name="NECK_COCK" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NECK_JOINT_TYPE" p0="1" />
+            <gene name="NECK_FLEXIBILITY" p2="1" />
+            <gene name="NECK_FLEX_BIAS" p1="1" />
+            <gene name="NECK_ONTOP" p1="1" />
+            <gene name="NECK_STIFF" p0="1" />
+            <gene name="HAS_FOOT" p1="1" />
+            <gene name="FOOT_SIZE" p1="1" />
+            <gene name="FOOT_THICKNESS" p1="1" />
+            <gene name="FOOT_TOE" p0="1" />
+            <gene name="HAND_WIDTH" p2="1" />
+            <gene name="HAND_LENGTH" p2="1" />
+            <gene name="HAND_FINGER" p0="1" p1="1" />
+            <gene name="HEAD_SIZE" p0="1" />
+            <gene name="HEAD_Y_GROWTH" p2="1" />
+            <gene name="HEAD_ASPECT" p1="1" />
+            <gene name="HEAD_SQUARE" p2="1" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="HEAD_SHRUNK" p1="1" />
+            <gene name="HEAD_JOINTED" p1="1" />
+            <gene name="EYE_STYLE" p3="1" />
+            <gene name="BUGEYE" p1="1" />
+            <gene name="EYEBOX_X" p2="1" />
+            <gene name="EYEBOX_Y" p1="1" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="EAR_SIZE" p1="1" />
+            <gene name="EAR_ASPECT" p1="1" />
+            <gene name="MOUTH_SIZE" p1="1" />
+            <gene name="JAW" p0="1" p1="1" p2="1" />
+            <gene name="TEETH_UPPER" p1="1" />
+            <gene name="TEETH_UPPER2" p1="1" />
+            <gene name="TONGUE" p1="1" />
+            <gene name="TONGUE_SEGS" p2="1" />
+            <gene name="NOSE_STYLE" p3="1" />
+            <gene name="HAS_ANTLERS" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_X" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_W" p3="1" />
+            <gene name="ANTLER_H" p0="1" p1="1" p2="1" />
+            <gene name="ANTLER_TAPER" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_POM" p0="1" p2="1" p3="1" />
+            <gene name="ANTLER_COLOR" p2="1" />
+            <gene name="POM_COLOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="POM_USECOLOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_REC" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_FLIP" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_MOD" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_SCALEH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_SCALEW" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_T1" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_T2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_SIZE" p0="7" p1="8" />
+            <gene name="HAT_ASPECT" p1="1" p3="1" />
+            <gene name="HAT_TAPER" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_POM" p0="1" p1="1" p3="1" />
+            <gene name="HAT_CLONE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_BACK_SCALE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_FRONT_SCALE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_BACK_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_FRONT_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_T" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_RED" p0="1" />
+            <gene name="BASE_GREEN" p0="1" p1="1" p2="1" />
+            <gene name="BASE_CREAM" p0="1" />
+            <gene name="ALT_BLUE" p0="1" />
+            <gene name="SPOT_YELLOW" p1="1" />
+            <gene name="SKIN_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SKIN_HUE2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="EYE_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NOSE_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HOOF_COLOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="PAT_PERLIN" p1="1" />
+            <gene name="PAT_PERLIN2" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="SPINAL_LOCO" p1="1" />
+            <gene name="L_LEG_FTOB_EVENT" p0="1" />
+            <gene name="L_LEG_BTOF_REACT" p1="1" />
+            <gene name="L_LEG_BTOF_EVENT" p1="1" />
+            <gene name="L_ARM_FTOB_EVENT" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p1="1" />
+            <gene name="L_TAIL_FTOB_REACT" p2="1" />
+            <gene name="L_TAIL_FTOB_EVENT" p0="1" />
+            <gene name="L_TAIL_BTOF_REACT" p2="1" />
+            <gene name="L_TAIL_BTOF_EVENT" p0="1" />
+            <gene name="L_NECK_FTOB_REACT" p2="1" />
+            <gene name="L_NECK_BTOF_REACT" p2="1" />
+        </pop>
+        <pop name="hay">
+            <gene name="SIZE" p2="2" />
+            <gene name="ASPECT" p2="1" />
+            <gene name="SKINNY" p0="1" />
+            <gene name="BONES" p0="1" />
+            <gene name="BONES2" p0="1" />
+            <gene name="MUSCLE_USE" p0="1" />
+            <gene name="QUADRUPED" p1="1" />
+            <gene name="BIPED" p3="1" />
+            <gene name="SPLAY" p1="1" />
+            <gene name="LEG_IN" p0="1" />
+            <gene name="GUT" p0="1" />
+            <gene name="OSTODERM" p1="1" />
+            <gene name="DERRIERE" p0="1" />
+            <gene name="TAIL_TAG" p0="1" />
+            <gene name="TAIL_EXISTS" p1="1" />
+            <gene name="TAIL_SIZE" p1="1" />
+            <gene name="TAIL_SHORT" p1="1" />
+            <gene name="TAIL_ASPECT" p0="1" />
+            <gene name="TAIL_ANGLE" p0="1" />
+            <gene name="TAIL_FLEXIBILITY" p2="1" />
+            <gene name="TAIL_SHAPE" p1="1" />
+            <gene name="TAIL_BOTTOM" p1="1" />
+            <gene name="LEG_TAG" p1="1" />
+            <gene name="LEG_TYPE" p0="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_HAS_FOOT" p2="1" />
+            <gene name="LEG_COUNT" p2="1" />
+            <gene name="ARM_LENGTH" p1="1" />
+            <gene name="ARM_HAS_HAND" p1="1" />
+            <gene name="ARM_JOINT_TYPE" p0="1" />
+            <gene name="ARM_FLEXIBILITY" p2="1" />
+            <gene name="ARM_FLEX_BIAS" p0="1" />
+            <gene name="ARM_SKEW" p0="1" />
+            <gene name="UPARM_TAG" p1="1" />
+            <gene name="UPARM_Y" p3="1" />
+            <gene name="UPARM_ANGLE" p3="1" />
+            <gene name="NECK_TAG" p3="1" />
+            <gene name="NECK_TYPE" p3="1" />
+            <gene name="NECK_LENGTH" p2="1" />
+            <gene name="NECK_ANGLE" p3="1" />
+            <gene name="NECK_COCK" p2="1" />
+            <gene name="NECK_FLEXIBILITY" p1="1" />
+            <gene name="NECK_ONTOP" p1="1" />
+            <gene name="FOOT_TOE" p1="1" />
+            <gene name="HEAD_SIZE" p1="1" />
+            <gene name="HEAD_SQUARE" p2="1" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="EYE_STYLE" p0="1" />
+            <gene name="EYEBOX_X" p2="1" />
+            <gene name="EYEBOX_Y" p1="1" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="EAR_SHAPE" p1="1" />
+            <gene name="NOSE_STYLE" p3="1" />
+            <gene name="ANTLER_X" p2="1" />
+            <gene name="ANTLER_W" p0="1" />
+            <gene name="ANTLER_H" p1="1" />
+            <gene name="ANTLER_COLOR" p2="1" />
+            <gene name="ANTLER_REC" p0="1" p2="1" />
+            <gene name="ANTLER_FLIP" p1="1" />
+            <gene name="ANTLER_MOD" p0="1" />
+            <gene name="ANTLER_ANGLE" p0="4" p1="1" />
+            <gene name="ANTLER_ANGLE2" p0="6" p1="1" />
+            <gene name="ANTLER_T1" p0="1" />
+            <gene name="BASE_BROWN" p0="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="BASE_RED" p0="1" />
+            <gene name="BASE_CREAM" p0="1" />
+            <gene name="ALT_BLUE" p0="1" />
+            <gene name="SPOT_YELLOW" p1="1" />
+            <gene name="SKIN_HUE" p1="1" p2="1" />
+            <gene name="SWAP_BASE_SPOT" p1="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="HOOF_COLOR" p0="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="SKIN_HEAD" p0="1" />
+            <gene name="RACCOON_EYE" p2="15" />
+            <gene name="TAIL_ALT" p0="1" />
+            <gene name="PAT_SPLIT" p3="1" />
+            <gene name="PAT_STRIPE" p3="1" />
+            <gene name="PAT_SPOT" p3="1" />
+            <gene name="PAT_PERLIN" p3="1" />
+            <gene name="PAT_PERLIN2" p3="1" />
+            <gene name="LIMP" p0="1" />
+            <gene name="L_LEG_FTOB_EVENT" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p1="1" />
+            <gene name="L_ARM_FTOB_EVENT" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p1="1" />
+            <gene name="L_TAIL_FTOB_REACT" p2="1" />
+            <gene name="L_TAIL_BTOF_REACT" p2="1" />
+            <gene name="L_NECK_FTOB_REACT" p2="1" />
+            <gene name="L_NECK_BTOF_REACT" p2="1" />
+        </pop>
+        <pop name="fish">
+            <gene name="SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ASPECT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SKINNY" p0="1" p1="1" />
+            <gene name="GIANT_DWARF" p0="1" />
+            <gene name="SPLAY" p3="1" />
+            <gene name="LEG_IN" p0="1" p1="1" />
+            <gene name="LEG_IN2" p1="1" />
+            <gene name="GUT" p0="1" p1="1" />
+            <gene name="OSTODERM" p2="20" p3="1" />
+            <gene name="OSTO_SIZE" p1="13" p2="1" p3="1" />
+            <gene name="DERRIERE" p0="1" p1="1" />
+            <gene name="TAIL_SIZE" p2="1" p3="1" />
+            <gene name="TAIL_ASPECT" p2="16" p3="1" />
+            <gene name="TAIL_ANGLE" p1="2" p2="3" />
+            <gene name="TAIL_STIFF" p0="13" p1="1" />
+            <gene name="TAIL_SPEED" p0="1" p1="5" />
+            <gene name="TAIL_FLEXIBILITY" p2="1" p3="1" />
+            <gene name="TAIL_SHAPE" p0="1" />
+            <gene name="TAIL_BOTTOM" p0="1" p1="1" />
+            <gene name="LEG_TAG" p1="1" />
+            <gene name="LEG_TYPE" p1="1" />
+            <gene name="LEG_LENGTH" p1="1" />
+            <gene name="LEG_STRETCH" p0="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" />
+            <gene name="LEG_STRENGTH" p1="1" p3="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" p1="1" />
+            <gene name="LEG_FLEXIBILITY" p2="1" />
+            <gene name="LEG_FLEX_BIAS" p3="1" />
+            <gene name="LEG_COUNT" p0="1" p1="1" p2="1" />
+            <gene name="ARM_TAG" p1="1" />
+            <gene name="ARM_TYPE" p1="1" />
+            <gene name="ARM_LENGTH" p1="1" p3="1" />
+            <gene name="ARM_STRETCH" p0="1" p2="1" />
+            <gene name="ARM_STRETCH2" p0="1" p1="1" />
+            <gene name="ARM_STRENGTH" p1="1" p3="1" />
+            <gene name="ARM_FLEXIBILITY" p2="1" />
+            <gene name="ARM_NODE_SCALE" p1="3" />
+            <gene name="ELBOW_RANGE" p0="1" />
+            <gene name="UPARM_ANGLE" p0="1" p1="12" p2="10" />
+            <gene name="NECK_TYPE" p2="1" />
+            <gene name="NECK_LENGTH" p3="1" />
+            <gene name="NECK_THICKNESS" p0="1" p1="1" p2="1" />
+            <gene name="NECK_FLEXIBILITY" p0="6" p1="1" />
+            <gene name="NECK_FLEX_BIAS" p0="1" />
+            <gene name="NECK_SLOUCH" p1="1" />
+            <gene name="NECK_STIFF" p0="1" p1="3" />
+            <gene name="FOOT_SIZE" p1="1" p2="1" />
+            <gene name="FOOT_TOE" p0="1" />
+            <gene name="FOOT_IS_CIRCLE" p0="1" />
+            <gene name="FOOT_BACKWARDS" p0="1" p1="4" />
+            <gene name="HAS_HAND" p1="1" />
+            <gene name="HAND_WIDTH" p0="1" />
+            <gene name="HAND_LENGTH" p1="1" />
+            <gene name="HAND_FINGER" p1="1" />
+            <gene name="HEAD_SIZE" p2="2" />
+            <gene name="HEAD_Y_GROWTH" p0="1" p1="1" />
+            <gene name="HEAD_ASPECT" p0="6" p1="1" p2="6" />
+            <gene name="HEAD_HAS_BACK" p1="1" />
+            <gene name="HEAD_GIANT" p0="1" p1="9" />
+            <gene name="BUGEYE" p0="1" p1="1" />
+            <gene name="EYEBOX_X" p1="17" p2="1" />
+            <gene name="EYEBOX_Y" p0="10" p1="1" />
+            <gene name="EYEBOX_SIZE" p0="1" p2="1" />
+            <gene name="EYE_SIZE" p0="19" p1="1" p2="3" />
+            <gene name="PUPIL_SIZE" p1="1" />
+            <gene name="EAR_STYLE" p3="1" />
+            <gene name="TEETH_SHAPE" p0="1" p3="1" />
+            <gene name="MOUTH_Y" p0="1" p1="10" p2="12" />
+            <gene name="MOUTH_SIZE" p0="6" p1="7" p2="16" p3="11" />
+            <gene name="JAW" p0="1" p1="9" />
+            <gene name="NOSE_STYLE" p0="19" p1="1" />
+            <gene name="NOSE_Y" p1="1" p2="1" />
+            <gene name="NOSE_SIZE" p2="1" p3="1" />
+            <gene name="BASE_BLACK" p0="1" />
+            <gene name="ALT_BLUE" p1="1" />
+            <gene name="SPOT_YELLOW" p0="16" p1="1" />
+            <gene name="SKIN_HUE" p1="18" p3="2" />
+            <gene name="SKIN_HUE2" p3="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="EYE_HUE" p1="1" p2="1" p3="1" />
+            <gene name="NOSE_HUE" p1="1" p2="4" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="SKIN_HEAD" p3="1" />
+            <gene name="SKIN_HANDS" p3="1" />
+            <gene name="FOOT_IS_HOOF" p0="1" />
+            <gene name="RACCOON_EYE" p0="1" p2="1" />
+            <gene name="PAT_STRIPE" p0="1" p1="1" />
+            <gene name="PAT_PERLIN" p1="1" p2="1" p3="1" />
+            <gene name="PAT_PERLIN2" p1="1" p2="1" p3="1" />
+            <gene name="PAT_PERLIN_SIZE" p0="1" />
+            <gene name="SPINAL_LOCO" p1="1" />
+            <gene name="TAIL_WAG" p0="1" />
+            <gene name="L_TAIL_SIGNAL" p0="1" />
+            <gene name="L_TAIL_FTOB_REACT" p2="1" />
+            <gene name="L_TAIL_BTOF_REACT" p2="1" />
+            <gene name="L_NECK_FTOB_REACT" p2="1" />
+            <gene name="L_NECK_BTOF_REACT" p2="1" />
+            <gene name="LOCO_SYNC" p0="3" p1="1" />
+        </pop>
+        <pop name="helix">
+            <gene name="SIZE" p2="1" />
+            <gene name="ASPECT" p2="1" />
+            <gene name="SKINNY" p3="1" />
+            <gene name="BONES" p1="1" />
+            <gene name="BONES2" p0="1" />
+            <gene name="CHEST_BIG" p1="1" />
+            <gene name="CHEST_SMALL" p0="1" />
+            <gene name="GIANT_DWARF" p0="1" />
+            <gene name="QUADRUPED" p0="1" />
+            <gene name="BIPED" p0="1" />
+            <gene name="SPLAY" p3="1" />
+            <gene name="LEG_IN" p0="1" />
+            <gene name="LEG_IN2" p0="1" />
+            <gene name="TAIL_EXISTS" p0="1" />
+            <gene name="TAIL_SIZE" p0="1" />
+            <gene name="TAIL_SHORT" p1="1" />
+            <gene name="TAIL_ASPECT" p2="1" />
+            <gene name="TAIL_ANGLE" p2="1" />
+            <gene name="TAIL_JOINT_TYPE" p0="1" />
+            <gene name="TAIL_STIFF" p1="1" />
+            <gene name="TAIL_FLEXIBILITY" p1="1" />
+            <gene name="TAIL_SHAPE" p3="1" />
+            <gene name="TAIL_BOTTOM" p0="1" />
+            <gene name="TAIL_SEGMENTS" p0="1" />
+            <gene name="LEG_TAG" p3="1" />
+            <gene name="LEG_LENGTH" p0="1" />
+            <gene name="LEG_STRETCH" p0="1" />
+            <gene name="LEG_STRETCH2" p0="1" />
+            <gene name="LEG_STRENGTH" p0="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" />
+            <gene name="LEG_COUNT" p0="1" />
+            <gene name="KNEE_MIN" p0="1" />
+            <gene name="KNEE_MAX" p0="1" />
+            <gene name="ARM_TAG" p3="1" />
+            <gene name="ARM_LENGTH" p0="1" />
+            <gene name="ARM_STRETCH" p0="1" />
+            <gene name="ARM_STRETCH2" p0="1" />
+            <gene name="ARM_STRENGTH" p0="1" />
+            <gene name="ELBOW_RANGE" p0="1" />
+            <gene name="UPARM_Y" p0="1" />
+            <gene name="UPARM_ANGLE" p0="1" />
+            <gene name="NECK_TAG" p1="1" />
+            <gene name="NECK_TYPE" p0="1" />
+            <gene name="NECK_LENGTH" p0="1" />
+            <gene name="NECK_GIRAFFE" />
+            <gene name="NECK_THICKNESS" p0="1" />
+            <gene name="NECK_ANGLE" p0="1" />
+            <gene name="NECK_FLEXIBILITY" p0="1" />
+            <gene name="NECK_STIFF" p0="1" />
+            <gene name="FOOT_SIZE" p0="1" />
+            <gene name="FOOT_TOE" p1="1" />
+            <gene name="FOOT_IS_CIRCLE" p0="1" />
+            <gene name="HEAD_SIZE" p0="1" />
+            <gene name="HEAD_ASPECT" p0="1" />
+            <gene name="HEAD_CHIMERA" p0="1" />
+            <gene name="EYEBOX_Y" p2="1" />
+            <gene name="EYEBOX_SIZE" p1="1" />
+            <gene name="BROW_SLANT" p0="1" />
+            <gene name="EAR_SIZE" p0="1" />
+            <gene name="EAR_SLANT" p3="1" />
+            <gene name="MOUTH_Y" p0="1" />
+            <gene name="MOUTH_SIZE" p0="1" />
+            <gene name="JAW" p0="1" />
+            <gene name="TEETH_UPPER" p0="1" />
+            <gene name="TEETH_UPPER2" p0="1" />
+            <gene name="NOSE_Y" p0="1" />
+            <gene name="NOSE_SIZE" p0="1" />
+            <gene name="ANTLER_MOD" p3="1" />
+            <gene name="BASE_BLACK" p1="1" />
+            <gene name="BASE_RED" p0="1" />
+            <gene name="BASE_CREAM" p0="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" />
+            <gene name="WHITE" p3="1" />
+            <gene name="EYE_HUE" p1="1" />
+            <gene name="AGOUTI" p1="1" />
+            <gene name="EAR_COMP" p0="1" />
+            <gene name="PAT_PERLIN" p0="1" />
+            <gene name="PAT_PERLIN2" p0="1" />
+            <gene name="PAT_PERLIN_SIZE" p1="1" />
+            <gene name="SPINAL_LOCO" p1="1" />
+            <gene name="BRAIN_SPASTIC" p0="1" />
+            <gene name="HIGH_INTELLECT" p0="1" />
+            <gene name="L_LEG_FTOB_EVENT" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p1="2" />
+            <gene name="L_ARM_FTOB_EVENT" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p1="1" />
+            <gene name="L_TAIL_FTOB_REACT" p2="1" />
+            <gene name="L_TAIL_BTOF_REACT" p2="1" />
+            <gene name="L_NECK_FTOB_REACT" p2="1" />
+            <gene name="L_NECK_BTOF_REACT" p2="1" />
+        </pop>
+        <pop name="freak">
+            <gene name="SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ASPECT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SKINNY" p0="1" p1="1" p3="1" />
+            <gene name="BONES" p0="1" p1="1" p2="1" />
+            <gene name="BONES2" p0="1" p1="1" p2="1" />
+            <gene name="CHEST_BIG" p0="1" p1="1" p2="1" />
+            <gene name="CHEST_SMALL" p0="1" p1="1" p2="1" />
+            <gene name="GIANT_DWARF" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="MUSCLE_USE" p0="1" p1="7" p2="10" />
+            <gene name="QUADRUPED" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="BIPED" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SPLAY" p0="1" p1="1" p2="1" p3="14" />
+            <gene name="LEG_IN" p0="1" p1="7" p2="7" />
+            <gene name="LEG_IN2" p0="1" p1="12" p3="17" />
+            <gene name="GUT" p0="1" p1="4" p2="6" />
+            <gene name="GUT_IS_UDDER" p0="1" p1="11" p3="17" />
+            <gene name="OSTODERM" p1="1" p2="11" p3="16" />
+            <gene name="OSTO_SIZE" p0="1" p1="1" p2="13" p3="14" />
+            <gene name="DERRIERE" p0="1" p1="5" p2="9" p3="10" />
+            <gene name="SPEED_FACTOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="BREAK_FORCE" p0="1" p1="12" p3="20" />
+            <gene name="TAIL_TAG" p0="1" p1="11" p2="9" p3="5" />
+            <gene name="TAIL_EXISTS" p0="1" p1="1" p3="15" />
+            <gene name="TAIL_SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="TAIL_SHORT" p0="1" p1="4" p2="6" />
+            <gene name="TAIL_ASPECT" p0="1" p1="1" p2="1" />
+            <gene name="TAIL_ANGLE" p0="1" p1="1" p2="1" />
+            <gene name="TAIL_JOINT_TYPE" p0="1" p1="1" />
+            <gene name="TAIL_STIFF" p0="1" p1="1" />
+            <gene name="TAIL_SPEED" p0="1" p1="1" p3="1" />
+            <gene name="TAIL_FLEXIBILITY" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="TAIL_SHAPE" p0="1" p1="1" p2="9" />
+            <gene name="TAIL_BOTTOM" p0="1" p1="14" p3="1" />
+            <gene name="TAIL_SEGMENTS" p1="1" p2="7" p3="7" />
+            <gene name="LEG_TAG" p0="1" p1="1" p2="6" p3="4" />
+            <gene name="LEG_TYPE" p0="1" p1="4" p2="14" />
+            <gene name="LEG_LENGTH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="LEG_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="LEG_STRENGTH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="LEG_HAS_FOOT" p0="1" p1="1" p2="1" />
+            <gene name="LEG_JOINT_TYPE" p0="1" p1="5" p2="7" />
+            <gene name="LEG_FLEXIBILITY" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="LEG_FLEX_BIAS" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="LEG_THRUST_BACK" p0="1" p1="1" p3="12" />
+            <gene name="LEG_IS_CIRCLE" p0="1" p1="11" />
+            <gene name="LEG_COUNT" p0="1" p1="1" p2="1" p3="9" />
+            <gene name="LEG_SKEW" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="LEG_PENCIL" p0="1" p1="16" />
+            <gene name="LEG_AND_ARM_LIMP" p0="1" p3="13" />
+            <gene name="HAS_KNEE" p0="1" p1="1" />
+            <gene name="KNEE_MIN" p0="1" p1="13" p2="9" />
+            <gene name="KNEE_MAX" p0="1" p1="1" p2="1" />
+            <gene name="ARM_TAG" p0="1" p1="1" p2="8" p3="5" />
+            <gene name="ARM_LENGTH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ARM_STRETCH" p0="1" p1="1" p2="1" />
+            <gene name="ARM_STRETCH2" p0="1" p1="1" p2="1" />
+            <gene name="ARM_STRENGTH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ARM_HAS_HAND" p0="1" p1="1" />
+            <gene name="ARM_JOINT_TYPE" p0="1" p1="6" p2="6" p3="1" />
+            <gene name="ARM_FLEXIBILITY" p0="1" p1="1" p2="1" />
+            <gene name="ARM_FLEX_BIAS" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ARM_FORWARD" p0="20" p1="1" p2="1" p3="1" />
+            <gene name="ARM_SKEW" p0="1" p1="1" p2="1" />
+            <gene name="ARM_NODE_SCALE" p0="1" p1="1" p2="6" p3="1" />
+            <gene name="HAS_ELBOW" p0="1" p1="1" />
+            <gene name="ELBOW_RANGE" p0="1" p1="1" p2="1" />
+            <gene name="UPARM_TAG" p0="1" p1="10" p2="10" p3="14" />
+            <gene name="UPARM_Y" p0="1" p1="1" p3="1" />
+            <gene name="UPARM_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="UPARM_GOOFY" p0="1" p1="14" p2="14" p3="14" />
+            <gene name="NECK_TAG" p0="1" p1="3" p2="2" p3="4" />
+            <gene name="NECK_TYPE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NECK_LENGTH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NECK_GIRAFFE" p0="19" p1="1" p2="16" p3="16" />
+            <gene name="NECK_THICKNESS" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NECK_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NECK_COCK" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NECK_JOINT_TYPE" p0="1" p1="1" p2="1" />
+            <gene name="NECK_FLEXIBILITY" p0="1" p1="1" p2="7" p3="1" />
+            <gene name="NECK_FLEX_BIAS" p0="1" p1="1" p2="1" p3="7" />
+            <gene name="NECK_SLOUCH" p0="1" p1="1" p2="1" />
+            <gene name="NECK_ONTOP" p0="1" p1="9" p2="7" p3="7" />
+            <gene name="NECK_STIFF" p0="1" p1="1" />
+            <gene name="NECK_SPEED" p0="1" p1="1" />
+            <gene name="HAS_FOOT" p0="1" p1="1" />
+            <gene name="FOOT_SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="FOOT_CLOWN" p0="1" p1="6" />
+            <gene name="FOOT_THICKNESS" p0="1" p1="1" p2="5" p3="6" />
+            <gene name="FOOT_TOE" p0="1" p1="1" p2="6" />
+            <gene name="FOOT_IS_CIRCLE" p0="1" p1="1" />
+            <gene name="FOOT_BACKWARDS" p0="1" p1="3" />
+            <gene name="HAS_HAND" p0="1" p1="1" p2="1" />
+            <gene name="HAND_WIDTH" p0="1" p1="1" p2="1" />
+            <gene name="HAND_LENGTH" p0="1" p1="1" p2="1" />
+            <gene name="HAND_FINGER" p0="1" p1="1" />
+            <gene name="HEAD_SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HEAD_THICK_SKULL" p0="1" p1="5" />
+            <gene name="HEAD_X_GROWTH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HEAD_Y_GROWTH" p0="1" p1="1" p2="1" />
+            <gene name="HEAD_ASPECT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HEAD_SQUARE" p0="1" p1="9" p2="9" />
+            <gene name="HEAD_HAS_BACK" p0="1" p1="1" />
+            <gene name="HEAD_GIANT" p0="1" p1="12" />
+            <gene name="HEAD_SHRUNK" p0="1" p1="12" />
+            <gene name="HEAD_JOINTED" p0="1" p1="12" />
+            <gene name="HEAD_CHIMERA" p0="1" p1="6" />
+            <gene name="EYE_STYLE" p0="1" p1="1" p3="17" />
+            <gene name="BUGEYE" p0="1" p1="4" />
+            <gene name="EYEBOX_X" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="EYEBOX_Y" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="EYEBOX_SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="EYE_SIZE" p0="1" p1="1" />
+            <gene name="PUPIL_SIZE" p0="1" p2="1" />
+            <gene name="HAS_PUPIL" p0="1" p1="18" />
+            <gene name="BROW_SIZE" p0="1" p1="8" p2="9" />
+            <gene name="BROW_SLANT" p0="1" p1="1" p2="1" />
+            <gene name="EAR_STYLE" p0="1" p1="4" p3="5" />
+            <gene name="EAR_SHAPE" p0="1" p1="1" />
+            <gene name="EAR_X" p0="1" p1="7" p2="10" />
+            <gene name="EAR_SIZE" p0="1" p1="1" p2="1" />
+            <gene name="EAR_ASPECT" p0="1" p1="1" p2="4" />
+            <gene name="EAR_SLANT" p0="1" p1="4" p2="3" p3="1" />
+            <gene name="EAR_INTERIOR" p0="16" p1="1" />
+            <gene name="TEETH_SHAPE" p0="18" p1="1" p2="1" p3="1" />
+            <gene name="HAS_MOUTH" p0="1" p2="14" />
+            <gene name="MOUTH_Y" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="MOUTH_SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="JAW" p0="1" p1="6" p2="7" p3="7" />
+            <gene name="TEETH_UPPER" p0="1" p1="1" />
+            <gene name="TEETH_UPPER2" p0="1" p1="1" />
+            <gene name="TONGUE" p0="1" p1="8" />
+            <gene name="TONGUE_SEGS" p0="1" p2="11" />
+            <gene name="NOSE_STYLE" p0="1" p1="13" p2="17" p3="14" />
+            <gene name="NOSE_INNY" p0="1" p1="4" />
+            <gene name="NOSE_Y" p0="1" p1="4" p2="4" />
+            <gene name="NOSE_SIZE" p0="1" p1="1" p2="1" p3="3" />
+            <gene name="HAS_ANTLERS" p0="1" p1="1" p3="1" />
+            <gene name="ANTLER_X" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_W" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_H" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_TAPER" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_POM" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_COLOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="POM_COLOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="POM_USECOLOR" p0="1" p1="1" />
+            <gene name="ANTLER_REC" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_REC2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_FLIP" p0="1" p1="1" />
+            <gene name="ANTLER_MOD" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_SCALEH" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_SCALEW" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_ANGLE_RAND" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_T1" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="ANTLER_T2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_EXISTS" p0="1" p1="1" />
+            <gene name="HAT_SIZE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_RAKE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_ASPECT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_TAPER" p0="9" p1="1" p2="1" p3="1" />
+            <gene name="HAT_POM" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_POM_IS_LID" p0="1" p1="1" />
+            <gene name="HAT_CLONE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_BACK_SCALE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_FRONT_SCALE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_BACK_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_FRONT_ANGLE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_ANGLE_RAND" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HAT_FLIP" p0="1" p1="1" />
+            <gene name="HAT_T" p0="1" p1="1" p2="1" />
+            <gene name="BASE_BROWN" p0="1" p1="1" p2="1" />
+            <gene name="BASE_BLACK" p0="1" p1="1" />
+            <gene name="BASE_RED" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="BASE_GREEN" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="GREEN_KNOCKOUT" p0="1" p1="5" />
+            <gene name="BASE_CREAM" p0="1" p1="13" />
+            <gene name="ALT_BLUE" p0="1" p1="1" p3="1" />
+            <gene name="SPOT_YELLOW" p0="1" p1="6" />
+            <gene name="SKIN_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SKIN_HUE2" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="SWAP_BASE_SPOT" p0="1" p1="1" />
+            <gene name="SWAP_ALT_SPOT" p0="1" p1="1" />
+            <gene name="WHITE" p0="19" p1="1" p2="1" />
+            <gene name="WHITE_IS_LETHAL" p0="1" p1="1" />
+            <gene name="EYE_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="NOSE_HUE" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="HOOF_COLOR" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="AGOUTI" p0="1" p1="1" />
+            <gene name="BELLY_ALT" p0="1" p1="4" />
+            <gene name="SKIN_HEAD" p0="1" p1="1" />
+            <gene name="SKIN_HANDS" p0="1" p1="1" />
+            <gene name="FOOT_IS_HOOF" p0="16" p1="1" p2="19" />
+            <gene name="RACCOON_EYE" p0="1" p1="7" p2="7" />
+            <gene name="EAR_COMP" p0="1" />
+            <gene name="TAIL_ALT" p0="1" p1="4" />
+            <gene name="PAT_SPLIT" p0="1" p1="15" />
+            <gene name="PAT_BELLY" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="PAT_STRIPE" p0="1" p1="1" p2="1" />
+            <gene name="PAT_SPOT" p0="1" p1="1" p3="1" />
+            <gene name="PAT_PERLIN" p0="1" p1="1" p2="1" />
+            <gene name="PAT_PERLIN2" p0="1" p1="1" p2="1" />
+            <gene name="PAT_PERLIN_SIZE" p0="1" p1="1" p2="1" />
+            <gene name="RAMPAGE" p0="1" p3="9" />
+            <gene name="SPINAL_LOCO" p0="1" />
+            <gene name="BRAIN_SPASTIC" p0="1" p1="14" p2="11" />
+            <gene name="HIGH_INTELLECT" p0="1" p1="1" />
+            <gene name="OMNIVORE" p0="1" p1="1" />
+            <gene name="LITTER_SIZE" p0="1" p1="12" p2="14" />
+            <gene name="OLD_AGE" p0="1" p2="18" p3="17" />
+            <gene name="LIMP" p0="1" p1="19" p3="14" />
+            <gene name="NARCOLEPSY" p0="1" p2="16" />
+            <gene name="FLU_IMMUNITY" p0="1" />
+            <gene name="TAIL_WAG" p0="20" p1="1" p2="1" />
+            <gene name="STIFF_JOINTS" p0="1" p1="15" p2="16" />
+            <gene name="L_LEG_SIGNAL" p0="1" />
+            <gene name="L_LEG_FTOB_REACT" p0="1" p1="1" />
+            <gene name="L_LEG_FTOB_EVENT" p0="1" p1="1" />
+            <gene name="L_LEG_BTOF_REACT" p0="1" p1="1" />
+            <gene name="L_LEG_BTOF_EVENT" p0="1" p1="1" p2="1" />
+            <gene name="L_ARM_SIGNAL" p0="1" />
+            <gene name="L_ARM_FTOB_REACT" p0="1" p1="1" />
+            <gene name="L_ARM_FTOB_EVENT" p0="1" p1="1" />
+            <gene name="L_ARM_BTOF_REACT" p0="1" p1="1" />
+            <gene name="L_ARM_BTOF_EVENT" p0="1" p1="1" p2="1" />
+            <gene name="L_TAIL_SIGNAL" p0="1" p1="1" p2="1" />
+            <gene name="L_TAIL_FTOB_REACT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="L_TAIL_FTOB_EVENT" p0="1" p1="1" />
+            <gene name="L_TAIL_BTOF_REACT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="L_TAIL_BTOF_EVENT" p0="1" p1="1" />
+            <gene name="L_NECK_SIGNAL" p0="1" p1="1" p2="1" />
+            <gene name="L_NECK_FTOB_REACT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="L_NECK_FTOB_EVENT" p0="1" p1="1" />
+            <gene name="L_NECK_BTOF_REACT" p0="1" p1="1" p2="1" p3="1" />
+            <gene name="L_NECK_BTOF_EVENT" p0="1" p1="1" />
+            <gene name="LOCO_SYNC" p0="1" p1="5" />
+        </pop>
+    </pop>
+</pops>
