@@ -51,13 +51,16 @@ button{cursor:pointer}
 .logo{display:block;padding:0 16px;color:var(--ink)}
 .logo svg{display:block;height:92px;width:auto}
 .sw{position:relative;width:calc(100% - 32px);margin:0 16px}
-.search{display:block;width:100%;margin:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s;font-kerning:none;font-variant-ligatures:none}
+.sw::before{content:"";position:absolute;left:12px;top:50%;width:15px;height:15px;margin-top:-7.5px;z-index:1;pointer-events:none;background:var(--mute);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m15.5 15.5 5 5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m15.5 15.5 5 5'/%3E%3C/svg%3E") center/contain no-repeat;transition:background .2s}
+.sw:focus-within::before{background:#ff2b2b}
+.search{display:block;width:100%;margin:0;padding:9px 12px 9px 37px;border-radius:10px;border:1px solid rgba(255,43,43,.3);background:linear-gradient(90deg,rgba(255,43,43,.1),rgba(6,2,3,.72) 70%);transition:border-color .2s,box-shadow .2s,background .2s;font-kerning:none;font-variant-ligatures:none}
+.search:hover{border-color:rgba(255,43,43,.55)}
 .search::placeholder{color:var(--mute)}
-.search:focus{outline:none;border-color:var(--ink)}
+.search:focus{outline:none;border-color:#ff2b2b;box-shadow:0 0 0 3px rgba(255,43,43,.2);background:linear-gradient(90deg,rgba(255,43,43,.16),rgba(6,2,3,.8) 70%)}
 /* typing animation: the real input keeps the text, a copy drawn letter by letter sits on top of it */
 .sw.on .search{color:transparent;caret-color:transparent}
 .sw.on .search::selection{background:transparent;color:transparent}
-.sv{position:absolute;left:13px;right:13px;top:1px;bottom:1px;display:flex;align-items:center;overflow:hidden;pointer-events:none;color:var(--ink);font-kerning:none;font-variant-ligatures:none;letter-spacing:0}
+.sv{position:absolute;left:38px;right:13px;top:1px;bottom:1px;display:flex;align-items:center;overflow:hidden;pointer-events:none;color:var(--ink);font-kerning:none;font-variant-ligatures:none;letter-spacing:0}
 .st{position:relative;white-space:pre;line-height:1.25;transition:transform 170ms cubic-bezier(.16,1,.3,1)}
 .sc{display:inline-block;white-space:pre}
 .sc.sel{background:rgba(255,255,255,.3)}
@@ -65,16 +68,22 @@ button{cursor:pointer}
 .sw:not(.f) .scaret{display:none}
 @keyframes sblinkA{50%{opacity:0}}
 @keyframes sblinkB{50%{opacity:0}}
-.home{display:flex;align-items:center;gap:9px;margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600;color:var(--ink);transition:background .15s,border-color .15s}
-.home svg{width:16px;height:16px;flex:none;fill:currentColor}
-.home:hover{background:var(--hover);border-color:var(--ink)}
+.home{display:flex;align-items:center;gap:9px;margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,43,43,.35);background:linear-gradient(90deg,rgba(255,43,43,.18),rgba(255,43,43,.05));font-weight:600;color:var(--ink);transition:background .2s,border-color .2s,box-shadow .2s,transform .25s cubic-bezier(.22,1,.36,1)}
+.home svg{width:16px;height:16px;flex:none;fill:#ff2b2b;transition:transform .25s cubic-bezier(.22,1,.36,1)}
+.home:hover{background:linear-gradient(90deg,rgba(255,43,43,.3),rgba(255,43,43,.1));border-color:#ff2b2b;box-shadow:0 0 0 3px rgba(255,43,43,.14)}
+.home:hover svg{transform:translateY(-1px) scale(1.12)}
+.home:active{transform:scale(.98)}
 .label{margin:0 16px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.cats{display:flex;flex-direction:column;gap:0}
-.cat{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;
-  padding:9px 16px;border-radius:0;font-weight:500;color:var(--mute);transition:background .15s,color .15s}
-.cat:hover{background:var(--hover);color:var(--ink)}
-.cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);text-shadow:none}
-.cat small{font-size:12px;opacity:.9}
+.cats{display:flex;flex-direction:column;gap:3px;padding:0 16px}
+.cat{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:1px solid transparent;background:transparent;
+  padding:7px 8px 7px 15px;border-radius:10px;font-weight:500;color:var(--mute);transition:background .2s,color .2s,border-color .2s,transform .25s cubic-bezier(.22,1,.36,1)}
+.cat::before{content:"";position:absolute;left:5px;top:50%;width:3px;height:0;border-radius:3px;background:#ff2b2b;transform:translateY(-50%);transition:height .25s cubic-bezier(.22,1,.36,1)}
+.cat:hover{background:var(--hover);color:var(--ink);transform:translateX(3px)}
+.cat:hover::before{height:10px}
+.cat[aria-pressed="true"]{background:linear-gradient(90deg,rgba(255,43,43,.3),rgba(255,43,43,.07));border-color:rgba(255,43,43,.45);color:#fff;text-shadow:none;transform:none}
+.cat[aria-pressed="true"]::before{height:16px}
+.cat small{min-width:26px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.1);font-size:11px;font-weight:600;text-align:center;transition:background .2s,color .2s}
+.cat[aria-pressed="true"] small{background:#ff2b2b;color:#fff}
 
 /* games: tiles sit edge to edge, no gaps */
 .side canvas.gl,#mainBg.gl{filter:none}
@@ -213,9 +222,12 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
   .sw{width:100%;margin:0}
   .home{margin:0}
   .label{display:none}
-  .cats{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
+  .cats{flex-direction:row;overflow-x:auto;gap:6px;padding:0 0 2px}
   .cat{width:auto;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
-  .cat[aria-pressed="true"]{border-color:var(--ink)}
+  .cat::before{display:none}
+  .cat:hover{transform:none}
+  .cat small{padding:0 6px}
+  .cat[aria-pressed="true"]{border-color:#ff2b2b}
 }
 @media(min-width:560px) and (max-width:959px){.grid{grid-template-columns:repeat(2,1fr)}}
 
