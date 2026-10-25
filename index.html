@@ -37,7 +37,7 @@
 }}
 *,*::before,*::after{box-sizing:border-box}
 html{background:#060203;scrollbar-gutter:stable}   /* the scrollbar's space stays reserved, so locking and unlocking scroll never shifts the layout sideways */
-body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+body{margin:0;background:#060203;color:var(--ink);font:400 14px/1.5 var(--font);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -122,11 +122,12 @@ html.launching,html.launching body{overflow:hidden}
 .launch .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#fff;transform:scaleX(0);transform-origin:0 50%;transition:transform 3s cubic-bezier(.1,.6,.2,1) .6s}
 .launch.go .bar{transform:scaleX(.92)}
 
+/* page transition (see the script): the browser freezes the old screen as a picture; the new one is cut in through slanted blades */
 /* start menu */
 .menu{display:none;position:fixed;inset:0;z-index:200;background:#060203;overflow:hidden;will-change:transform;
   transition:transform .95s cubic-bezier(.22,1,.36,1)}
 html.menu-open .menu,html.menu-open-leaving .menu{display:block}
-html.menu-open,html.menu-open body{overflow:hidden}
+html.menu-open:not(.zt),html.menu-open:not(.zt) body{overflow:hidden}   /* .zt: mid-transition; the page keeps its scrolled, sticky sidebar until the start screen has fully arrived */
 .menu.out{transform:translateY(-100%);pointer-events:none}
 .menu.exit .m-title .l span{transform:translateY(-118%);transition:transform .8s cubic-bezier(.22,1,.36,1) calc(var(--i)*.03s)}
 .menu.exit .m-link .t{transform:translateY(-118%);transition:transform .8s cubic-bezier(.22,1,.36,1) calc(var(--n)*.04s)}
@@ -882,97 +883,95 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
 
 /* ---------- start menu, then the sidebar background ---------- */
 (function(){
-  const side=createContours($('#sideBg'),{parent:true,fps:30,dim:0.7,major:1.4,minor:0.7,zoom:1.9,gl:{dim:0.26,zoom:0.8}});
-  const main=createContours($('#mainBg'),{fps:24,dim:0.6,major:1.4,minor:0.7,zoom:1.2,gl:{dim:0.2,zoom:0.8}});
+  const side=createContours($('#sideBg'),{parent:true,fps:30,dim:0.7,major:1.4,minor:0.7,zoom:1.9,gl:{dim:0.26,zoom:0.8,scale:.6}});
+  const main=createContours($('#mainBg'),{fps:24,dim:0.6,major:1.4,minor:0.7,zoom:1.2,gl:{dim:0.2,zoom:0.8,scale:.6}});
   const menu=$('#menu'),app=$('#app'),play=$('#play');
   if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();main.start();return}
   app.inert=true;
   tiles.slice(0,18).forEach(tl=>{const im=tl.querySelector('img');if(im){im.loading='eager';if(im.decode)im.decode().catch(()=>{})}});
-  const BGOPT={dim:0.6,gl:{dim:0.55,zoom:0.45}};
+  const BGOPT={dim:0.6,gl:{dim:0.55,zoom:0.45,scale:.5}};
   let bg=createContours($('#bg'),BGOPT);
   bg.start();
   play.focus({preventScroll:true});
 
   let left=false,busy=false;
-  function enter(){
-    if(left||busy)return;left=true;busy=true;
-    const root=document.documentElement;
-    app.inert=false;                                          /* the topo behind the page was drawn once while the menu showed, so nothing underneath is ever black */
-    side.ensure();main.ensure();                              /* and if nothing drew it yet, it is drawn now, before the first frame of the reveal */
-    let fin=false,onEnd=null;
-    /* the panel is not thrown away: it stays parked above the screen, ready to come back down */
-    const done=()=>{if(fin)return;fin=true;if(onEnd)menu.removeEventListener('transitionend',onEnd);bg.stop();
-      root.classList.remove('menu-open');root.classList.add('menu-open-leaving');menu.inert=true;busy=false};   /* the page stays unscrollable until the end, so no scrollbar can jolt the layout */
-    if(calm){menu.classList.add('out');done();side.start();main.start();return}
-    /* the click's own frame can be a heavy one while the page wakes up, so the motion starts two frames later and begins cleanly */
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      menu.classList.add('exit');                             /* title, words and reaper drift away, each on its own */
-      menu.classList.add('out');reveal();                     /* the panel lifts away at once while the page builds itself underneath */
-      setTimeout(()=>{bg.stop();side.start()},800);           /* the page's two moving backgrounds start only once the panel has almost left, one at a time, so no frame has to do two jobs */
-      setTimeout(()=>main.start(),1150);
-      onEnd=e=>{if(e.target===menu&&e.propertyName==='transform'&&menu.classList.contains('out'))done()};
-      menu.addEventListener('transitionend',onEnd);
-    }));
-    setTimeout(done,2600);                                    /* safety net */
+  const root=document.documentElement;
+  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Page transition: a zoom. Both screens stay completely alive underneath, so the moving backgrounds never pause.
+     Ports: the start screen rushes towards you and fades while the page settles in behind it, as if you flew into the button.
+     Home: the start screen comes back from the front and the page shrinks away behind it. Only transform and opacity move. */
+  const ZOOM_MS=950,ZOOM_EASE='cubic-bezier(.28,.62,.16,1)';
+  function transit(into,start,later,end,ox,oy){
+    return new Promise(done=>{
+      const W=innerWidth,H=innerHeight,anims=[],els=[];
+      const add=(el,kf,origin)=>{els.push(el);el.style.transformOrigin=origin;anims.push(el.animate(kf,{duration:ZOOM_MS,easing:ZOOM_EASE,fill:'both'}))};
+      root.classList.add('zt');
+      start();
+      const grid=$('#grid'),gr=grid.getBoundingClientRect();   /* only the games grid zooms: a scrolled sidebar and the background stay put */
+      const fg=[$('.m-inner',menu),$('#mReaper')].filter(Boolean);   /* the blurred background only fades: scaling it would redraw the blur every frame */
+      const aim=(el,x,y)=>{const r=el.getBoundingClientRect();return (x-r.left)+'px '+(y-r.top)+'px'};
+      if(into){
+        add(menu,[{opacity:1},{opacity:0}],'50% 50%');
+        fg.forEach(el=>add(el,[{transform:'scale(1)'},{transform:'scale(1.6)'}],aim(el,ox,oy)));
+        add(grid,[{transform:'scale(.88)'},{transform:'scale(1)'}],(ox-gr.left)+'px '+(oy-gr.top)+'px');
+      }else{
+        add(menu,[{opacity:0},{opacity:1}],'50% 50%');
+        fg.forEach(el=>add(el,[{transform:'scale(1.5)'},{transform:'scale(1)'}],aim(el,W/2,H/2)));
+        add(grid,[{transform:'scale(1)'},{transform:'scale(.9)'}],(W/2-gr.left)+'px '+(H/2-gr.top)+'px');
+      }
+      let ended=false;
+      const finish=()=>{if(ended)return;ended=true;end();root.classList.remove('zt');anims.forEach(a=>a.cancel());els.forEach(el=>{el.style.transformOrigin=''});done()};
+      setTimeout(later,140);                                  /* the heavier set-up waits until the movement is under way */
+      Promise.all(anims.map(x=>x.finished.catch(()=>{}))).then(finish);
+      setTimeout(finish,ZOOM_MS+900);                        /* safety net for a tab that is not painting */
+    });
   }
 
-  /* the way back: the page stays still and sinks back a little while the start screen drops over it like a curtain;
-     as it lands, the title and words rise in with the same intro the site opens with. Only transforms move. */
-  const RISE='cubic-bezier(.16,1,.3,1)';
-  function intro(){
-    menu.classList.remove('exit');            /* the gh link and the reaper glide in on their own; the letters and words are replayed below */
-    menu.querySelectorAll('.m-title .l span').forEach((el,i)=>el.animate([{transform:'translateY(112%) rotate(7deg)'},{transform:'none'}],{duration:700,delay:40+i*45,easing:RISE,fill:'backwards'}));
-    menu.querySelectorAll('.m-link .t').forEach((el,n)=>el.animate([{transform:'translateY(112%) rotate(7deg)'},{transform:'none'}],{duration:680,delay:180+n*55,easing:RISE,fill:'backwards'}));
+  const mainBg=$('#mainBg');
+  function origin(e,el){
+    if(e&&e.clientX&&e.clientY)return[e.clientX,e.clientY];
+    const r=(el||document.body).getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];
   }
-  function goHome(){
-    if(!left||busy)return;busy=true;
-    const root=document.documentElement;
-    app.inert=true;
-    side.stop();main.stop();                                  /* the page's moving lines pause (their last picture stays), so the graphics card only has the curtain to do */
-    bg.start();requestAnimationFrame(()=>requestAnimationFrame(()=>bg.stop()));   /* the menu's own picture is refreshed once, then held still until it has landed */
-    let fin=false,onBack=null;
-    const finish=()=>{if(fin)return;fin=true;if(onBack)menu.removeEventListener('transitionend',onBack);
-      menu.classList.remove('back');
-      root.classList.remove('menu-open-leaving');root.classList.add('menu-open');
+  function enter(e){
+    if(left||busy)return;left=true;busy=true;
+    const start=()=>{
+      app.inert=false;                                       /* the page is already there, underneath the start screen, which keeps running on top */
       scrollTo(0,0);
-      bg.start();                                             /* the lines behind the menu start moving again once everything has settled */
-      left=false;menu.inert=false;play.focus({preventScroll:true});
-      setTimeout(()=>{busy=false},900)};                      /* Ports stays locked until the title has finished rising */
-    if(calm){menu.classList.remove('out','exit');finish();busy=false;return}
-    root.classList.add('menu-open-leaving');
-    void menu.offsetWidth;                                    /* commit the parked state so the transitions start from it */
-    menu.inert=false;
-    menu.classList.add('back');
-    menu.classList.remove('out');                             /* the curtain drops; the words stay hidden above until it is nearly down */
-    setTimeout(intro,260);
-    onBack=e=>{if(e.target===menu&&e.propertyName==='transform'&&!menu.classList.contains('out'))finish()};
-    menu.addEventListener('transitionend',onBack);
-    setTimeout(finish,1800);                                  /* safety net */
+    };
+    const later=()=>{
+      side.ensure();main.ensure();
+      side.start();setTimeout(()=>main.start(),200);
+    };
+    const end=()=>{
+      menu.inert=true;
+      root.classList.remove('menu-open');                    /* the start screen is gone; it comes back from the Home button */
+      bg.stop();
+    };
+    if(calm){start();later();end();busy=false;return}
+    const[ox,oy]=origin(e,play);
+    transit(true,start,later,end,ox,oy).then(()=>{busy=false});
+  }
+  function goHome(e){
+    if(!left||busy)return;busy=true;
+    const start=()=>{
+      menu.classList.remove('out','exit','back');menu.inert=false;
+      root.classList.add('menu-open');                       /* the start screen appears on top; the page keeps moving underneath */
+    };
+    const later=()=>{bg.start()};
+    const end=()=>{
+      app.inert=true;
+      scrollTo(0,0);
+      side.stop();main.stop();
+      left=false;
+    };
+    if(calm){start();later();end();play.focus({preventScroll:true});busy=false;return}
+    transit(false,start,later,end,0,0).then(()=>{play.focus({preventScroll:true});setTimeout(()=>{busy=false},250)});
   }
   const homeBtn=$('#home');
   if(homeBtn)homeBtn.addEventListener('click',e=>{
     if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;   /* new-tab clicks work normally */
-    e.preventDefault();goHome();
+    e.preventDefault();goHome(e);
   });
-  /* everything on the page moves into place with a long ease-out; nothing fades */
-  const EO='cubic-bezier(.22,1,.36,1)';
-  const slide=(el,delay,from,dur)=>{if(el)el.animate([{transform:from},{transform:'none'}],{duration:dur,delay:delay,easing:EO,fill:'backwards'})};
-  function reveal(){
-    slide(document.querySelector('.side'),0,'translateX(-100%)',950);
-    slide($('#searchbox')||$('#search'),40,'translateX(-260px)',950);
-    slide(document.querySelector('.side .label'),80,'translateX(-260px)',950);
-    document.querySelectorAll('#cats .cat').forEach((b,k)=>slide(b,100+k*26,'translateX(-260px)',950));
-    const vh=innerHeight,gr=$('#grid').getBoundingClientRect();
-    const seen=tiles.filter(tl=>!tl.hidden&&tl.getBoundingClientRect().top<vh);
-    const first=seen.length?seen[0].getBoundingClientRect():null;
-    seen.forEach(tl=>{
-      const r=tl.getBoundingClientRect();
-      const col=Math.round((r.left-gr.left)/(first.width||1)),row=Math.round((r.top-first.top)/(first.height||1));
-      const delay=60+(row*2+col)*55;                        /* a diagonal wave from the top left */
-      tl.animate([{transform:'translateY(48px)'},{transform:'none'}],{duration:1000,delay:delay,easing:EO,fill:'backwards'});
-    });
-  }
-  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   /* draw the page's topo once, early and out of sight, so starting it later costs nothing; the picture stays on the canvas */
   if(!calm)setTimeout(()=>{if(left)return;side.start();main.start();requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!left){side.stop();main.stop()}}))},1600);
   play.addEventListener('click',enter);
