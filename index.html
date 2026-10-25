@@ -50,9 +50,21 @@ button{cursor:pointer}
 .side-body{position:relative;z-index:1;text-shadow:0 0 7px #060203,0 0 3px #060203,0 1px 1px #060203;height:100%;overflow-y:auto;padding:22px 0;display:flex;flex-direction:column;gap:20px}
 .logo{display:block;padding:0 16px;color:var(--ink)}
 .logo svg{display:block;height:92px;width:auto}
-.search{width:calc(100% - 32px);margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s}
+.sw{position:relative;width:calc(100% - 32px);margin:0 16px}
+.search{display:block;width:100%;margin:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s;font-kerning:none;font-variant-ligatures:none}
 .search::placeholder{color:var(--mute)}
 .search:focus{outline:none;border-color:var(--ink)}
+/* typing animation: the real input keeps the text, a copy drawn letter by letter sits on top of it */
+.sw.on .search{color:transparent;caret-color:transparent}
+.sw.on .search::selection{background:transparent;color:transparent}
+.sv{position:absolute;left:13px;right:13px;top:1px;bottom:1px;display:flex;align-items:center;overflow:hidden;pointer-events:none;color:var(--ink);font-kerning:none;font-variant-ligatures:none;letter-spacing:0}
+.st{position:relative;white-space:pre;line-height:1.25;transition:transform 170ms cubic-bezier(.16,1,.3,1)}
+.sc{display:inline-block;white-space:pre}
+.sc.sel{background:rgba(255,255,255,.3)}
+.scaret{position:absolute;left:0;top:50%;width:2px;height:1.3em;margin:-.65em 0 0 -1px;background:var(--ink);will-change:transform;animation:sblinkA 1s steps(1) infinite}
+.sw:not(.f) .scaret{display:none}
+@keyframes sblinkA{50%{opacity:0}}
+@keyframes sblinkB{50%{opacity:0}}
 .home{display:flex;align-items:center;gap:9px;margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600;color:var(--ink);transition:background .15s,border-color .15s}
 .home svg{width:16px;height:16px;flex:none;fill:currentColor}
 .home:hover{background:var(--hover);border-color:var(--ink)}
@@ -198,7 +210,7 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
   .side-body{height:auto;overflow:visible;padding:14px 16px;gap:12px}
   .logo{padding:0}
   .logo svg{height:46px}
-  .search{width:100%;margin:0}
+  .sw{width:100%;margin:0}
   .home{margin:0}
   .label{display:none}
   .cats{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
@@ -532,6 +544,108 @@ function renderGames(animate){
   if(!empty.hidden)empty.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:500,easing:EASE,fill:'backwards'});
 }
 $('#search').addEventListener('input',e=>{setQuery(e.target.value);renderGames(true)});
+/* typing animation for the search box: new letters pop in, deleted ones fade out and the gap closes, the caret glides.
+   The real <input> still holds the text, so search, focus and the clear button work as before. */
+(function(){
+  const input=$('#search');
+  if(!input||!input.parentNode||!input.animate)return;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const box=document.createElement('div');box.className='sw';box.id='searchbox';
+  input.parentNode.insertBefore(box,input);box.appendChild(input);
+  const view=document.createElement('div');view.className='sv';view.setAttribute('aria-hidden','true');
+  const track=document.createElement('div');track.className='st';
+  const tail=document.createElement('span');tail.className='sc';tail.textContent='​';
+  const caret=document.createElement('i');caret.className='scaret';
+  track.append(tail,caret);view.appendChild(track);box.appendChild(view);box.classList.add('on');
+  let prev=[],els=[],selA=-1,selB=-1,placed=false,flip=false;
+  const cpIndex=i=>Array.from(input.value.slice(0,i)).length;
+  function makeEl(ch){
+    const el=document.createElement('span');el.className='sc';el.textContent=ch;
+    return el;
+  }
+  /* the gap opens first so the letters after it slide aside, then the letter rises in and fades up */
+  function enterEl(el){
+    const w=el.offsetWidth;
+    if(el.textContent===' '){el.animate([{width:'0px'},{width:w+'px'}],{duration:240,easing:'cubic-bezier(.22,1,.36,1)'});return}
+    el.animate([
+      {width:'0px',opacity:0,transform:'translateY(9px) scale(.85)',offset:0},
+      {width:w+'px',opacity:.55,transform:'translateY(3px) scale(.96)',offset:.45},
+      {width:w+'px',opacity:1,transform:'none',offset:1}
+    ],{duration:380,easing:'cubic-bezier(.22,1,.36,1)'});
+  }
+  function exitEl(el){
+    if(reduce||el.textContent===' '){el.remove();return}
+    el.classList.remove('sel');el.classList.add('ghost');
+    const w=el.offsetWidth;
+    el.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-6px) scale(.6)'}],{duration:260,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
+    const gap=el.animate([{width:w+'px'},{width:'0px'}],{duration:300,delay:40,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
+    gap.onfinish=()=>el.remove();
+  }
+  function applyText(text){
+    for(let i=Math.max(selA,0);i<selB&&i<els.length;i++)els[i].classList.remove('sel');
+    selA=selB=-1;
+    const next=Array.from(text),max=Math.min(prev.length,next.length);
+    let p=0;while(p<max&&prev[p]===next[p])p++;
+    let t=0;while(t<max-p&&prev[prev.length-1-t]===next[next.length-1-t])t++;
+    const oldEnd=prev.length-t,newEnd=next.length-t,ref=els[oldEnd]||tail;
+    const many=(oldEnd-p)>30;
+    for(let k=p;k<oldEnd;k++)many?els[k].remove():exitEl(els[k]);
+    const animate=!reduce&&(newEnd-p)<=60,fresh=[],frag=document.createDocumentFragment();
+    for(let k=p;k<newEnd;k++){const el=makeEl(next[k]);fresh.push(el);frag.appendChild(el)}
+    track.insertBefore(frag,ref);
+    if(animate)fresh.forEach(enterEl);
+    els.splice(p,oldEnd-p,...fresh);
+    prev=next;
+  }
+  /* the caret follows the letters frame by frame: while a gap is opening or closing it rides along with it, and
+     otherwise it glides to the new spot */
+  let cur=null,cx=0,raf=0,last=0;
+  function targetX(){
+    let t=cur||tail,n=t.previousSibling;
+    /* letters still closing up in front of the caret: it goes straight to where they start */
+    while(n&&n.classList&&n.classList.contains('ghost')){t=n;n=n.previousSibling}
+    return t.offsetLeft;
+  }
+  function busy(){return track.getAnimations({subtree:true}).some(a=>a.effect&&a.effect.target!==caret)}
+  function loop(ts){
+    raf=0;
+    const dt=last?Math.min(50,ts-last):16;last=ts;
+    const tx=targetX();
+    cx+=(tx-cx)*(1-Math.exp(-dt/55));
+    if(Math.abs(tx-cx)<.3)cx=tx;
+    caret.style.transform='translateX('+cx+'px)';
+    if(cx!==tx||busy())raf=requestAnimationFrame(loop);else last=0;
+  }
+  function placeCaret(target){
+    cur=target;
+    if(!placed){cx=targetX();caret.style.transform='translateX('+cx+'px)';placed=true}
+    else if(!raf){last=0;raf=requestAnimationFrame(loop)}
+    flip=!flip;caret.style.animationName=flip?'sblinkB':'sblinkA';
+  }
+  function sync(){
+    let changed=false;
+    if(Array.from(input.value).join('')!==prev.join('')){applyText(input.value);changed=true}
+    track.style.transform='translateX('+(-input.scrollLeft)+'px)';
+    const a=cpIndex(input.selectionStart),b=cpIndex(input.selectionEnd);
+    if(!changed&&a===selA&&b===selB)return;
+    for(let i=Math.max(selA,0);i<selB&&i<els.length;i++)els[i].classList.remove('sel');
+    for(let i=a;i<b&&i<els.length;i++)els[i].classList.add('sel');
+    selA=a;selB=b;
+    if(a===b){caret.style.display='';placeCaret(els[a]||tail)}
+    else{caret.style.display='none';placed=false}
+  }
+  input.addEventListener('input',sync);
+  input.addEventListener('keyup',sync);
+  input.addEventListener('scroll',()=>{track.style.transform='translateX('+(-input.scrollLeft)+'px)'});
+  input.addEventListener('focus',()=>{box.classList.add('f');sync()});
+  input.addEventListener('blur',()=>box.classList.remove('f'));
+  document.addEventListener('selectionchange',()=>{if(document.activeElement===input)sync()});
+  addEventListener('resize',()=>{placed=false;sync()});
+  addEventListener('pageshow',sync);
+  if(document.activeElement===input)box.classList.add('f');
+  sync();
+})();
+
 
 /* ---------- animated red contour lines (start menu + sidebar) ---------- */
 function createContours2D(cv,o){
@@ -833,7 +947,7 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   const slide=(el,delay,from,dur)=>{if(el)el.animate([{transform:from},{transform:'none'}],{duration:dur,delay:delay,easing:EO,fill:'backwards'})};
   function reveal(){
     slide(document.querySelector('.side'),0,'translateX(-100%)',950);
-    slide($('#search'),40,'translateX(-260px)',950);
+    slide($('#searchbox')||$('#search'),40,'translateX(-260px)',950);
     slide(document.querySelector('.side .label'),80,'translateX(-260px)',950);
     document.querySelectorAll('#cats .cat').forEach((b,k)=>slide(b,100+k*26,'translateX(-260px)',950));
     const vh=innerHeight,gr=$('#grid').getBoundingClientRect();
