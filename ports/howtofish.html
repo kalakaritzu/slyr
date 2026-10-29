@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Fish</title>
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+  #unity-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; background: #000; }
+  #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #000; color: #fff; font: 18px Arial, sans-serif; text-align: center; padding: 0 20px; z-index: 10; }
+  #loading .bar { width: min(340px, 80vw); height: 8px; background: rgba(255,255,255,.15); border-radius: 4px; overflow: hidden; }
+  #loading .fill { width: 0%; height: 100%; background: #3aa0ff; transition: width .2s linear; }
+  #loading .detail { font-size: 13px; color: rgba(255,255,255,.6); min-height: 1.2em; }
+  #loading button { display: none; margin-top: 4px; padding: 8px 18px; border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; border-radius: 999px; cursor: pointer; font: 14px Arial, sans-serif; }
+</style>
+</head>
+<body>
+<canvas id="unity-canvas" tabindex="-1"></canvas>
+<div id="loading"><div class="text">Downloading the game...</div><div class="bar"><div class="fill"></div></div><div class="detail"></div><button type="button" onclick="location.reload()">Try again</button></div>
+<script>
+// The game's 190 MB of data lives in NotRexed/HowToFishPort (pinned to one version) as ~16-18 MB pieces. Every piece is
+// size-checked and retried, and finished pieces are kept in the browser's cache so the next visit does not download them again.
+const REPO = "NotRexed/HowToFishPort", REF = "3e0dbe9fd91c74dd77b3b493564d7c295d6af9e7";
+const BASES = [
+  `https://raw.githubusercontent.com/${REPO}/${REF}/`,
+  `https://cdn.jsdelivr.net/gh/${REPO}@${REF}/`
+];
+const FILES = [
+  { key: "data", type: "application/octet-stream",
+    parts: [["Build/WebGL.data.part1", 18022372], ["Build/WebGL.data.part2", 18022372], ["Build/WebGL.data.part3", 18022372], ["Build/WebGL.data.part4", 18022372],
+            ["Build/WebGL.data.part5", 18022372], ["Build/WebGL.data.part6", 18022372], ["Build/WebGL.data.part7", 18022369]] },
+  { key: "code", type: "application/wasm",
+    parts: [["Build/WebGL.wasm.000", 16012037], ["Build/WebGL.wasm.001", 16012037], ["Build/WebGL.wasm.002", 16012037], ["Build/WebGL.wasm.003", 16012035]] }
+];
+const TOTAL = FILES.reduce((a, f) => a + f.parts.reduce((x, p) => x + p[1], 0), 0);
+const $ = s => document.querySelector(s);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let done = 0;
+function shown() {
+  $("#loading .fill").style.width = Math.min(100, done / TOTAL * 100).toFixed(1) + "%";
+  $("#loading .detail").textContent = Math.round(done / 1048576) + " MB of " + Math.round(TOTAL / 1048576) + " MB";
+}
+async function getPart(path, expected) {
+  let cache = null;
+  try { cache = await caches.open("howtofish-" + REF.slice(0, 7)); } catch (e) {}
+  if (cache) {
+    try { const hit = await cache.match("/__htf/" + path); if (hit) { const b = await hit.blob(); if (b.size === expected) return b; } } catch (e) {}
+  }
+  for (const base of BASES) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const r = await fetch(base + path + (attempt > 1 ? "?t=" + Date.now() : ""));
+        if (r.ok) {
+          const b = await r.blob();
+          if (b.size === expected) {
+            if (cache) { try { await cache.put("/__htf/" + path, new Response(b)); } catch (e) {} }
+            return b;
+          }
+        }
+      } catch (e) { /* try the next copy */ }
+      await sleep(300 * attempt);
+    }
+  }
+  throw new Error("Could not download " + path);
+}
+async function joined(f) {
+  const blobs = [];
+  for (const [path, size] of f.parts) { blobs.push(await getPart(path, size)); done += size; shown(); }
+  // A Blob of Blobs can be backed by disk, so memory stays near one piece
+  return URL.createObjectURL(new Blob(blobs, { type: f.type }));
+}
+async function start() {
+  try {
+    const urls = {};
+    for (const f of FILES) urls[f.key] = await joined(f);
+    const loader = document.createElement("script");
+    loader.src = "howtofish/Build/WebGL.loader.js";
+    await new Promise((res, rej) => { loader.onload = res; loader.onerror = () => rej(new Error("Could not load the game launcher.")); document.body.appendChild(loader); });
+    $("#loading .text").textContent = "Starting the game...";
+    const config = {
+      arguments: [],
+      dataUrl: urls.data,
+      frameworkUrl: "howtofish/Build/WebGL.framework.js",
+      codeUrl: urls.code,
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "ExportedProject",
+      productVersion: "1.0",
+      showBanner: (msg, type) => console.warn("[unity " + (type || "info") + "]", msg),
+      cacheControl: () => "no-store",
+      autoSyncPersistentDataPath: true
+    };
+    window.alert = m => console.warn("[unity]", m);
+    window.unityInstance = await createUnityInstance($("#unity-canvas"), config, p => { $("#loading .fill").style.width = (100 * p).toFixed(0) + "%"; });
+    $("#loading").remove();
+  } catch (err) {
+    $("#loading .text").textContent = "Game loading failed: " + (err && err.message || err);
+    $("#loading button").style.display = "block";
+    console.error(err);
+  }
+}
+start();
+</script>
+</body>
+</html>
