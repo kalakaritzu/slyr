@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cuphead</title>
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+  #unity-canvas, #unityContainer { position: absolute; inset: 0; width: 100%; height: 100%; display: block; background: #000; }
+  #loading { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #000; color: #fff; font: 18px Arial, sans-serif; text-align: center; padding: 0 20px; }
+  #loading .bar { width: min(340px, 80vw); height: 8px; background: rgba(255,255,255,.15); border-radius: 4px; overflow: hidden; }
+  #loading .fill { width: 0%; height: 100%; background: #ffd24a; transition: width .2s linear; }
+  #loading .detail { font-size: 13px; color: rgba(255,255,255,.6); min-height: 1.2em; }
+  #loading .credit { position: absolute; bottom: 14px; font-size: 12px; color: rgba(255,255,255,.4); }
+  #loading button { display: none; margin-top: 4px; padding: 8px 18px; border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; border-radius: 999px; cursor: pointer; font: 14px Arial, sans-serif; }
+</style>
+</head>
+<body>
+<canvas id="unity-canvas" tabindex="-1"></canvas>
+<div id="loading"><div class="text">Downloading the game...</div><div class="bar"><div class="fill"></div></div><div class="detail"></div><button type="button" onclick="location.reload()">Try again</button><div class="credit">Web port by crackers (woahhcrackers)</div></div>
+<script>
+// The game's data (about 1295 MB) lives in woahhcrackers/CupheadWeb (pinned to one version). Every piece is size-checked and retried,
+// and finished pieces are kept in the browser's cache so the next visit does not download them again.
+const REPO = "woahhcrackers/CupheadWeb", REF = "df67afd1412ca905ca43b8d44ab21ae81e84e58d", CACHE = "cuphead";
+const BASE = `https://raw.githubusercontent.com/${REPO}/${REF}/`;
+const FILES = [{"key": "data", "type": "application/octet-stream", "parts": [["Build/Cuphead.data.001", 52428800], ["Build/Cuphead.data.002", 52428800], ["Build/Cuphead.data.003", 52428800], ["Build/Cuphead.data.004", 52428800], ["Build/Cuphead.data.005", 52428800], ["Build/Cuphead.data.006", 52428800], ["Build/Cuphead.data.007", 52428800], ["Build/Cuphead.data.008", 52428800], ["Build/Cuphead.data.009", 52428800], ["Build/Cuphead.data.010", 52428800], ["Build/Cuphead.data.011", 52428800], ["Build/Cuphead.data.012", 52428800], ["Build/Cuphead.data.013", 52428800], ["Build/Cuphead.data.014", 52428800], ["Build/Cuphead.data.015", 52428800], ["Build/Cuphead.data.016", 52428800], ["Build/Cuphead.data.017", 52428800], ["Build/Cuphead.data.018", 52428800], ["Build/Cuphead.data.019", 52428800], ["Build/Cuphead.data.020", 52428800], ["Build/Cuphead.data.021", 52428800], ["Build/Cuphead.data.022", 52428800], ["Build/Cuphead.data.023", 52428800], ["Build/Cuphead.data.024", 52428800], ["Build/Cuphead.data.025", 52428800], ["Build/Cuphead.data.026", 27311178]]}, {"key": "code", "type": "application/wasm", "parts": [["Build/Cuphead.wasm", 19483998]]}];
+
+const $ = s => document.querySelector(s);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const TOTAL = FILES.reduce((a, f) => a + f.parts.reduce((x, p) => x + p[1], 0), 0);
+let done = 0;
+function shown() {
+  $("#loading .fill").style.width = Math.min(100, done / TOTAL * 100).toFixed(1) + "%";
+  $("#loading .detail").textContent = Math.round(done / 1048576) + " MB of " + Math.round(TOTAL / 1048576) + " MB";
+}
+async function getPart(path, expected) {
+  let cache = null;
+  try { cache = await caches.open(CACHE + "-" + REF.slice(0, 7)); } catch (e) {}
+  if (cache) {
+    try { const hit = await cache.match("/__" + CACHE + "/" + path); if (hit) { const b = await hit.blob(); if (b.size === expected) return b; } } catch (e) {}
+  }
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    try {
+      const r = await fetch(BASE + path + (attempt > 2 ? "?t=" + Date.now() : ""));
+      if (r.ok) {
+        const b = await r.blob();
+        if (b.size === expected) {
+          if (cache) { try { await cache.put("/__" + CACHE + "/" + path, new Response(b)); } catch (e) {} }
+          return b;
+        }
+      }
+    } catch (e) { /* try again */ }
+    await sleep(400 * attempt);
+  }
+  throw new Error("Could not download " + path);
+}
+async function joined(f) {
+  const blobs = [];
+  for (const [path, size] of f.parts) { blobs.push(await getPart(path, size)); done += size; shown(); }
+  // A Blob of Blobs can be backed by disk, so memory stays near one piece
+  return URL.createObjectURL(new Blob(blobs, { type: f.type }));
+}
+function fail(err) {
+  $("#loading .text").textContent = "Game loading failed: " + (err && err.message || err);
+  $("#loading button").style.display = "block";
+  console.error(err);
+}
+
+
+async function start() {
+  try {
+    const urls = {};
+    for (const f of FILES) urls[f.key] = await joined(f);
+    const loader = document.createElement("script");
+    loader.src = "cuphead/Build/Cuphead.loader.js";
+    await new Promise((res, rej) => { loader.onload = res; loader.onerror = () => rej(new Error("Could not load the game launcher.")); document.body.appendChild(loader); });
+    $("#loading .text").textContent = "Starting the game...";
+    window.alert = m => console.warn("[unity]", m);
+    window.unityInstance = await createUnityInstance($("#unity-canvas"), {
+      dataUrl: urls.data,
+      frameworkUrl: "cuphead/Build/Cuphead.framework.js",
+      codeUrl: urls.code,
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "crackers",
+      productName: "Cuphead",
+      productVersion: "1.0",
+      showBanner: (msg, type) => console.warn("[unity " + (type || "info") + "]", msg)
+    }, p => { $("#loading .fill").style.width = (100 * p).toFixed(0) + "%"; });
+    $("#loading").remove();
+  } catch (err) { fail(err); }
+}
+start();
+
+</script>
+</body>
+</html>
