@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>snaptic</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: #242424;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-splash.show-image--false {
+	display: none;
+}
+
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+
+#status-progress, #status-notice {
+	display: none;
+}
+
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+		</style>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+
+	</head>
+	<body>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+		<script>
+// The game's engine file is split in two so that every file stays small enough for the host; it is joined back here.
+(function () {
+	const realFetch = window.fetch.bind(window);
+	const PARTS = ["index.wasm.part-0000", "index.wasm.part-0001"];
+	window.fetch = async function (input, init) {
+		const url = typeof input === "string" ? input : (input instanceof URL ? input.href : (input && input.url)) || "";
+		if (/(^|\/)index\.wasm(\?|$)/.test(url)) {
+			const blobs = [];
+			for (const p of PARTS) {
+				const r = await realFetch(p);
+				if (!r.ok) throw new Error(p + ": http " + r.status);
+				blobs.push(await r.blob());
+			}
+			return new Response(new Blob(blobs, { type: "application/wasm" }), { status: 200, headers: { "Content-Type": "application/wasm" } });
+		}
+		return realFetch(input, init);
+	};
+})();
+</script>
+<script src="index.js"></script>
+		<script>
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":207865300,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+function loadSplitPck(engine, manifest) {
+    const preload = engine.preloadFile;
+
+    engine.preloadFile = async function (file, path) {
+        if (file !== 'index.pck') {
+            return preload.call(this, file, path);
+        }
+
+        if (!Number.isSafeInteger(manifest.size) || manifest.size <= 0 ||
+            !Array.isArray(manifest.parts) || manifest.parts.length === 0) {
+            throw new Error('invalid pck manifest');
+        }
+
+        const pack = new Uint8Array(manifest.size);
+        const progress = document.getElementById('status-progress');
+        let offset = 0;
+
+        for (const part of manifest.parts) {
+            if (!/^index\.pck\.part-\d{4}$/.test(part.file) ||
+                !Number.isSafeInteger(part.size) || part.size <= 0 ||
+                part.size > 20000000 || offset + part.size > pack.length) {
+                throw new Error('invalid pck part');
+            }
+
+            const download = await fetch(part.file);
+            if (!download.ok) {
+                throw new Error(`${part.file}: http ${download.status}`);
+            }
+            const bytes = new Uint8Array(await download.arrayBuffer());
+            if (bytes.length !== part.size) {
+                throw new Error(`${part.file}: incomplete download`);
+            }
+
+            if (globalThis.crypto?.subtle) {
+                const digest = await crypto.subtle.digest('SHA-256', bytes);
+                const hash = Array.from(new Uint8Array(digest), byte =>
+                    byte.toString(16).padStart(2, '0')).join('');
+                if (hash !== part.sha256) {
+                    throw new Error(`${part.file}: checksum mismatch`);
+                }
+            }
+
+            pack.set(bytes, offset);
+            offset += bytes.length;
+            if (progress) {
+                progress.max = manifest.size;
+                progress.value = offset;
+            }
+        }
+
+        if (offset !== pack.length) {
+            throw new Error('incomplete pck manifest');
+        }
+        // Pass the buffer itself; Godot converts views to strings in fileSizes lookup.
+        return preload.call(this, pack.buffer, path || file);
+    };
+}
+loadSplitPck(engine, {"size":207865300,"parts":[{"file":"index.pck.part-0000","size":20000000,"sha256":"77e83a31bf6edcf0afc8f5ffff03955b322c12277de5daf7c49543a76fff5210"},{"file":"index.pck.part-0001","size":20000000,"sha256":"accf6c071ae911b86dae38977b195c9f5c1a12b1a669ca80845469bee1004d11"},{"file":"index.pck.part-0002","size":20000000,"sha256":"3995afb644ed3fa3ca41beea947e9b5125a1b340201e7fc2ea958d82fb20d4b3"},{"file":"index.pck.part-0003","size":20000000,"sha256":"61057f50f9ccaaf9dc159aab9a6b61cd718e97a8f258c4083f926291fe818a69"},{"file":"index.pck.part-0004","size":20000000,"sha256":"e1c34f12923a8ecafb12ed0805e135d8541f3dea809b394b29805a453e60fc25"},{"file":"index.pck.part-0005","size":20000000,"sha256":"05e112de9fcf279abe87b719d3055fb70aa348392d9758d1f6efbdb57d05178f"},{"file":"index.pck.part-0006","size":20000000,"sha256":"06a13951808b7ee28bce7bc98f28e0305769ddf830fcd0b0a8df684d283d818e"},{"file":"index.pck.part-0007","size":20000000,"sha256":"aa55d7bef77b965ba7e819c169c0134f37fa7470e1dcea861a276181cda99d12"},{"file":"index.pck.part-0008","size":20000000,"sha256":"1a9ec2bbc5960283269acb40d5f8ffec962dfacd51cfad58589680b85fabedb0"},{"file":"index.pck.part-0009","size":20000000,"sha256":"7b89e285818bd25547e5e21873764b26599b8bbb69d4fb9038c9f1f073b2e6e9"},{"file":"index.pck.part-0010","size":7865300,"sha256":"9e5d9aad006b721a96b335bbdbabc05f950b37c157dc5f35da09ed3a775c53d4"}]});
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>
+
