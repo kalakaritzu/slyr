@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Project Zomboid Tech Demo</title>
+<link rel="icon" href="zomboid/favicon.ico">
+<!-- start the biggest downloads before the scripts below finish loading -->
+<link rel="preload" href="https://raw.githubusercontent.com/mtnskye/ProjectZomboidTechDemoPort/550054fde222989e46b862760522e6facc6cab22/work/doppio/listings.json" as="fetch" crossorigin>
+<link rel="preload" href="https://raw.githubusercontent.com/mtnskye/ProjectZomboidTechDemoPort/550054fde222989e46b862760522e6facc6cab22/work/doppio/vendor/java_home/lib/rt.jar" as="fetch" crossorigin>
+<style>
+  body { margin: 0; background: #000; color: #ccc; font: 13px monospace; overflow: hidden; }
+  /* The game renders at a fixed logical size (e.g. 800x600). fit() sizes the canvas to the window WITHOUT changing its
+     aspect ratio (letterboxed) - stretching it to 100vw x 100vh distorted the image. */
+  canvas { display: block; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); touch-action: none; image-rendering: auto; }
+  #status { position: fixed; left: 8px; top: 8px; pointer-events: none; white-space: pre; }
+  #hud { position: fixed; left: 8px; top: 8px; display: none; pointer-events: none; white-space: pre; font: 700 15px/1.25 Consolas, monospace; color: #fff;
+         background: rgba(0,0,0,.55); border: 2px solid #e22; padding: 6px 12px; text-shadow: 1px 1px 0 #000; z-index: 10; }
+  #hud .l { display: inline-block; width: 5.2em; } #hud .fps { color: #fff; } #hud .o { color: #f90; }
+  #hud .g { color: #8c3; } #hud .b { color: #4af; } #hud .c { color: #3cc; } #hud .r { color: #f66; } #hud .u { font-size: 11px; opacity: .8; }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" tabindex="0"></canvas>
+<div id="status">Loading...</div>
+<div id="hud"></div>
+
+<!-- Doppio expects Node's setImmediate -->
+<script>
+(function (g) {
+  if (typeof g.setImmediate === 'function') return;
+  var q = [], id = 0, mc = new MessageChannel();
+  mc.port1.onmessage = function () {
+    var t = q.shift();
+    if (t && !t.c) t.f.apply(null, t.a);
+    if (q.length) mc.port2.postMessage(0);
+  };
+  g.setImmediate = function (f) {
+    var t = { f: f, a: Array.prototype.slice.call(arguments, 1), c: false, id: ++id };
+    q.push(t);
+    if (q.length === 1) mc.port2.postMessage(0);
+    return t.id;
+  };
+  g.clearImmediate = function (i) { q.forEach(function (t) { if (t.id === i) t.c = true; }); };
+})(window);
+</script>
+
+<script src="zomboid/package/dist/browserfs.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js"></script>
+<script src="zomboid/host/doppio.js"></script>
+<script src="zomboid/host/pzcore.js"></script>
+
+<script>
+// F12 toggles a dev overlay: FPS, frame time, draw stats, JS heap. Counts frames at Renderer.present(), which the game calls once per Display.update().
+var PZHud = (function () {
+  var el = document.getElementById('hud'), on = false, frames = 0, last = performance.now(), fps = 0, worst = 0, lastFrame = 0, ft = 0;
+  var draws = 0, verts = 0, dDraws = 0, dVerts = 0, hist = [];
+  try { on = localStorage.getItem('pzhud') === '1'; } catch (e) {}
+  function show() { el.style.display = on ? 'block' : 'none'; try { localStorage.setItem('pzhud', on ? '1' : '0'); } catch (e) {} }
+  show();
+  window.addEventListener('keydown', function (e) {
+    if (e.code !== 'F12') return;
+    e.preventDefault(); e.stopImmediatePropagation(); if (!e.repeat) { on = !on; show(); }
+  }, true);
+  window.addEventListener('keyup', function (e) { if (e.code === 'F12') { e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+  function row(cls, label, val, unit) { return '<span class="' + cls + ' l">' + label + '</span><span class="o">' + val + '</span> <span class="u">' + (unit || '') + '</span>\n'; }
+  function render() {
+    var m = performance.memory, heap = m ? Math.round(m.usedJSHeapSize / 1048576) : null;
+    var avg = hist.length ? hist.reduce(function (a, b) { return a + b; }, 0) / hist.length : 0;
+    el.innerHTML =
+      '<span class="g l">WEBGL</span><span class="fps">' + Math.round(fps) + '</span> <span class="u">FPS</span>\n' +
+      row('g', 'FRAME', ft.toFixed(1), 'ms') +
+      row('g', 'AVG/MAX', avg.toFixed(1) + ' / ' + worst.toFixed(0), 'ms') +
+      row('b', 'DRAWS', dDraws, 'per frame') +
+      row('b', 'VERTS', dVerts, 'per frame') +
+      (heap !== null ? row('c', 'JS HEAP', heap, 'MB') : '') +
+      row('r', 'CANVAS', (document.getElementById('gameCanvas').width) + 'x' + document.getElementById('gameCanvas').height, '');
+  }
+  return {
+    attach: function (r) {
+      var p = r.present, fb = r.flushBatch;
+      r.flushBatch = function () { if (this.nv) { draws++; verts += this.nv; } return fb.apply(this, arguments); };
+      r.present = function () {
+        var now = performance.now();
+        if (lastFrame) { ft = now - lastFrame; hist.push(ft); if (hist.length > 60) hist.shift(); if (ft > worst) worst = ft; }
+        lastFrame = now; frames++; dDraws = draws; dVerts = verts; draws = 0; verts = 0;
+        if (now - last >= 500) { fps = frames * 1000 / (now - last); frames = 0; last = now; worst = 0; if (on) render(); }
+        return p.apply(this, arguments);
+      };
+    }
+  };
+})();
+</script>
+<script>
+// ---- Layout (paths relative to this page) ----
+// the Java class library and the game itself (about 100 MB) are loaded from mtnskye/ProjectZomboidTechDemoPort, pinned to one version
+var DOPPIO_DIR  = 'https://raw.githubusercontent.com/mtnskye/ProjectZomboidTechDemoPort/550054fde222989e46b862760522e6facc6cab22/work/doppio/';              // contains listings.json and vendor/java_home/...
+var LISTINGS    = DOPPIO_DIR + 'listings.json';
+var GAME_JAR_URL = 'https://raw.githubusercontent.com/mtnskye/ProjectZomboidTechDemoPort/550054fde222989e46b862760522e6facc6cab22/pz-web.jar';
+var GAME_JAR_VFS = '/game/pz-web.jar';
+var MAIN_CLASS  = 'zombie.GameWindow';
+
+var statusEl = document.getElementById('status');
+function status(m) { statusEl.textContent = m || ''; console.log('[boot]', m); }
+
+function fail(what, e) { console.error(what, e); status(what + ': ' + (e && e.message || e)); }
+
+// Bump this whenever pz-web.jar changes so the cached copy is replaced.
+var JAR_VERSION = '6';   // 6 = v5 + fused glTexCoord2f+glVertex (GL11.tv/tvf), per-tile ArrayList.get hoist, inlined tile/enum/sprite getters and math helpers
+var QS = new URLSearchParams(location.search);
+
+// Start the game-jar download right now, in parallel with BrowserFS/JVM setup.
+// Uses Cache Storage so repeat visits skip the download entirely (?nocache=1 to bypass).
+function loadJar() {
+  var key = GAME_JAR_URL + '?v=' + JAR_VERSION, useCache = !QS.has('nocache') && window.caches;
+  var fromNet = function () {
+    return fetch(GAME_JAR_URL).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + GAME_JAR_URL);
+      if (!useCache) return r.arrayBuffer();
+      var copy = r.clone();
+      return r.arrayBuffer().then(function (buf) {
+        caches.open('pz-jar').then(function (c) { return c.keys().then(function (ks) {
+          return Promise.all(ks.map(function (k) { return c.delete(k); })).then(function () { return c.put(key, copy); });
+        }); }).catch(function () {});
+        return buf;
+      });
+    });
+  };
+  if (!useCache) return fromNet();
+  return caches.open('pz-jar').then(function (c) { return c.match(key); })
+    .then(function (hit) { return hit ? hit.arrayBuffer() : fromNet(); }, fromNet);
+}
+var jarPromise = loadJar();
+jarPromise.catch(function () {});   // reported below; avoids an unhandled-rejection warning if BrowserFS fails first
+
+BrowserFS.configure({
+  fs: 'MountableFileSystem',
+  options: {
+    '/sys':  { fs: 'XmlHttpRequest', options: { index: LISTINGS, baseUrl: DOPPIO_DIR } }, // Java class library, fetched lazily
+    '/tmp':  { fs: 'InMemory' },
+    '/game': { fs: 'InMemory' }
+  }
+}, function (err) {
+  if (err) return fail('BrowserFS init failed', err);
+  status('Downloading game jar...');
+  jarPromise.then(function (buf) {
+    var fs = BrowserFS.BFSRequire('fs'), Buffer = BrowserFS.BFSRequire('buffer').Buffer;
+    fs.writeFile(GAME_JAR_VFS, Buffer.from(buf), function (e) {
+      if (e) return fail('Could not store jar', e);
+      fs.mkdir('/tmp/lwjglcache', function () { startGame(); });   // README: game needs /tmp/lwjglcache
+    });
+  }, function (e) { fail('Could not load ' + GAME_JAR_URL, e); });
+});
+
+function startGame() {
+  var canvas = document.getElementById('gameCanvas');
+  var PZ = window.PZ, input = PZ.input;
+
+  // Letterbox: fit the canvas into the window keeping the game's aspect ratio (no stretching).
+  function fit() {
+    var w = canvas.width || 800, h = canvas.height || 600;
+    var s = Math.min(window.innerWidth / w, window.innerHeight / h);
+    canvas.style.width = Math.floor(w * s) + 'px'; canvas.style.height = Math.floor(h * s) + 'px';
+  }
+  window.addEventListener('resize', fit);
+
+  canvas.addEventListener('mousemove', function (e) {
+    var r = canvas.getBoundingClientRect();
+    input.mx = (e.clientX - r.left) * (canvas.width / r.width);
+    input.my = (e.clientY - r.top) * (canvas.height / r.height);
+  });
+  canvas.addEventListener('mousedown', function (e) { canvas.focus(); input.buttons |= (1 << e.button); });
+  window.addEventListener('mouseup', function (e) { input.buttons &= ~(1 << e.button); });
+  canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  canvas.addEventListener('wheel', function (e) { input.wheel += e.deltaY; e.preventDefault(); }, { passive: false });
+  window.addEventListener('keydown', function (e) {
+    var sc = PZ.keyCodeFor(e.code); if (!sc) return;
+    e.preventDefault(); PZ.pushKey(sc, 1, e.key && e.key.length === 1 ? e.key.charCodeAt(0) : 0);
+  });
+  window.addEventListener('keyup', function (e) {
+    var sc = PZ.keyCodeFor(e.code); if (!sc) return;
+    e.preventDefault(); PZ.pushKey(sc, 0, 0);
+  });
+  canvas.focus();
+  if (QS.has('audio')) {
+    var resumeAudio = function () { if (env.audio) env.audio.resume(); };
+    window.addEventListener('mousedown', resumeAudio); window.addEventListener('keydown', resumeAudio);
+  }
+
+  var renderer;
+  try { renderer = new PZ.Renderer(canvas); } catch (e) { return fail('WebGL init failed', e); }
+  fit();
+  PZHud.attach(renderer);
+
+  var env = {
+    renderer: renderer,
+    // Music/sfx are decoded by the browser now (see patched zombie.n.g), so audio is cheap. Opt in with ?audio=1
+    // (untested OpenAL emulation; AudioContext starts on your first click/keypress).
+    audio: QS.has('audio') ? new PZ.Audio() : null,
+    inflate: window.pako.inflate,
+    ASYNC: 6,                          // Doppio ThreadStatus.ASYNC_WAITING
+    log: function (m) { console.log('[game]', m); },
+    onDisplay: function (w, h) {
+      console.log('[display]', w, h);
+      canvas.width = w; canvas.height = h;
+      renderer.viewport = [0, 0, w, h]; renderer.gl.viewport(0, 0, w, h);
+      fit();
+    }
+  };
+
+  var JVM = Doppio.VM.JVM;
+  status('Booting JVM (loading Java class library)...');
+  var opts = JVM.getDefaultOptions('/sys');   // bootstrap = /sys/vendor/java_home/lib/*.jar
+  // The default bootstrap classpath is EVERY jar in java_home/lib (tools.jar, sa-jdi.jar, nashorn, localedata, ...).
+  // Doppio downloads and indexes each one before the game can start, so keep only what the game needs.
+  // If a NoClassDefFoundError appears, add that jar to KEEP_JARS (or load the page with ?fulljre=1 to disable the filter).
+  var KEEP_JARS = /\/(rt|charsets|jce|jsse|resources|doppio|sunjce_provider)\.jar$/;
+  if (!QS.has('fulljre')) {
+    var before = opts.bootstrapClasspath.length;
+    opts.bootstrapClasspath = opts.bootstrapClasspath.filter(function (p) { return !/\.jar$/.test(p) || KEEP_JARS.test(p); });
+    console.log('[boot] bootstrap jars:', before, '->', opts.bootstrapClasspath.length);
+  }
+  opts.bootstrapClasspath.push('/sys/classes'); // doppio.security.DoppioProvider etc. (compiled from doppio/classes)
+  opts.classpath = [GAME_JAR_VFS];
+  opts.tmpDir = '/tmp';
+  // Doppio runs the JVM in time slices and only yields to the browser between them. The default slice target is 1000 ms, so the
+  // browser could not paint or deliver input for up to a second at a time. A short slice keeps the page responsive and costs almost nothing
+  // (one MessageChannel hop per slice). Tune with ?resp=<ms>.
+  opts.responsiveness = QS.has('resp') ? +QS.get('resp') : 12;
+  new JVM(opts, function (err, jvm) {
+    if (err) return fail('JVM boot failed', err);
+    jvm.registerNatives(PZ.makeNatives(env));
+    status('');
+    jvm.runClass(MAIN_CLASS, [], function (code) {
+      console.log('JVM exited with code', code);
+      status('JVM exited with code ' + code);
+    });
+  });
+}
+</script>
+</body>
+</html>
