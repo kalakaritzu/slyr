@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://slyr.pages.dev/">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#111113">
-<script>document.documentElement.classList.add("menu-open")</script>
+<script>document.documentElement.classList.add("menu-open");(function(){var d=document.createElement("div");d.style.cssText="position:absolute;top:-999px;width:100px;height:100px;overflow:scroll";document.documentElement.appendChild(d);var w=d.offsetWidth-d.clientWidth;d.remove();document.documentElement.style.setProperty("--sbw",w+"px")})()</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="slyr">
@@ -127,6 +127,8 @@ html.launching,html.launching body{overflow:hidden}
 .menu{display:none;position:fixed;inset:0;z-index:200;background:#060203;overflow:hidden;will-change:transform;
   transition:transform .95s cubic-bezier(.22,1,.36,1)}
 html.menu-open .menu,html.menu-open-leaving .menu{display:block}
+html.menu-open{scrollbar-gutter:auto}   /* the start screen fills the whole window: no reserved strip along the right edge */
+html.menu-open .app{margin-right:var(--sbw,0px)}   /* ...while the page behind keeps the width it has once its scrollbar is there, so nothing shifts when you enter */
 html.menu-open:not(.zt),html.menu-open:not(.zt) body{overflow:hidden}   /* .zt: mid-transition; the page keeps its scrolled, sticky sidebar until the start screen has fully arrived */
 .menu.out{transform:translateY(-100%);pointer-events:none}
 .menu.exit .m-title .l span{transform:translateY(-118%);transition:transform .8s cubic-bezier(.22,1,.36,1) calc(var(--i)*.03s)}
