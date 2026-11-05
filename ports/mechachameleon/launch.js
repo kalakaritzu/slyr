@@ -1,0 +1,1 @@
+window.REXCOMP_LAUNCH = {};
