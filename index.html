@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://slyr.pages.dev/">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#111113">
-<script>document.documentElement.classList.add("menu-open");(function(){var d=document.createElement("div");d.style.cssText="position:absolute;top:-999px;width:100px;height:100px;overflow:scroll";document.documentElement.appendChild(d);var w=d.offsetWidth-d.clientWidth;d.remove();document.documentElement.style.setProperty("--sbw",w+"px")})()</script>
+<script>document.documentElement.classList.add("menu-open");(function(){var d=document.createElement("div");d.style.cssText="position:absolute;top:-999px;width:100px;height:100px;overflow:scroll";document.documentElement.appendChild(d);var w=d.offsetWidth-d.clientWidth;d.remove();document.documentElement.style.setProperty("--sbw",w+"px");var sv=function(){document.documentElement.style.setProperty("--vw",innerWidth+"px")};sv();addEventListener("resize",sv)})()</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="slyr">
@@ -87,7 +87,7 @@ button{cursor:pointer}
 
 /* games: tiles sit edge to edge, no gaps */
 .side canvas.gl,#mainBg.gl{filter:none}
-#mainBg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;filter:brightness(1.3)}
+#mainBg{position:fixed;left:0;top:0;width:var(--vw,100vw);height:100%;z-index:0;pointer-events:none;display:block;filter:brightness(1.3)}
 .grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:transparent}
 @media(min-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1280px){.grid{grid-template-columns:repeat(3,1fr)}}
@@ -129,6 +129,8 @@ html.launching,html.launching body{overflow:hidden}
 html.menu-open .menu,html.menu-open-leaving .menu{display:block}
 html.menu-open{scrollbar-gutter:auto}   /* the start screen fills the whole window: no reserved strip along the right edge */
 html.menu-open .app{margin-right:var(--sbw,0px)}   /* ...while the page behind keeps the width it has once its scrollbar is there, so nothing shifts when you enter */
+/* after the first visit to the games, the start screen's own entrance animations are off: the zoom is its entrance, so nothing keeps moving once it has landed */
+html.entered .m-title .l span,html.entered .m-link .t,html.entered .m-gh,html.entered .m-reaper,html.entered .menu canvas,html.entered .m-glow{animation:none}
 html.menu-open{overflow:hidden}   /* only the page's scroll is locked (not the body's), so a scrolled page keeps its sticky sidebar underneath */
 .menu.out{transform:translateY(-100%);pointer-events:none}
 .menu.exit .m-title .l span{transform:translateY(-118%);transition:transform .8s cubic-bezier(.22,1,.36,1) calc(var(--i)*.03s)}
@@ -952,6 +954,7 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   }
   function enter(e){
     if(left||busy)return;left=true;busy=true;
+    root.classList.add('entered');
     const start=()=>{
       app.inert=false;                                       /* the page is already there, underneath the start screen, which keeps running on top */
       scrollTo(0,0);
