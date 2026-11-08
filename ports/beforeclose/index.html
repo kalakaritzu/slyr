@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Before Close</title>
+<style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#08090c;color:#fff;font-family:Arial,Helvetica,sans-serif}#game{position:fixed;inset:0;width:100%;height:100%;display:block;background:#08090c;outline:0}#screen{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;background:#08090c;transition:opacity .5s ease,visibility .5s ease}#screen.hide{opacity:0;visibility:hidden;pointer-events:none}.loading{width:min(370px,85vw);text-align:center}h1{font-size:clamp(30px,6vw,48px);font-weight:800;letter-spacing:.09em;margin:0 0 17px}#status{color:#a8acb9;font-size:13px;min-height:19px;margin-bottom:16px}#track{height:5px;background:#262a33;border-radius:10px;overflow:hidden}#bar{height:100%;width:0%;border-radius:10px;background:#fff;transition:width .2s ease}#pct{font-size:12px;color:#9ba0ab;margin-top:10px}#error{white-space:pre-wrap;overflow-wrap:anywhere;text-align:left;line-height:1.5;color:#ff9c9c;font-size:12px;max-height:30vh;overflow:auto;margin-top:20px}#retry{display:none;margin:18px auto 0;padding:10px 24px;border:1px solid #555;background:#20222b;color:#fff;border-radius:7px;cursor:pointer}
+</style>
+</head>
+<body>
+<canvas id="game" tabindex="-1"></canvas>
+<div id="screen"><div class="loading"><h1>BEFORE CLOSE</h1><div id="status">Connecting to GitHub…</div><div id="track"><div id="bar"></div></div><div id="pct">0%</div><div id="error"></div><button id="retry">Retry</button></div></div>
+<script>
+const repo='xxuep/before-close-webport';
+const sources=[
+  {name:'Local files',base:'./'},
+  {name:'jsDelivr',base:`https://cdn.jsdelivr.net/gh/${repo}@main/`},
+  {name:'GitHub raw',base:`https://raw.githubusercontent.com/${repo}/main/`}
+];
+const file=(source,name)=>source.base+encodeURIComponent(name);
+const canvas=document.getElementById('game');
+const screen=document.getElementById('screen');
+const statusText=document.getElementById('status');
+const progress=document.getElementById('bar');
+const percent=document.getElementById('pct');
+const error=document.getElementById('error');
+const retry=document.getElementById('retry');
+let instance;
+let loaderScript;
+let attemptDetails=[];
+function status(message){statusText.textContent=message}
+function failure(reason){status('Failed to load');error.textContent=String(reason);retry.style.display='block';screen.classList.remove('hide')}
+function loadScript(url){
+  return new Promise((resolve,reject)=>{
+    if(loaderScript)loaderScript.remove();
+    loaderScript=document.createElement('script');
+    loaderScript.src=url;
+    loaderScript.onload=()=>resolve();
+    loaderScript.onerror=()=>reject(new Error('Script request failed: '+url));
+    document.head.appendChild(loaderScript);
+  });
+}
+async function load(){
+  error.textContent='';retry.style.display='none';progress.style.width='0%';percent.textContent='0%';
+  attemptDetails=[];
+  if(instance){try{await instance.Quit()}catch(e){}instance=null}
+  for(const source of sources){
+    status('Loading engine from '+source.name+'…');
+    try{
+      await loadScript(file(source,'before close web.loader.js'));
+      if(typeof createUnityInstance!=='function')throw new Error('Unity loader did not register createUnityInstance');
+    }catch(e){attemptDetails.push(e.message);continue}
+    status('Downloading game data from '+source.name+'…');
+    try{
+      const game=await createUnityInstance(canvas,{
+        dataUrl:file(source,'before close web.data.unityweb'),
+        frameworkUrl:file(source,'before close web.framework.js.unityweb'),
+        codeUrl:file(source,'before close web.wasm.unityweb'),
+        streamingAssetsUrl:source.base+'StreamingAssets',
+        companyName:'Unity',productName:'Before Close',productVersion:'1.0',
+        showBanner:(message,type)=>{if(type==='error')console.error(message);else console.warn(message)}
+      },value=>{
+        const p=Math.max(0,Math.min(100,Math.floor(value*100)));
+        progress.style.width=p+'%';percent.textContent=p+'%';
+        if(p>=90)status('Starting game…');
+      });
+      instance=game;progress.style.width='100%';percent.textContent='100%';
+      screen.classList.add('hide');canvas.focus();
+      return;
+    }catch(e){
+      attemptDetails.push(source.name+': '+(e?.message||String(e)));
+      failure('Unity started downloading from '+source.name+' but game assets failed.\n'+attemptDetails.join('\n')+'\n\nHost all four build files alongside this HTML for reliable loading.');return
+    }
+  }
+  failure('Could not load the Unity files from any source.\n\n'+attemptDetails.join('\n')+'\n\nIf your website blocks GitHub/CDN downloads, place all four build files beside this HTML file.');
+}
+retry.onclick=()=>location.reload();
+
+load();
+</script>
+</body>
+</html>

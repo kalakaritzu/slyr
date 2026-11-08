@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Five Nights At Shreks Hotel 2</title>
+    <link rel="shortcut icon" href="fnash2/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="fnash2/TemplateData/style.css">
+
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000;
+      }
+      #unity-container {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #unity-canvas {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        display: block;
+      }
+      .custom-controls {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        gap: 8px;
+        z-index: 10000;
+      }
+      .custom-btn {
+        background: rgba(20, 20, 20, 0.85);
+        color: #e0e0e0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        font-family: sans-serif;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: background 0.2s, color 0.2s;
+      }
+      .custom-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+      #status-text {
+        color: #aaa;
+        font-family: monospace;
+        font-size: 13px;
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+
+    <script>
+      const origPointerLock = Element.prototype.requestPointerLock || function() {};
+      Element.prototype.requestPointerLock = function() {
+        try {
+          const res = origPointerLock.apply(this, arguments);
+          if (res && typeof res.catch === 'function') res.catch(() => {});
+          return res;
+        } catch (e) {}
+      };
+    </script>
+  </head>
+  <body>
+    <div class="custom-controls">
+      <button class="custom-btn" id="btn-fs">⛶ Fullscreen</button>
+    </div>
+
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+        <div id="status-text">Initializing decompressor...</div>
+      </div>
+      <div id="unity-warning"></div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Five Nights At Shreks Hotel 2</div>
+      </div>
+    </div>
+
+    <script>
+      // the game data (about 130 MB) is loaded from AlexBoops/FNASH2, pinned to one version
+      const CDN_BASE = "https://raw.githubusercontent.com/AlexBoops/FNASH2/9b6feed0e53340ac5e8ffea68bb24dfd84e804aa/";
+      const BUILD_URL = CDN_BASE + "Build/";
+
+      const canvas = document.querySelector("#unity-canvas");
+      const loadingBar = document.querySelector("#unity-loading-bar");
+      const progressBarFull = document.querySelector("#unity-progress-bar-full");
+      const statusText = document.querySelector("#status-text");
+      const abBtn = document.querySelector("#btn-ab");
+      const fsBtn = document.querySelector("#btn-fs");
+
+      const isAboutBlank = window.location.href === "about:blank" || window.origin === "null";
+      if (isAboutBlank && abBtn) {
+        abBtn.remove();
+      }
+
+      if (abBtn) {
+        abBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          try {
+            const win = window.open("about:blank", "_blank");
+            if (!win || win.closed) return;
+
+            const clone = document.documentElement.cloneNode(true);
+            const oldAb = clone.querySelector("#btn-ab");
+            if (oldAb) oldAb.remove();
+
+            win.document.open();
+            win.document.write("<!DOCTYPE html>\n" + clone.outerHTML);
+            win.document.close();
+
+            win.document.title = "Google Docs";
+            const link = win.document.createElement("link");
+            link.rel = "icon";
+            link.href = "https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico";
+            win.document.head.appendChild(link);
+          } catch (err) {
+            console.error("About:blank deployment error:", err);
+          }
+        });
+      }
+
+      if (fsBtn) {
+        fsBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const target = canvas || document.documentElement;
+          if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            const req = target.requestFullscreen || target.webkitRequestFullscreen;
+            if (req) req.call(target).catch(() => {});
+          } else {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen;
+            if (exit) exit.call(document).catch(() => {});
+          }
+        });
+      }
+
+      function unityShowBanner(msg, type) {
+        const warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        const div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      async function fetchBuffer(url) {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status} on ${url}`);
+        return new Uint8Array(await res.arrayBuffer());
+      }
+
+      async function mergeDataParts(prefix, count) {
+        const chunks = [];
+        let total = 0;
+        for (let i = 1; i <= count; i++) {
+          statusText.textContent = `Downloading data chunk ${i}/${count}...`;
+          const url = `${prefix}.part${i}`;
+          const u8 = await fetchBuffer(url);
+          chunks.push(u8);
+          total += u8.byteLength;
+          progressBarFull.style.width = Math.min(45, Math.round((i / count) * 45)) + "%";
+        }
+        const merged = new Uint8Array(total);
+        let offset = 0;
+        for (const c of chunks) {
+          merged.set(c, offset);
+          offset += c.byteLength;
+        }
+        return merged;
+      }
+
+      loadingBar.style.display = "block";
+
+      (async () => {
+        try {
+          // Dynamically import brotli-wasm to avoid top-level ES module syntax errors
+          const brotliModule = await import("https://cdn.jsdelivr.net/npm/brotli-wasm@3.0.1/index.web.js");
+          const brotli = typeof brotliModule.default?.then === "function" 
+            ? await brotliModule.default 
+            : (brotliModule.default || brotliModule);
+
+          // 1. Download & Decompress Data (Parts 1-7)
+          const mergedDataBr = await mergeDataParts(BUILD_URL + "FNASH2.data.br", 7);
+          statusText.textContent = "Decompressing game data...";
+          const decompressedData = brotli.decompress(mergedDataBr);
+          const dataUrl = URL.createObjectURL(new Blob([decompressedData], { type: "application/octet-stream" }));
+          progressBarFull.style.width = "50%";
+
+          // 2. Download & Decompress Framework (Bypasses MIME blocking)
+          statusText.textContent = "Loading framework script...";
+          const frameworkBr = await fetchBuffer(BUILD_URL + "FNASH2.framework.js.br");
+          const decompressedFramework = brotli.decompress(frameworkBr);
+          const frameworkCode = new TextDecoder().decode(decompressedFramework);
+          const frameworkUrl = URL.createObjectURL(new Blob([frameworkCode], { type: "application/javascript" }));
+          progressBarFull.style.width = "55%";
+
+          // 3. Download & Decompress WASM
+          statusText.textContent = "Loading WASM binary...";
+          const wasmBr = await fetchBuffer(BUILD_URL + "FNASH2.wasm.br");
+          const decompressedWasm = brotli.decompress(wasmBr);
+          const codeUrl = URL.createObjectURL(new Blob([decompressedWasm], { type: "application/wasm" }));
+          progressBarFull.style.width = "60%";
+
+          statusText.textContent = "Starting engine...";
+
+          const config = {
+            arguments: [],
+            dataUrl: dataUrl,
+            frameworkUrl: frameworkUrl,
+            codeUrl: codeUrl,
+            streamingAssetsUrl: CDN_BASE + "StreamingAssets",
+            companyName: "RenderPi",
+            productName: "Five Nights At Shreks Hotel 2 (Official)",
+            productVersion: "2.0",
+            showBanner: unityShowBanner,
+          };
+
+          const script = document.createElement("script");
+          script.src = "fnash2/Build/FNASH2.loader.js";
+          script.onload = () => {
+            createUnityInstance(canvas, config, (progress) => {
+              progressBarFull.style.width = (60 + (40 * progress)) + "%";
+              statusText.textContent = `Compiling shaders and assets: ${Math.round(progress * 100)}%`;
+            }).then((unityInstance) => {
+              loadingBar.style.display = "none";
+              document.querySelector("#unity-fullscreen-button").onclick = () => {
+                unityInstance.SetFullscreen(1);
+              };
+            }).catch((message) => {
+              console.error(message);
+              statusText.textContent = "Engine crashed during boot.";
+            });
+          };
+
+          document.body.appendChild(script);
+        } catch (err) {
+          console.error("Asset extraction failed:", err);
+          statusText.textContent = "Failed downloading or decompressing build assets.";
+        }
+      })();
+    </script>
+  </body>
+</html>

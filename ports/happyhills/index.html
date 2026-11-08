@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Happy Hills Homicide</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden}
+  #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  canvas{image-rendering:pixelated;background:#000;width:100vw;height:56.25vw;max-height:100vh;max-width:177.78vh}
+  #start{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000;color:#ddd;font:20px monospace;cursor:pointer;z-index:2;text-align:center}
+  #pad{display:none;position:fixed;inset:auto 0 0 0;height:34vh;z-index:3;pointer-events:none;user-select:none;-webkit-user-select:none;touch-action:none}
+  body.touch #pad{display:block}
+  .b{position:absolute;pointer-events:auto;width:15vmin;height:15vmin;max-width:84px;max-height:84px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);color:#fff;font:bold 20px monospace;display:flex;align-items:center;justify-content:center;touch-action:none}
+  .b.on{background:rgba(255,255,255,.45)}
+</style>
+</head>
+<body>
+<div id="wrap"><canvas id="c" width="512" height="288"></canvas></div>
+<div id="pad">
+  <div class="b" data-k="37" style="left:3vw;bottom:5vh">&#9664;</div>
+  <div class="b" data-k="39" style="left:22vw;bottom:5vh">&#9654;</div>
+  <div class="b" data-k="38" style="left:12.5vw;bottom:16vh">&#9650;</div>
+  <div class="b" data-k="40" style="left:12.5vw;bottom:-3vh">&#9660;</div>
+  <div class="b" data-k="90" style="right:3vw;bottom:12vh">Z</div>
+  <div class="b" data-k="88" style="right:20vw;bottom:5vh">X</div>
+  <div class="b" data-k="32" style="right:3vw;bottom:-2vh">SP</div>
+  <div class="b" data-k="13" style="right:20vw;bottom:19vh">OK</div>
+  <div class="b" data-k="27" style="right:3vw;top:-26vh;width:10vmin;height:10vmin;font-size:14px">ESC</div>
+</div>
+<div id="start">Click or press any key to start<br><br><small>Arrow keys / Z / X / Space / Enter</small></div>
+<script src="game.js"></script>
+<script src="engine.js"></script>
+<script>
+  let started = false;
+  function go() { if (started) return; started = true; document.getElementById('start').remove(); HH.start(); setTimeout(() => HH.fit(), 50); }
+  document.getElementById('start').addEventListener('click', go);
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    document.body.classList.add('touch');
+    document.querySelectorAll('#pad .b').forEach(b => {
+      const k = +b.dataset.k;
+      const dn = e => { e.preventDefault(); b.classList.add('on'); go(); if (window.HH) HH.key(k, true); };
+      const up = e => { e.preventDefault(); b.classList.remove('on'); if (window.HH) HH.key(k, false); };
+      b.addEventListener('pointerdown', dn); b.addEventListener('pointerup', up);
+      b.addEventListener('pointercancel', up); b.addEventListener('pointerleave', up);
+    });
+  }
+  window.addEventListener('keydown', go);
+</script>
+</body>
+</html>

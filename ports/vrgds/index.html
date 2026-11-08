@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>Very Realistic Game Dev Simulator</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: #000000;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-splash.show-image--false {
+	display: none;
+}
+
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+
+#status-progress, #status-notice {
+	display: none;
+}
+
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+		</style>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="Very Realistic Game Dev Simulator.icon.png" />
+<link rel="apple-touch-icon" href="Very Realistic Game Dev Simulator.apple-touch-icon.png"/>
+
+	</head>
+	<body>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="Very Realistic Game Dev Simulator.png" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+		<script src="Very%20Realistic%20Game%20Dev%20Simulator.js"></script>
+		<script>
+// The game's data (about 800 MB) is loaded from UMMMM-GUYSSS/Very-Realistic-Game-Dev-Simulator, pinned to one version.
+const DATA_BASE = 'https://raw.githubusercontent.com/UMMMM-GUYSSS/Very-Realistic-Game-Dev-Simulator/94ab3c4fe24043a3c7c2353d1d5e1a46f42ceec5/';
+(function () {
+	const realFetch = window.fetch.bind(window);
+	window.fetch = function (input, init) {
+		const url = typeof input === 'string' ? input : (input instanceof URL ? input.href : input.url);
+		const name = decodeURIComponent(new URL(url, document.baseURI).pathname.split('/').pop());
+		if (name === 'Very Realistic Game Dev Simulator.wasm') return realFetch(DATA_BASE + encodeURIComponent(name), init);
+		return realFetch(input, init);
+	};
+})();
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"Very Realistic Game Dev Simulator","experimentalVK":false,"fileSizes":{"Very Realistic Game Dev Simulator.pck":744704816,"Very Realistic Game Dev Simulator.wasm":52126319},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	// Fetch one split part with streaming progress + retries.
+	// Resolves with an ArrayBuffer. Rejects with `err.httpStatus` on HTTP errors
+	// so callers can detect 404 = "no more parts".
+	async function fetchPartWithProgress(url, onChunk, attempts = 4) {
+		let lastErr = null;
+		for (let attempt = 0; attempt < attempts; attempt++) {
+			try {
+				const response = await fetch(url);
+				if (!response.ok) {
+					const err = new Error(`Failed loading file '${url}' (${response.status})`);
+					err.httpStatus = response.status;
+					throw err;
+				}
+				// Older browsers / edge cases without streaming support.
+				if (!response.body || typeof response.body.getReader !== 'function') {
+					const buf = await response.arrayBuffer();
+					if (typeof onChunk === 'function') {
+						onChunk(buf.byteLength);
+					}
+					return buf;
+				}
+				const reader = response.body.getReader();
+				const chunks = [];
+				let received = 0;
+				for (;;) {
+					const { done, value } = await reader.read();
+					if (done) {
+						break;
+					}
+					chunks.push(value);
+					received += value.length;
+					if (typeof onChunk === 'function') {
+						onChunk(value.length);
+					}
+				}
+				const part = new Uint8Array(received);
+				let offset = 0;
+				for (const chunk of chunks) {
+					part.set(chunk, offset);
+					offset += chunk.length;
+				}
+				return part.buffer;
+			} catch (err) {
+				lastErr = err;
+				// 404 means "no more parts" when probing - don't retry, bubble up fast.
+				if (err && err.httpStatus === 404) {
+					throw err;
+				}
+				if (attempt === attempts - 1) {
+					throw err;
+				}
+				await new Promise((resolve) => setTimeout(resolve, 1000));
+			}
+		}
+		throw lastErr;
+	}
+
+	// Load `<pack>.part1`, `<pack>.part2`, ... until the first 404, then
+	// concatenate them back into a single ArrayBuffer.
+	async function loadSplitPack(packBase, expectedTotal, onProgress) {
+		const parts = [];
+		let loaded = 0;
+		let index = 1;
+		for (;;) {
+			const url = `${packBase}.part${index}`;
+			let partBuf = null;
+			try {
+				partBuf = await fetchPartWithProgress(url, (delta) => {
+					loaded += delta;
+					if (typeof onProgress === 'function') {
+						onProgress(loaded, expectedTotal || 0);
+					}
+				});
+			} catch (err) {
+				const status = err && err.httpStatus;
+				const is404 = status === 404 || /\(404\)/.test((err && err.message) || '');
+				if (is404) {
+					if (index === 1) {
+						throw new Error(`No split parts found at '${packBase}.part1'. Make sure the .pck.part1, .part2, ... files are uploaded next to the HTML file.`);
+					}
+					break; // No more parts - done.
+				}
+				throw err;
+			}
+			parts.push(partBuf);
+			index++;
+			if (index > 999) {
+				break; // Safety cap.
+			}
+		}
+		let totalLen = 0;
+		for (const part of parts) {
+			totalLen += part.byteLength;
+		}
+		if (expectedTotal && totalLen !== expectedTotal) {
+			console.warn(`Split pack size mismatch: got ${totalLen} bytes in ${parts.length} parts, expected ${expectedTotal}. Continuing anyway.`);
+		} else {
+			console.log(`Loaded split pack: ${parts.length} parts, ${totalLen} bytes.`);
+		}
+		const combined = new Uint8Array(totalLen);
+		let offset = 0;
+		for (const part of parts) {
+			combined.set(new Uint8Array(part), offset);
+			offset += part.byteLength;
+		}
+		return combined.buffer;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		const exe = GODOT_CONFIG['executable'];
+		const pack = GODOT_CONFIG['mainPack'] || `${exe}.pck`;
+		const wasmSize = (GODOT_CONFIG['fileSizes'] && GODOT_CONFIG['fileSizes'][`${exe}.wasm`]) || 0;
+		let pckTotal = (GODOT_CONFIG['fileSizes'] && GODOT_CONFIG['fileSizes'][pack]) || 0;
+
+		let wasmLoaded = 0;
+		let wasmTotal = wasmSize;
+		let pckLoaded = 0;
+		function updateCombinedProgress() {
+			const current = wasmLoaded + pckLoaded;
+			const total = wasmTotal + pckTotal;
+			if (current > 0 && total > 0) {
+				statusProgress.value = current;
+				statusProgress.max = total;
+			} else {
+				statusProgress.removeAttribute('value');
+				statusProgress.removeAttribute('max');
+			}
+		}
+
+		// Route the engine's own (wasm) progress through the combined bar.
+		engine.config.update({
+			'onProgress': function (current, total) {
+				wasmLoaded = current;
+				if (total) {
+					wasmTotal = total;
+				}
+				updateCombinedProgress();
+			},
+		});
+
+		// Load the wasm and all .pck.partN files in parallel, then start.
+		// We can't use engine.startGame() here because it would try to fetch
+		// the single (non-existent) .pck file.
+		const initPromise = engine.init(exe);
+		const pckPromise = loadSplitPack(DATA_BASE + encodeURIComponent(pack), pckTotal, (loaded, total) => {
+			pckLoaded = loaded;
+			if (total) {
+				pckTotal = total;
+			}
+			updateCombinedProgress();
+		});
+
+		// Add the --main-pack arg the way startGame() normally would.
+		engine.config.update({
+			'args': ['--main-pack', pack].concat(engine.config.args || []),
+		});
+
+		Promise.all([initPromise, pckPromise]).then(([_, pckBuffer]) => {
+			return engine.preloadFile(pckBuffer, pack).then(() => engine.start());
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>
+
