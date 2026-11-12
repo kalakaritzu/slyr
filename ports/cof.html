@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>cry of fear</title><link rel="icon" href="data:,"></head>
+<body>
+<div id="overlay"><h1>cry of fear</h1><button id="play">Play</button><p id="status" hidden></p><p id="credit" style="margin-top:18px;font-size:13px;opacity:.6">Web port by 98.corbin</p></div>
+<div id="stage" hidden><canvas id="canvas" width="1280" height="720" tabindex="0"></canvas></div>
+<script>
+// The game's data (about 4.6 GB) lives in Down1oads/cof-web-data (pinned to one version) as 90 MiB pieces. The game reads cof.data in
+// 1 MiB blocks using byte ranges, so each range is answered straight from the right piece; only what is played is downloaded.
+// cof.wasm and image.bin are joined from their pieces once and kept in the browser's cache.
+(function () {
+  const BASE = "https://raw.githubusercontent.com/Down1oads/cof-web-data/76e71af7e27dddf65c698115ee8b8df413956593/";
+  const PART = 94371840, TOTAL = 4603688726, NPARTS = 49;
+  const BIG = {
+    "cof.wasm": { type: "application/wasm", parts: [["cof.wasm.part01", 58720256], ["cof.wasm.part02", 51087285]] },
+    "image.bin": { type: "application/octet-stream", parts: [["image.bin", 84008960]] }
+  };
+  const realFetch = window.fetch.bind(window);
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const say = t => { const s = document.getElementById("status"); if (s) { s.textContent = t; s.hidden = !t; } };
+  async function get(path, init, expected) {
+    let last;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      try {
+        const r = await realFetch(BASE + path + (attempt > 2 ? "?t=" + Date.now() : ""), init);
+        if (r.ok || r.status === 206) {
+          const b = await r.blob();
+          if (expected === undefined || b.size === expected) return b;
+        }
+        last = "http " + r.status;
+      } catch (e) { last = e.message; }
+      await sleep(400 * attempt);
+    }
+    throw new Error("Could not download " + path + " (" + last + ")");
+  }
+  const joined = {};
+  function whole(name) {
+    if (joined[name]) return joined[name];
+    return joined[name] = (async () => {
+      const f = BIG[name];
+      let cache = null; try { cache = await caches.open("cof-" + "76e71af7e27dddf65c698115ee8b8df413956593".slice(0, 7)); } catch (e) {}
+      const list = []; let n = 0;
+      for (const [path, size] of f.parts) {
+        let b = null;
+        if (cache) { try { const hit = await cache.match("/__cof/" + path); if (hit) { const hb = await hit.blob(); if (hb.size === size) b = hb; } } catch (e) {} }
+        if (!b) { b = await get(path, undefined, size); if (cache) { try { await cache.put("/__cof/" + path, new Response(b)); } catch (e) {} } }
+        list.push(b); n++; say("Downloading the game engine (" + n + " / " + f.parts.length + ")...");
+      }
+      say("");
+      return new Blob(list, { type: f.type });
+    })();
+  }
+  async function range(a, b) {
+    const pieces = [];
+    for (let p = Math.floor(a / PART); p <= Math.floor(b / PART) && p < NPARTS; p++) {
+      const lo = Math.max(a, p * PART) - p * PART, hi = Math.min(b, (p + 1) * PART - 1) - p * PART;
+      const name = "cof.data.part" + String(p + 1).padStart(3, "0");
+      pieces.push(await get(name, { headers: { Range: "bytes=" + lo + "-" + hi } }, hi - lo + 1));
+    }
+    return new Blob(pieces, { type: "application/octet-stream" });
+  }
+  window.fetch = async function (input, init) {
+    const url = typeof input === "string" ? input : (input instanceof URL ? input.href : (input && input.url)) || "";
+    const name = decodeURIComponent(url.split("?")[0].split("/").pop());
+    if (name === "cof.data") {
+      let rh = init && init.headers && (init.headers.Range || init.headers.range || (init.headers.get && init.headers.get("Range")));
+      const m = rh && /bytes=(\d*)-(\d*)/.exec(rh);
+      const a = m && m[1] ? +m[1] : 0, b = m && m[2] ? Math.min(+m[2], TOTAL - 1) : TOTAL - 1;
+      const blob = await range(a, b);
+      return new Response(blob, { status: 206, headers: { "Content-Type": "application/octet-stream", "Content-Range": "bytes " + a + "-" + b + "/" + TOTAL, "Content-Length": String(b - a + 1), "Accept-Ranges": "bytes" } });
+    }
+    if (BIG[name]) {
+      const blob = await whole(name);
+      return new Response(blob, { status: 200, headers: { "Content-Type": BIG[name].type, "Content-Length": String(blob.size) } });
+    }
+    return realFetch(input, init);
+  };
+})();
+</script>
+<script src="cof/cof.js"></script>
+<script>
+(() => {
+  const internalControls=Object.fromEntries(['hud','fps','bsound','bfps','bcap','bvsync','bfull','bmouse','hint'].map(id=>[id,document.createElement('button')]));
+  const $ = id => document.getElementById(id)||internalControls[id];
+  const canvas = $('canvas'), status = s => { $('status').textContent=s;$('status').hidden=!s; };
+  Object.assign(canvas.style,{position:'fixed',inset:'0',width:'100%',height:'100%',display:'block',objectFit:'fill',background:'black'});
+  const q = new URLSearchParams(location.search);
+                                                                                             
+                                                                         
+  const GAME_BASE = '';
+                                                                               
+  try { for (const k of ['Vsync', 'Progs']) { const v = localStorage.getItem('sa' + k); if (v !== null) { if (localStorage.getItem('cof' + k) === null) localStorage.setItem('cof' + k, v); localStorage.removeItem('sa' + k); } } } catch (e) {}
+  if (!('Suspending' in WebAssembly)) { status('This browser lacks WebAssembly JavaScript Promise Integration: use Chrome or Edge 137 or newer.'); $('play').disabled = true; }
+  let GAME_W = 1280, GAME_H = 720;                                                                                             
+
+                                                                            
+  const K = {};
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach((ch, i) => { K['Key' + ch] = [65 + i, [0x1E,0x30,0x2E,0x20,0x12,0x21,0x22,0x23,0x17,0x24,0x25,0x26,0x32,0x31,0x18,0x19,0x10,0x13,0x1F,0x14,0x16,0x2F,0x11,0x2D,0x15,0x2C][i], 0]; });
+  for (let d = 0; d <= 9; d++) K['Digit' + d] = [48 + d, d === 0 ? 0x0B : d + 1, 0];
+  Object.assign(K, { Escape: [0x1B, 0x01, 0], Minus: [0xBD, 0x0C, 0], Equal: [0xBB, 0x0D, 0], Backspace: [0x08, 0x0E, 0], Tab: [0x09, 0x0F, 0], BracketLeft: [0xDB, 0x1A, 0], BracketRight: [0xDD, 0x1B, 0],
+    Enter: [0x0D, 0x1C, 0], ControlLeft: [0x11, 0x1D, 0], Semicolon: [0xBA, 0x27, 0], Quote: [0xDE, 0x28, 0], Backquote: [0xC0, 0x29, 0], ShiftLeft: [0x10, 0x2A, 0], Backslash: [0xDC, 0x2B, 0],
+    Comma: [0xBC, 0x33, 0], Period: [0xBE, 0x34, 0], Slash: [0xBF, 0x35, 0], ShiftRight: [0x10, 0x36, 0], NumpadMultiply: [0x6A, 0x37, 0], AltLeft: [0x12, 0x38, 0], Space: [0x20, 0x39, 0],
+    CapsLock: [0x14, 0x3A, 0], F1: [0x70, 0x3B, 0], F2: [0x71, 0x3C, 0], F3: [0x72, 0x3D, 0], F4: [0x73, 0x3E, 0], F5: [0x74, 0x3F, 0], F6: [0x75, 0x40, 0], F7: [0x76, 0x41, 0], F10: [0x79, 0x44, 0],
+    F12: [0x7B, 0x58, 0], Numpad7: [0x67, 0x47, 0], Numpad8: [0x68, 0x48, 0], Numpad9: [0x69, 0x49, 0], NumpadSubtract: [0x6D, 0x4A, 0], Numpad4: [0x64, 0x4B, 0], Numpad5: [0x65, 0x4C, 0],
+    Numpad6: [0x66, 0x4D, 0], NumpadAdd: [0x6B, 0x4E, 0], Numpad1: [0x61, 0x4F, 0], Numpad2: [0x62, 0x50, 0], Numpad3: [0x63, 0x51, 0], Numpad0: [0x60, 0x52, 0], NumpadDecimal: [0x6E, 0x53, 0],
+    NumpadEnter: [0x0D, 0x1C, 1], ControlRight: [0x11, 0x1D, 1], AltRight: [0x12, 0x38, 1], ArrowUp: [0x26, 0x48, 1], ArrowLeft: [0x25, 0x4B, 1], ArrowRight: [0x27, 0x4D, 1], ArrowDown: [0x28, 0x50, 1],
+    Insert: [0x2D, 0x52, 1], Delete: [0x2E, 0x53, 1], Home: [0x24, 0x47, 1], End: [0x23, 0x4F, 1], PageUp: [0x21, 0x49, 1], PageDown: [0x22, 0x51, 1] });
+
+  let M = null, started = false;
+                                                                                                                       
+                                                                                        
+  let transferred = false;
+  const fit = () => { const w = GAME_W, h = GAME_H;
+    if (M) { M.canvasW = w; M.canvasH = h; } if (!transferred && (canvas.width !== w || canvas.height !== h)) { canvas.width = w; canvas.height = h; } };
+  addEventListener('resize', fit); fit();
+  $('bfps').onclick = () => { const f = $('fps'); f.style.display = f.style.display === 'inline' ? 'none' : 'inline'; };
+  $('bfull').onclick = () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); };
+  const setVsync = on => { if (M) M.vsync = on; localStorage.setItem('cofVsync', on ? '1' : '0'); $('bvsync').textContent = 'Vsync: ' + (on ? 'on' : 'off'); };
+  $('bvsync').onclick = () => { setVsync(localStorage.getItem('cofVsync') !== '1'); alert('Reload the page to apply.'); };
+  setVsync(localStorage.getItem('cofVsync') === '1');
+                                                                                                 
+  const CAPS = [60, 120, 0, 30], capName = c => c ? String(c) : 'max';
+  let cap = +(q.get('COF_FPS') ?? localStorage.getItem('cofCap') ?? 60); if (!CAPS.includes(cap)) cap = 60;
+  const showCap = () => { $('bcap').textContent = 'Cap: ' + capName(cap); };
+  $('bcap').onclick = () => { cap = CAPS[(CAPS.indexOf(cap) + 1) % CAPS.length]; localStorage.setItem('cofCap', String(cap)); showCap(); if (M && M._cof_ev_fps) M._cof_ev_fps(cap); };
+  showCap();
+  for (const b of document.querySelectorAll('#hud button')) { b.tabIndex = -1; b.addEventListener('mousedown', e => e.preventDefault()); b.addEventListener('click', () => { b.blur(); canvas.focus(); }); }
+
+                                                            
+  const ev = (name, ...a) => { if (M && M['_' + name]) M['_' + name](...a); };
+                                                                                  
+const mouseButton=$('bmouse');
+const mouseHint=document.createElement('div');                                             
+let captureWanted=false,clientCaptureWanted=false,gameCursorVisible=true,capturePending=false,wasLocked=false,intentionalUnlock=false;
+const mouseMessage=text=>{mouseHint.textContent=text;mouseHint.classList.add('show');};
+const requestMouse=()=>{
+ if(!started||capturePending||document.pointerLockElement===canvas)return;
+ capturePending=true;
+ try{
+  const request=canvas.requestPointerLock();
+  if(request&&request.catch)request.catch(()=>{if(captureWanted)mouseMessage('Click the game to capture the mouse.');}).finally(()=>{capturePending=false;});
+  else capturePending=false;
+ }catch(e){capturePending=false;if(captureWanted)mouseMessage('Click the game to capture the mouse.');}
+};
+const releaseMouse=()=>{if(document.pointerLockElement===canvas){intentionalUnlock=true;document.exitPointerLock();}};
+const updateGameMouse=()=>{
+ captureWanted=clientCaptureWanted&&!gameCursorVisible;
+ if(captureWanted)requestMouse();else{releaseMouse();mouseHint.classList.remove('show');}
+};
+const gameMouseCapture=active=>{clientCaptureWanted=active;updateGameMouse();};
+const gameCursorVisibility=visible=>{gameCursorVisible=visible;updateGameMouse();};
+const lockMouse=()=>{
+ if(!started)return;
+ if(document.pointerLockElement===canvas)releaseMouse();else requestMouse();
+};
+mouseButton.onclick=lockMouse;
+canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&captureWanted)requestMouse();},true);
+addEventListener('keydown',e=>{if(e.code==='F9'&&started){if(!e.repeat)lockMouse();e.preventDefault();e.stopImmediatePropagation();}},true);
+addEventListener('keyup',e=>{if(e.code==='F9'&&started){e.preventDefault();e.stopImmediatePropagation();}},true);
+document.addEventListener('pointerlockchange',()=>{
+ const locked=document.pointerLockElement===canvas;
+ mouseButton.textContent=locked?'Unlock mouse':'Lock mouse';
+ if(locked){capturePending=false;canvas.focus();mouseMessage('Esc opens the menu and releases the mouse');setTimeout(()=>mouseHint.classList.remove('show'),3000);}
+ else if(wasLocked&&captureWanted&&!intentionalUnlock&&document.hasFocus()){
+                                                                           
+                                                                          
+  setTimeout(()=>{if(captureWanted&&document.pointerLockElement!==canvas){ev('cof_ev_key',1,27,1,0);ev('cof_ev_key',0,27,1,0);}},80);
+ }
+ wasLocked=locked;intentionalUnlock=false;
+});
+
+                                                                                                           
+  const pos = e => { if(document.pointerLockElement===canvas && (!e.pointerType||e.pointerType==='mouse'))return [-1,-1]; const r = canvas.getBoundingClientRect();
+    return [Math.round((e.clientX-r.left)*GAME_W/r.width),Math.round((e.clientY-r.top)*GAME_H/r.height)]; };
+  addEventListener('keydown', e => {
+    if (!started) return;
+    if (e.code === 'F8') { $('bfps').onclick(); e.preventDefault(); return; }
+    if (e.code === 'F11') { $('bfull').onclick(); e.preventDefault(); return; }
+    const k = K[e.code]; if (!k) return;
+    ev('cof_ev_key', 1, k[0], k[1], (e.repeat ? 1 : 0) | (k[2] ? 2 : 0));
+    if (e.key.length === 1 && !e.ctrlKey && !e.altKey) ev('cof_ev_char', e.key.charCodeAt(0));
+    else if (e.code === 'Enter' || e.code === 'Backspace' || e.code === 'Escape') ev('cof_ev_char', k[0]);
+    e.preventDefault();
+  });
+  addEventListener('keyup', e => { if (!started) return; const k = K[e.code]; if (!k) return; ev('cof_ev_key', 0, k[0], k[1], k[2] ? 2 : 0); e.preventDefault(); });
+                                                                                                                       
+                  
+                                                                        
+  const pressedMouseButtons=new Set(),pressedPhysicalKeys=new Set();
+  const tid=e=>(e.pointerId%1000000)+2;
+  const releaseMouseButton=(button,e)=>{
+    if(!pressedMouseButtons.delete(button))return;
+    const position=e?pos(e):[-1,-1];ev('cof_ev_mouse',2,position[0],position[1],button,0);cofRecordLog('input','mouse up '+button+' via '+(e?.type||'reset')+' held='+[...pressedMouseButtons]);
+  };
+  const releaseMouseButtons=()=>{for(const button of [...pressedMouseButtons])releaseMouseButton(button);};
+  const releaseGameInput=()=>{
+    releaseMouseButtons();
+    for(const code of pressedPhysicalKeys){const key=K[code];if(key)ev('cof_ev_key',0,key[0],key[1],key[2]?2:0);}
+    pressedPhysicalKeys.clear();
+  };
+  addEventListener('keydown',e=>{if(started&&K[e.code])pressedPhysicalKeys.add(e.code);},true);
+  addEventListener('keyup',e=>pressedPhysicalKeys.delete(e.code),true);
+  canvas.addEventListener('pointerdown',e=>{
+    canvas.focus();if(e.pointerType!=='mouse')e.preventDefault();try{canvas.setPointerCapture(e.pointerId);}catch(_){}
+    if(e.pointerType!=='mouse'){const[x,y]=pos(e);ev('cof_ev_touch',0,tid(e),x,y);}
+  });
+  canvas.addEventListener('mousedown',e=>{
+    if(e.button<0||e.button>2)return;canvas.focus();e.preventDefault();
+    if(pressedMouseButtons.has(e.button))return;
+    pressedMouseButtons.add(e.button);const[x,y]=pos(e);
+    if(x>=0&&y>=0)ev('cof_ev_mouse',0,x,y,0,0);ev('cof_ev_mouse',1,x,y,e.button,0);cofRecordLog('input','mouse down '+e.button+' held='+[...pressedMouseButtons]);
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(e.pointerType==='mouse'){
+                                                                     
+      if(typeof e.buttons==='number')for(const button of [...pressedMouseButtons]){
+        const mask=button===0?1:button===2?2:4;if(!(e.buttons&mask))releaseMouseButton(button,e);
+      }
+      if(document.pointerLockElement===canvas){ev('cof_ev_mouse_raw',e.movementX,e.movementY);return;}
+      const[x,y]=pos(e);ev('cof_ev_mouse',0,x,y,0,0);
+    }else{const[x,y]=pos(e);ev('cof_ev_touch',1,tid(e),x,y);}
+  });
+  addEventListener('mouseup',e=>releaseMouseButton(e.button,e),true);
+  canvas.addEventListener('pointerup',e=>{if(e.pointerType==='mouse'){releaseMouseButton(e.button,e);if(typeof e.buttons==='number')for(const button of [...pressedMouseButtons]){const mask=button===0?1:button===2?2:4;if(!(e.buttons&mask))releaseMouseButton(button,e);}}else{const[x,y]=pos(e);ev('cof_ev_touch',2,tid(e),x,y);}});
+  canvas.addEventListener('pointercancel',e=>{if(e.pointerType==='mouse')releaseMouseButtons();else{const[x,y]=pos(e);ev('cof_ev_touch',2,tid(e),x,y);}});
+  canvas.addEventListener('lostpointercapture',e=>{if(e.pointerType==='mouse'&&!e.buttons)releaseMouseButtons();});
+  document.addEventListener('pointerlockchange',()=>{if(document.pointerLockElement!==canvas)releaseMouseButtons();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseGameInput();ev('cof_ev_focus',0);}});
+  canvas.addEventListener('contextmenu',e=>e.preventDefault());
+  addEventListener('focus',()=>ev('cof_ev_focus',1));
+  addEventListener('blur',()=>{releaseGameInput();ev('cof_ev_focus',0);});
+  canvas.addEventListener('webglcontextlost', () => { status('The graphics context was lost (GPU reset). Reload the page to continue.'); $('overlay').hidden=false;$('stage').hidden=true; });
+
+                                                                                                         
+  const WORKLET = "                                                                  \nclass CofOut extends AudioWorkletProcessor {\n  constructor() {\n    super(); this.capacity=16384;this.ring=new Float32Array(this.capacity*2);\n    this.write=0;this.read=0;this.step=48000/sampleRate;\n    this.target=3840;this.maximum=12000;this.buffering=true;this.started=false;\n    this.gain=0;this.lastL=0;this.lastR=0;this.tail=0;\n    this.frames=0;this.underruns=0;this.rebuffers=0;this.dropped=0;\n    this.received=0;this.peak=0;this.clipped=0;this.invalid=0;this.nextReport=sampleRate;\n    this.port.onmessage=e=>{\n      const b=e.data;\n      if(!ArrayBuffer.isView(b)){if(b&&b.type==='stats')this.report();return;}\n      const count=b.length/2,first=Math.max(0,count-this.capacity),start=this.write;\n      for(let i=first;i<count;i++)for(let ch=0;ch<2;ch++) {\n        let value=b[2*i+ch];if(!Number.isFinite(value)){value=0;this.invalid++;}\n        this.peak=Math.max(this.peak,Math.abs(value));if(Math.abs(value)>1)this.clipped++;\n        this.ring[2*((start+i)%this.capacity)+ch]=value;\n      }\n      this.write+=count;this.received+=count;\n      if(this.write-this.read>this.maximum){const next=this.write-this.target;this.dropped+=Math.floor(next-this.read);this.read=next;this.gain=0;}\n    };\n  }\n  report(){this.port.postMessage({type:'audio-stats',outputRate:sampleRate,inputRate:48000,\n    outputFrames:this.frames,inputFrames:this.received,underrunFrames:this.underruns,\n    rebufferCount:this.rebuffers,droppedFrames:this.dropped,queuedFrames:Math.max(0,this.write-this.read),\n    inputPeak:this.peak,clippedInputSamples:this.clipped,invalidInputSamples:this.invalid});}\n  process(inputs,outputs) {\n    const out=outputs[0],L=out[0],R=out[1]||out[0];\n    if(this.buffering&&this.write-this.read>=this.target){this.buffering=false;this.started=true;this.gain=0;}\n    for(let i=0;i<L.length;i++) {\n      if(!this.buffering&&this.write-this.read>=Math.max(2,this.step)) {\n        const at=Math.floor(this.read),t=this.read-at,a=2*(at%this.capacity),b=2*((at+1)%this.capacity);\n        this.gain=Math.min(1,this.gain+1/64);\n        this.lastL=(this.ring[a]+(this.ring[b]-this.ring[a])*t)*this.gain;\n        this.lastR=(this.ring[a+1]+(this.ring[b+1]-this.ring[a+1])*t)*this.gain;\n        L[i]=Math.max(-1,Math.min(1,this.lastL));R[i]=Math.max(-1,Math.min(1,this.lastR));\n        this.read+=this.step;this.tail=64;\n      }else{\n        if(!this.buffering){this.buffering=true;this.rebuffers++;}\n        if(this.started)this.underruns++;\n        const fade=this.tail?--this.tail/64:0;\n        L[i]=Math.max(-1,Math.min(1,this.lastL*fade));R[i]=Math.max(-1,Math.min(1,this.lastR*fade));\n      }\n    }\n    this.frames+=L.length;if(this.frames>=this.nextReport){this.report();this.nextReport=this.frames+sampleRate;}\n    return true;\n  }\n}\nregisterProcessor('cof-out',CofOut);\n";
+  async function startAudio(M) {
+    try {
+      const ctx = new AudioContext({ sampleRate: 48000, latencyHint: 'interactive' });
+      await ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET], { type: 'application/javascript' })));
+      const node = new AudioWorkletNode(ctx, 'cof-out', { numberOfInputs: 0, outputChannelCount: [2] });
+      node.port.onmessage=e=>{if(e.data&&e.data.type==='audio-stats')M.audioStats=e.data;}; node.connect(ctx.destination); M.audioContext = ctx; M.audioNode = node;
+      $('bsound').onclick = () => { const on = ctx.state !== 'running'; if (on) ctx.resume(); else ctx.suspend(); $('bsound').textContent = on ? 'Sound: on' : 'Sound: off'; };
+    } catch (e) { console.warn('[audio] unavailable:', e); $('bsound').textContent = 'Sound: n/a'; }
+  }
+
+                                                               
+  const cofLogQueue=[];let cofLogTimer=0;
+  function cofRecordLog(level,message){
+    cofLogQueue.push({level,message:String(message).slice(0,3072)});
+    if(cofLogQueue.length>128)cofLogQueue.shift();
+    if(!cofLogTimer)cofLogTimer=setTimeout(cofFlushLog,100);
+  }
+  function cofFlushLog(){
+    cofLogTimer=0;const batch=cofLogQueue.splice(0,4);
+    if(batch.length)fetch('/__cof_runtime_log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(batch),keepalive:true}).catch(()=>{});
+    if(cofLogQueue.length)cofLogTimer=setTimeout(cofFlushLog,100);
+  }
+  function cofRuntimeError(error){
+    const message=error?.stack||error?.message||String(error);cofRecordLog('error',message);
+    status('Game stopped: '+(error?.message||String(error)));$('overlay').hidden=false;$('stage').hidden=true;
+    if(document.pointerLockElement)document.exitPointerLock();
+  }
+  window.addEventListener('error',event=>cofRuntimeError(event.error||event.message));
+  window.addEventListener('unhandledrejection',event=>cofRuntimeError(event.reason));
+
+  $('play').onclick = async () => {
+    if (started) return; started = true;
+    $('play').disabled = true; status('Loading…');
+    M = {
+      canvas, vsync: localStorage.getItem('cofVsync') === '1' || q.has('vsync'),
+      preRun: [m => { Object.assign(m.ENV, {"COF_EXE_PATH": "C:\\game\\cof.exe", "COF_ALWAYS_ACTIVE": "1", "COF_STEAM_APPID": "223710", "COF_GOLDSRC_CVARS": "cg_water=0;gl_screenblur=0;gl_posteffects=0;gl_bump=0;gl_noshaders=1", "COF_SYSTEM_PROXY_DLLS": "opengl32", "COF_GOLDSRC_PERSIST_SETTINGS": "1", "COF_WEB_BRAND": "cof", "COF_GOLDSRC_VERSION_LABEL": "port by 98corbins", "COF_PORT_ID": "cryoffear", "COF_ARGS": "-game cryoffear -gl -windowed -w 1280 -h 720 -nojoy +gl_noshaders 1 +gl_posteffects 0 +gl_bump 0 +cg_water 0 -insecure +sv_lan 1 -console +console 1"}); m.ENV.COF_FPS = String(cap); for (const [k, v] of q) if (k.startsWith('COF_')) m.ENV[k] = v; }],                                         
+      print: s => {console.log(s);cofRecordLog('log',s);}, printErr: s => {
+        console.error(s);cofRecordLog('error',s);
+        if (/^(MISSING IMPORT:|FATAL:)/.test(s)) { status('Game stopped: ' + s); $('overlay').hidden=false;$('stage').hidden=true; if(document.pointerLockElement)document.exitPointerLock(); }
+      },
+      onAbort: reason => { status('Game stopped: ' + reason); $('overlay').hidden=false;$('stage').hidden=true; },
+      onLog: s => cofRecordLog('log',s),
+      onStatus: s => {status(s);cofRecordLog('status',s);},
+      onFps: f => { $('fps').textContent = f.toFixed(0) + ' fps'; },
+      onGameSize: (w, h) => { GAME_W = w; GAME_H = h; fit(); },
+      onMouseCapture: gameMouseCapture, onCursorVisibility: gameCursorVisibility,
+      onFirstFrame: () => { $('overlay').hidden=true;$('stage').hidden=false; canvas.focus(); },
+    };
+    window.cof = M; fit(); if (q.has('glahead')) M.glAhead = +q.get('glahead');
+                                                                                                                            
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().then(ok => console.log('[web] persistent storage: ' + ok)); } catch (e) {}
+                                                                                                                       
+    const GL_WORKER = false;                                     
+    if (GL_WORKER) try {
+      const probe = document.createElement('canvas').getContext('webgl2');
+      if (probe) { M.glExtensions = probe.getSupportedExtensions().join(' '); const ax = probe.getExtension('EXT_texture_filter_anisotropic'); M.glMaxAniso = ax ? probe.getParameter(ax.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 1; const le = probe.getExtension('WEBGL_lose_context'); if (le) le.loseContext(); }
+      const off = canvas.transferControlToOffscreen(); transferred = true;
+      M.glWorker = new Worker('gl_worker.js');
+      M.glWorker.postMessage({ init: true, canvas: off, preserve: q.has('preserve') }, [off]);
+    } catch (e) { status('This browser cannot run WebGL in a worker: ' + e); console.error(e); return; }
+                                                                                                        
+    M.gameBase = GAME_BASE;
+    M.programList = (await fetch('programs.txt').then(r => r.ok ? r.text() : '').catch(() => '')) + (localStorage.getItem('cofProgs') || '');
+    await startAudio(M);                                                                                    
+    Cof(M).catch(e => { status('Failed to start: ' + e); console.error(e); });
+    canvas.focus();
+  };
+  if (q.has('autostart')) $('play').onclick();
+})();
+</script>
+</body></html>
