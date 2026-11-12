@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+<script>
+// The game uses threads, which need cross-origin isolation. A service worker supplies the headers; the page reloads once after it is installed.
+if (!window.crossOriginIsolated && "serviceWorker" in navigator) {
+	navigator.serviceWorker.register("coi-sw.js").then((reg) => {
+		const go = () => { if (!sessionStorage.getItem("coi-reloaded")) { sessionStorage.setItem("coi-reloaded", "1"); location.reload(); } };
+		if (reg.active && !navigator.serviceWorker.controller) go();
+		else navigator.serviceWorker.addEventListener("controllerchange", go);
+	}).catch((e) => console.error("coi", e));
+}
+</script>
+
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no">
 		<title>The Deadseat</title>
