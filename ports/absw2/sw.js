@@ -9,6 +9,7 @@ self.addEventListener("fetch", (e) => {
   const req = e.request, u = new URL(req.url);
   if (u.origin !== location.origin || !u.pathname.startsWith(SCOPE_PATH)) return;
   let rel = decodeURIComponent(u.pathname.slice(SCOPE_PATH.length));
+  rel = rel.split("/").filter((x, i, arr) => x !== "" || i === arr.length - 1).join("/");
   if (rel === "sw.js") return;
   if (rel === "" && CFG.start) { e.respondWith(Response.redirect(SCOPE + CFG.start, 302)); return; }
   if (rel === "" || rel.endsWith("/")) rel += "index.html";

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stardew Valley</title>
+<style>html,body{margin:0;height:100%;background:#000;color:#fff;font:16px system-ui,sans-serif}body{display:flex;align-items:center;justify-content:center;text-align:center;padding:0 20px}</style>
+</head>
+<body>
+<div id="msg">Starting Stardew Valley...</div>
+<script>
+// The game's files are loaded from its GitHub repo through a small service worker (sw.js), so the game runs on this site.
+(async function () {
+  const msg = document.getElementById("msg");
+  try {
+    if (!("serviceWorker" in navigator)) throw new Error("This browser cannot run the game here.");
+    await navigator.serviceWorker.register("sw.js", { scope: "./" });
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise((r) => { navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }); setTimeout(r, 3000); });
+    location.replace("./");
+  } catch (err) { msg.textContent = "Could not start the game: " + (err && err.message || err); }
+})();
+</script>
+</body>
+</html>
