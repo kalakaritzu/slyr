@@ -1,5 +1,5 @@
 // Serves this game's files from where its GitHub project publishes them, so the game runs on this site instead of sending you elsewhere.
-const CFG = {"base": "https://nawsif.github.io/html/", "start": "rounds.html", "rewrite": null, "isolate": false, "patches": null};
+const CFG = {"base": "https://nawsif.github.io/html/", "start": "rounds.html", "rewrite": null, "isolate": false, "patches": null, "overrides": null};
 const BASE = CFG.base;
 const TYPES = { html: "text/html; charset=utf-8", htm: "text/html; charset=utf-8", js: "text/javascript", mjs: "text/javascript", css: "text/css", json: "application/json", wasm: "application/wasm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", webp: "image/webp", svg: "image/svg+xml", ico: "image/x-icon", mp3: "audio/mpeg", ogg: "audio/ogg", wav: "audio/wav", mp4: "video/mp4", webm: "video/webm", woff: "font/woff", woff2: "font/woff2", ttf: "font/ttf", otf: "font/otf", txt: "text/plain; charset=utf-8", xml: "application/xml", map: "application/json", webmanifest: "application/manifest+json" };
 const SCOPE = self.registration.scope, SCOPE_PATH = new URL(SCOPE).pathname;
@@ -15,7 +15,7 @@ self.addEventListener("fetch", (e) => {
   e.respondWith(serve(req, rel));
 });
 async function serve(req, rel) {
-  const url = BASE + rel.split("/").map(encodeURIComponent).join("/");
+  const url = (CFG.overrides && CFG.overrides[rel]) || (BASE + rel.split("/").map(encodeURIComponent).join("/"));
   const range = req.headers.get("range");
   let cache = null;
   try { cache = await caches.open("proxy2-" + SCOPE_PATH); } catch (e) {}
