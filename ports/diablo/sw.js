@@ -34,7 +34,7 @@ async function rewritten(res, rel) {
   if (CFG.rewrite) text = text.split(CFG.rewrite[0]).join(SCOPE_PATH);
   for (const p of (CFG.patches || [])) if (p.file === rel) text = text.split(p.find).join(p.replace);
   const h = new Headers(); h.set("Content-Type", TYPES[rel.split(".").pop().toLowerCase()] || "text/plain");
-  if (CFG.isolate) { h.set("Cross-Origin-Embedder-Policy", "require-corp"); h.set("Cross-Origin-Opener-Policy", "same-origin"); }
+  if (CFG.isolate) { h.set("Cross-Origin-Embedder-Policy", CFG.isolate === "credentialless" ? "credentialless" : "require-corp"); h.set("Cross-Origin-Opener-Policy", "same-origin"); }
   return new Response(text, { status: 200, headers: h });
 }
 function finish(res, rel, _) {
@@ -43,6 +43,6 @@ function finish(res, rel, _) {
   h.set("Content-Type", TYPES[ext] || "application/octet-stream");
   for (const k of ["content-length", "content-range", "accept-ranges", "etag"]) { const v = res.headers.get(k); if (v) h.set(k, v); }
   if (!h.has("accept-ranges")) h.set("Accept-Ranges", "bytes");
-  if (CFG.isolate) { h.set("Cross-Origin-Embedder-Policy", "require-corp"); h.set("Cross-Origin-Opener-Policy", "same-origin"); }
+  if (CFG.isolate) { h.set("Cross-Origin-Embedder-Policy", CFG.isolate === "credentialless" ? "credentialless" : "require-corp"); h.set("Cross-Origin-Opener-Policy", "same-origin"); }
   return new Response(res.status === 404 ? "Not found" : res.body, { status: res.status, headers: h });
 }
