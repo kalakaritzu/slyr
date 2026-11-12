@@ -18,8 +18,8 @@ async function serve(req, rel) {
   const url = BASE + rel.split("/").map(encodeURIComponent).join("/");
   const range = req.headers.get("range");
   let cache = null;
-  try { cache = await caches.open("proxy-" + SCOPE_PATH); } catch (e) {}
-  if (cache && !range) { const hit = await cache.match(url); if (hit) return finish(hit, rel, true); }
+  try { cache = await caches.open("proxy2-" + SCOPE_PATH); } catch (e) {}
+  if (cache && !range) { const hit = await cache.match(url); if (hit) return (CFG.rewrite && TEXT.test(rel)) ? rewritten(hit, rel) : finish(hit, rel, true); }
   let res;
   try { res = await fetch(url, range ? { headers: { Range: range } } : undefined); } catch (err) { return new Response("Could not load " + rel, { status: 502 }); }
   const len = +res.headers.get("content-length") || 0;
