@@ -1,6 +1,8 @@
 // Serves this game's files from where its GitHub project publishes them, so the game runs on this site instead of sending you elsewhere.
-const CFG = {"base": "https://nostaligafun.pages.dev/games/games-accualy/OTHER/AGameAboutFeedingABlackHole/", "start": "", "rewrite": null, "isolate": true, "patches": null, "overrides": null};
+const CFG = {"base": "https://nostaligafun.pages.dev/games/games-accualy/OTHER/AGameAboutFeedingABlackHole/", "start": "", "rewrite": null, "isolate": true, "patches": null, "overrides": null, "id": "agameaboutfeedingablackhole"};
 const BASE = CFG.base;
+const SHIM = "(function(){var P=" + JSON.stringify(CFG.id + ":") + ";var F=IDBFactory.prototype,op=F.open,del=F.deleteDatabase,dbs=F.databases;F.open=function(n){var a=[].slice.call(arguments);a[0]=P+n;return op.apply(this,a)};F.deleteDatabase=function(n){var a=[].slice.call(arguments);a[0]=P+n;return del.apply(this,a)};if(dbs)F.databases=function(){return dbs.call(this).then(function(l){return l.filter(function(d){return d.name.indexOf(P)===0}).map(function(d){return{name:d.name.slice(P.length),version:d.version}})})}})();";
+
 const TYPES = { html: "text/html; charset=utf-8", htm: "text/html; charset=utf-8", js: "text/javascript", mjs: "text/javascript", css: "text/css", json: "application/json", wasm: "application/wasm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", webp: "image/webp", svg: "image/svg+xml", ico: "image/x-icon", mp3: "audio/mpeg", ogg: "audio/ogg", wav: "audio/wav", mp4: "video/mp4", webm: "video/webm", woff: "font/woff", woff2: "font/woff2", ttf: "font/ttf", otf: "font/otf", txt: "text/plain; charset=utf-8", xml: "application/xml", map: "application/json", webmanifest: "application/manifest+json" };
 const SCOPE = self.registration.scope, SCOPE_PATH = new URL(SCOPE).pathname;
 self.addEventListener("install", () => self.skipWaiting());
@@ -28,12 +30,18 @@ async function serve(req, rel) {
   if (res.status === 200 && wants(rel) && len < 8 * 1048576) return rewritten(res, rel);
   return finish(res, rel, false);
 }
-const wants = (rel) => (CFG.rewrite && TEXT.test(rel)) || (CFG.patches || []).some((p) => p.file === rel);
+const wants = (rel) => (CFG.rewrite && TEXT.test(rel)) || (CFG.patches || []).some((p) => p.file === rel) || /\.html?$/i.test(rel);
 const TEXT = /\.(html?|js|mjs|css|json|webmanifest)$/i;
 async function rewritten(res, rel) {
   let text = await res.text();
   if (CFG.rewrite) text = text.split(CFG.rewrite[0]).join(SCOPE_PATH);
   for (const p of (CFG.patches || [])) if (p.file === rel) text = text.split(p.find).join(p.replace);
+  if (/\.html?$/i.test(rel)) {
+    const tag = "<script>" + SHIM + "</script>";
+    const hm = /<head[^>]*>/i.exec(text);
+    if (hm) text = text.slice(0, hm.index + hm[0].length) + tag + text.slice(hm.index + hm[0].length);
+    else { const tm = /<html[^>]*>/i.exec(text); text = tm ? text.slice(0, tm.index + tm[0].length) + tag + text.slice(tm.index + tm[0].length) : tag + text; }
+  }
   const h = new Headers(); h.set("Content-Type", TYPES[rel.split(".").pop().toLowerCase()] || "text/plain");
   if (CFG.isolate) { h.set("Cross-Origin-Embedder-Policy", CFG.isolate === "credentialless" ? "credentialless" : "require-corp"); h.set("Cross-Origin-Opener-Policy", "same-origin"); }
   return new Response(text, { status: 200, headers: h });
