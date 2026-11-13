@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Please, Don’t Touch Anything 3D</title>
+<link rel="icon" href="data:,">
+<style>
+html,body{width:100%;height:100%;margin:0;background:#151619}
+canvas{display:block;width:100%;height:100%;outline:none}
+#status{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);color:#fff;font:16px monospace;pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="game" width="1280" height="720" tabindex="0"></canvas>
+<div id="status" role="status">Loading…</div>
+<script src="https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@ab3c96131e2936e10b6c8f35352a1448efafa253/WebBuild-next.loader.js"></script>
+<script>
+const canvas = document.querySelector('#game');
+const status = document.querySelector('#status');
+const assets = {"data": ["https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@07d6a2df9a099243ee6be439b530b58e4c21f1f2/data-00.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@07d6a2df9a099243ee6be439b530b58e4c21f1f2/data-01.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@07d6a2df9a099243ee6be439b530b58e4c21f1f2/data-02.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@ac5e31440834abcd0c89f6138e618bde703ecfb1/data-03.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@ac5e31440834abcd0c89f6138e618bde703ecfb1/data-04.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@ac5e31440834abcd0c89f6138e618bde703ecfb1/data-05.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@e1cccdf1e1664221b9d4b2260fabbed25ec72260/data-06.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@e1cccdf1e1664221b9d4b2260fabbed25ec72260/data-07.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@e1cccdf1e1664221b9d4b2260fabbed25ec72260/data-08.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/data-09.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/data-10.gz"], "wasm": ["https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/wasm-00.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/wasm-01.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/wasm-02.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/wasm-03.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/wasm-04.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/wasm-05.gz", "https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@9b35373cd59f4a0b54e7d00045d8ecf52d215b6b/wasm-06.gz"]};
+async function unpack(urls, type) {
+    const chunks = [];
+    for (const url of urls) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Asset request failed: ' + response.status);
+        const stream = response.body.pipeThrough(new DecompressionStream('gzip'));
+        chunks.push(await new Response(stream).blob());
+    }
+    return URL.createObjectURL(new Blob(chunks, {type}));
+}
+async function start() {
+    const [data, wasm] = await Promise.all([
+        unpack(assets.data, 'application/octet-stream'),
+        unpack(assets.wasm, 'application/wasm')
+    ]);
+    const instance = await createUnityInstance(canvas, {
+    dataUrl: data,
+    frameworkUrl: 'https://cdn.jsdelivr.net/gh/3cfl/pdta3d-webport@ab3c96131e2936e10b6c8f35352a1448efafa253/WebBuild-next.framework.js',
+    codeUrl: wasm,
+    cacheControl: () => 'no-store',
+    companyName: 'escalation',
+    productName: 'PDTA 3D',
+    productVersion: '1.1',
+    devicePixelRatio: 1
+}, progress => {
+    status.textContent = 'Loading… ' + Math.round(progress * 100) + '%';
+});
+    window.pdta = instance;
+    status.remove();
+}
+start().catch(error => {
+    status.textContent = String(error);
+    console.error(error);
+});
+</script>
+</body>
+</html>
