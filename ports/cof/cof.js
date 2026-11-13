@@ -6595,6 +6595,7 @@ var GLImmediate = {
     enabledAttributesKey = (enabledAttributesKey << 3) | (GLEmulation.alphaTestEnabled ? (GLEmulation.alphaTestFunc - 512) : 7);
     // By drawing mode:
     enabledAttributesKey = (enabledAttributesKey << 1) | (GLImmediate.mode == GLctx.POINTS ? 1 : 0);
+    enabledAttributesKey = (enabledAttributesKey << 1) | +GLImmediate.useTextureMatrix;
     keyView.next(enabledAttributesKey);
     // By cur program:
     keyView.next(GL.currProgram);
@@ -6822,7 +6823,7 @@ var GLImmediate = {
         }
         // Stores an array that remembers which matrix uniforms are up-to-date in this FFP renderer, so they don't need to be resubmitted
         // each time we render with this program.
-        this.textureMatrixVersion = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+        this.textureMatrixVersion = new Array(2 + GLImmediate.MAX_TEXTURES).fill(-1);
         this.positionLocation = GLctx.getAttribLocation(this.program, "a_position");
         this.texCoordLocations = [];
         for (var i = 0; i < GLImmediate.MAX_TEXTURES; i++) {
@@ -7652,7 +7653,10 @@ var _emscripten_glMatrixMode = mode => {
     GLImmediate.currentMatrix = 1;
   } else if (mode == 5890) {
     // GL_TEXTURE
-    GLImmediate.useTextureMatrix = true;
+    if (!GLImmediate.useTextureMatrix) {
+      GLImmediate.useTextureMatrix = true;
+      GLImmediate.currentRenderer = null;
+    }
     GLImmediate.currentMatrix = 2 + GLImmediate.TexEnvJIT.getActiveTexture();
   } else {
     throw `Wrong mode ${mode} passed to glMatrixMode`;
@@ -7925,7 +7929,7 @@ var COF = {
   nextFd: 3,
   cache: new Map,
   cacheBytes: 0,
-  cacheLimit: 536870912,
+  cacheLimit: 67108864,
   overlay: new Map,
   mkdirs: new Set,
   tot: {
@@ -8050,153 +8054,221 @@ var COF = {
     return COF.manifestP;
   },
   async openData() {
-    const url = COF.base + "cof.data";
-    let r = await fetch(url, {
+    const url = COF.base + "cof.data", maximumIndex = 8 * 1048576;
+    let response = await fetch(url, {
       headers: {
-        Range: "bytes=0-262143"
+        Range: "bytes=0-1048575"
       }
     });
-    if (r.status === 404) return null;
-    if (!r.ok) throw new Error("cof.data: HTTP " + r.status);
-    let head;
-    if (r.status === 206) {
-      // Range works: blocks on demand
-      COF.dataUrl = url;
-      COF.dataSize = +r.headers.get("Content-Range").split("/")[1];
-      head = new Uint8Array(await r.arrayBuffer());
-    } else {
-      // the whole file (no Range support): into memory once
-      const total = +r.headers.get("Content-Length") || 0, reader = r.body.getReader(), parts = [];
-      let got = 0, last = 0;
-      for (;;) {
-        const {done, value} = await reader.read();
-        if (done) break;
-        parts.push(value);
-        got += value.length;
-        if (got - last > (4 << 20)) {
-          last = got;
-          COF.status(`downloading the game data ${(got / 1048576) | 0}${total ? " / " + ((total / 1048576) | 0) : ""} MB`);
+    if (response.status === 404) {
+      await COF.discardResponse(response);
+      return null;
+    }
+    if (!response.ok) {
+      await COF.discardResponse(response);
+      throw COF.assetError("Asset index: HTTP " + response.status);
+    }
+    let total = 0, head;
+    if (response.status === 206) {
+      let range;
+      try {
+        range = COF.rangeInfo(response, 0, 1048575);
+      } catch (error) {
+        await COF.discardResponse(response);
+        throw error;
+      }
+      total = range.total;
+      head = await COF.boundedBody(response, 1048576, range.length);
+    } else head = await COF.boundedBody(response, maximumIndex);
+    if (head.length < 12) throw COF.assetError("Invalid asset index.");
+    const magic = (new TextDecoder).decode(head.subarray(0, 8));
+    if (magic !== "COFDATA1" && magic !== "COFDATA2") throw COF.assetError("Invalid game data signature.");
+    const length = new DataView(head.buffer, head.byteOffset).getUint32(8, true);
+    if (length > maximumIndex - 12) throw COF.assetError("Asset index is too large.");
+    if (head.length < 12 + length) {
+      response = await fetch(url, {
+        headers: {
+          Range: `bytes=0-${11 + length}`
         }
+      });
+      if (!response.ok) {
+        await COF.discardResponse(response);
+        throw COF.assetError("Asset index: HTTP " + response.status);
       }
-      head = COF.data = new Uint8Array(got);
-      let o = 0;
-      for (const p of parts) {
-        head.set(p, o);
-        o += p.length;
-      }
+      if (response.status === 206) {
+        let range;
+        try {
+          range = COF.rangeInfo(response, 0, 11 + length);
+        } catch (error) {
+          await COF.discardResponse(response);
+          throw error;
+        }
+        head = await COF.boundedBody(response, 12 + length, range.length);
+      } else head = await COF.boundedBody(response, maximumIndex);
     }
-    if ((new TextDecoder).decode(head.subarray(0, 8)) !== "COFDATA1") throw new Error("cof.data: not a game data file");
-    const len = new DataView(head.buffer, head.byteOffset).getUint32(8, true);
-    if (12 + len > head.length) head = new Uint8Array(await (await fetch(url, {
-      headers: {
-        Range: `bytes=0-${11 + len}`
-      }
-    })).arrayBuffer());
-    const files = JSON.parse((new TextDecoder).decode(head.subarray(12, 12 + len))).files, m = {};
+    if (head.length < 12 + length) throw COF.assetError("Truncated asset index.");
+    const metadata = JSON.parse((new TextDecoder).decode(head.subarray(12, 12 + length)));
+    if (magic === "COFDATA2") {
+      const parts = metadata.parts;
+      if (!parts || !Number.isSafeInteger(parts.size) || parts.size < 1048576 || parts.size > 8 * 1048576 || !Number.isSafeInteger(parts.length) || parts.length < 1 || !Array.isArray(parts.files) || parts.files.length !== Math.ceil(parts.length / parts.size) || parts.files.some(name => !/^cof-[0-9a-f]{24}\.data$/.test(name)) || parts.folder !== "cof-assets/") throw COF.assetError("Invalid chunked asset manifest.");
+      COF.dataParts = parts;
+      COF.BLOCK = parts.size;
+      COF.dataSize = parts.length;
+    } else {
+      if (!total) throw COF.assetError("This older monolithic build needs byte-range support. Upload the new chunked build instead.");
+      COF.dataSize = total;
+      COF.BLOCK = 1048576;
+      COF.dataParts = null;
+    }
+    const manifest = {};
     COF.offs = {};
-    for (const k in files) {
-      COF.offs[k] = files[k][0];
-      m[k] = files[k][1];
+    COF.dataUrl = url;
+    for (const [key, entry] of Object.entries(metadata.files)) {
+      if (!Array.isArray(entry) || !entry.every(Number.isSafeInteger) || entry[0] < 0 || entry[1] < 0 || entry[0] + entry[1] > COF.dataSize) throw COF.assetError("Invalid asset file range.");
+      COF.offs[key] = entry[0];
+      manifest[key] = entry[1];
     }
-    return m;
+    COF.capCache();
+    return manifest;
   },
   BLOCK: 1048576,
   capCache() {
     if (COF.capped) return;
-    COF.capped = 1;
-    const mb = +(new URLSearchParams(location.search).get("filecache") || Module["fileCacheMB"] || 0);
-    if (mb > 0) COF.cacheLimit = mb << 20;
-    console.log("[web] block cache limit: " + (COF.cacheLimit >> 20) + " MB");
+    COF.capped = true;
+    const mb = +(new URLSearchParams(location.search).get("filecache") || Module["fileCacheMB"] || 64);
+    COF.cacheLimit = Math.max(16, Math.min(64, Number.isFinite(mb) ? mb : 64)) * 1048576;
+    COF.log("[assets] bounded cache " + COF.cacheLimit / 1048576 + " MB; at most two simultaneous requests");
   },
-  fetchBlock(rel, b) {
+  fetchBlock(rel, block, prefetch = false) {
     COF.capCache();
-    const key = rel + "#" + b, v = COF.cache.get(key);
-    if (v) {
-      if (!(v instanceof Promise)) {
+    const key = rel + "#" + block, found = COF.cache.get(key);
+    if (found) {
+      if (!(found instanceof Promise)) {
         COF.cache.delete(key);
-        COF.cache.set(key, v);
+        COF.cache.set(key, found);
       }
-      return v;
+      return found;
     }
-    // LRU touch
-    const size = rel ? COF.manifest[rel] : COF.dataSize, start = b * COF.BLOCK, end = Math.min(size, start + COF.BLOCK) - 1;
-    const url = rel ? COF.base + "game/" + rel.split("\\").map(encodeURIComponent).join("/") : COF.dataUrl;
-    const p = (async () => {
-      let r, blk;
+    if (prefetch && (COF.activeFetches >= COF.maxFetches || COF.fetchQueue.length)) return null;
+    const size = rel ? COF.manifest[rel] : COF.dataSize, start = block * COF.BLOCK, end = Math.min(size, start + COF.BLOCK) - 1;
+    if (end < start) return new Uint8Array(0);
+    const chunked = !rel && COF.dataParts;
+    const url = chunked ? COF.base + chunked.folder + chunked.files[block] : rel ? COF.base + "game/" + rel.split("\\").map(encodeURIComponent).join("/") : COF.dataUrl;
+    const promise = COF.withFetchSlot(async () => {
+      let bytes;
       for (let attempt = 0; ;attempt++) {
         try {
-          r = await fetch(url, {
+          const response = await fetch(url, chunked ? {} : {
             headers: {
               Range: `bytes=${start}-${end}`
-            },
-            cache: attempt ? "no-store" : "default"
+            }
           });
-          if (!r.ok && r.status !== 206) throw new Error("HTTP " + r.status);
-          blk = new Uint8Array(await r.arrayBuffer());
+          if (!response.ok) {
+            await COF.discardResponse(response);
+            throw COF.assetError("Asset chunk missing or unavailable (HTTP " + response.status + "). Upload the entire build, including cof-assets/.");
+          }
+          if (!chunked) {
+            if (response.status !== 206) {
+              await COF.discardResponse(response);
+              throw COF.assetError("Asset host ignored a byte range; refusing to buffer the complete pack.");
+            }
+            try {
+              const range = COF.rangeInfo(response, start, end);
+              if (range.total !== size) throw COF.assetError("Asset pack size changed.");
+            } catch (error) {
+              await COF.discardResponse(response);
+              throw error;
+            }
+          }
+          bytes = await COF.boundedBody(response, end - start + 1, end - start + 1);
           break;
-        } catch (e) {
-          if (attempt === 0 || attempt % 10 === 9) console.warn(`[web] fetch ${rel} block ${b} failed (${e && e.message || e}), retrying`);
-          await new Promise(res => setTimeout(res, Math.min(2e3, 50 * (1 << Math.min(attempt, 6)))));
+        } catch (error) {
+          if (error.permanent || attempt >= 2) throw error;
+          await new Promise(resolve => setTimeout(resolve, 100 * (attempt + 1)));
         }
       }
-      if (r.status === 200 && blk.length > end - start + 1) blk = blk.subarray(start, end + 1);
-      // server ignored Range
-      COF.cache.set(key, blk);
-      COF.cacheBytes += blk.length;
+      COF.cache.set(key, bytes);
+      COF.cacheBytes += bytes.length;
       COF.tot.fetches++;
-      COF.tot.fetchKB += blk.length >> 10;
-      if (COF.cacheBytes > COF.cacheLimit) COF.evict();
-      return blk;
-    })();
-    COF.cache.set(key, p);
-    p.catch(() => COF.cache.delete(key));
-    return p;
+      COF.tot.fetchKB += bytes.length / 1024;
+      COF.evict();
+      return bytes;
+    });
+    COF.cache.set(key, promise);
+    promise.catch(() => {
+      if (COF.cache.get(key) === promise) COF.cache.delete(key);
+    });
+    return promise;
   },
   evict() {
-    for (const [k, v] of COF.cache) {
-      if (v instanceof Promise) continue;
-      COF.cache.delete(k);
-      COF.cacheBytes -= v.length;
-      if (COF.cacheBytes < COF.cacheLimit * .7) break;
+    if (COF.cacheBytes <= COF.cacheLimit) return;
+    for (const [key, value] of COF.cache) {
+      if (value instanceof Promise) continue;
+      COF.cache.delete(key);
+      COF.cacheBytes -= value.length;
+      if (COF.cacheBytes <= COF.cacheLimit) break;
     }
   },
-  readRange(rel, off, n) {
+  readRange(rel, offset, count) {
     const size = COF.manifest[rel];
-    if (off >= size) return new Uint8Array(0);
-    if (off + n > size) n = size - off;
-    if (!COF.offs) return COF.readBlocks(rel, off, n, size);
-    const at = COF.offs[rel] + off;
-    return COF.data ? COF.data.subarray(at, at + n) : COF.readBlocks("", at, n, COF.dataSize);
+    if (offset >= size || count <= 0) return new Uint8Array(0);
+    count = Math.min(count, size - offset);
+    if (!COF.offs) return COF.readBlocks(rel, offset, count, size, size);
+    const at = COF.offs[rel] + offset;
+    return COF.readBlocks("", at, count, COF.dataSize, COF.offs[rel] + size);
   },
-  readBlocks(rel, off, n, size) {
-    const B = COF.BLOCK, b0 = Math.floor(off / B), b1 = Math.floor((off + n - 1) / B);
-    const parts = [];
-    let pending = false;
-    for (let b = b0; b <= b1; b++) {
-      const v = COF.fetchBlock(rel, b);
-      if (v instanceof Promise) pending = true;
-      parts.push(v);
-    }
-    if (b1 + 1 < Math.ceil(size / B) && !COF.cache.has(rel + "#" + (b1 + 1))) COF.fetchBlock(rel, b1 + 1).catch(() => {});
-    // sequential read-ahead
-    const assemble = blks => {
-      if (b0 === b1) return blks[0].subarray(off - b0 * B, off - b0 * B + n);
-      const out = new Uint8Array(n);
-      let done = 0;
-      for (let i = 0; i < blks.length && done < n; i++) {
-        const s = i === 0 ? off - b0 * B : 0, take = Math.min(n - done, blks[i].length - s);
-        if (take <= 0) break;
-        out.set(blks[i].subarray(s, s + take), done);
-        done += take;
+  readBlocks(rel, offset, count, size, fileEnd = size) {
+    if (count <= 0) return new Uint8Array(0);
+    const B = COF.BLOCK, first = Math.floor(offset / B), last = Math.floor((offset + count - 1) / B);
+    const peek = index => {
+      const key = rel + "#" + index, value = COF.cache.get(key);
+      if (value && !(value instanceof Promise)) {
+        COF.cache.delete(key);
+        COF.cache.set(key, value);
+        return value;
       }
-      return done === n ? out : out.subarray(0, done);
+      return null;
     };
-    if (!pending) return assemble(parts);
-    const tf = performance.now();
-    return Promise.all(parts).then(blks => {
-      COF.tot.fetchMs += performance.now() - tf;
-      return assemble(blks);
-    });
+    const prefetch = () => {
+      if ((last + 1) * B < fileEnd && ((offset + count) % B > B * .75 || count >= B)) {
+        const next = COF.fetchBlock(rel, last + 1, true);
+        if (next instanceof Promise) next.catch(() => {});
+      }
+    };
+    if (first === last) {
+      const block = COF.fetchBlock(rel, first), slice = value => value.subarray(offset % B, offset % B + count);
+      prefetch();
+      return block instanceof Promise ? block.then(slice) : slice(block);
+    }
+    let cached = true;
+    for (let index = first; index <= last; index++) if (!peek(index)) {
+      cached = false;
+      break;
+    }
+    const result = new Uint8Array(count);
+    const copy = (bytes, index) => {
+      const begin = index === first ? offset % B : 0, at = index * B + begin - offset;
+      result.set(bytes.subarray(begin, begin + Math.min(bytes.length - begin, count - at)), at);
+    };
+    if (cached) {
+      for (let index = first; index <= last; index++) copy(peek(index), index);
+      prefetch();
+      return result;
+    }
+    const started = performance.now();
+    return (async () => {
+      for (let index = first; index <= last; index++) {
+        const current = COF.fetchBlock(rel, index);
+        if (index < last) {
+          const next = COF.fetchBlock(rel, index + 1, true);
+          if (next instanceof Promise) next.catch(() => {});
+        }
+        copy(await current, index);
+      }
+      COF.tot.fetchMs += performance.now() - started;
+      prefetch();
+      return result;
+    })();
   },
   hop(f) {
     if (!COF.hopq) {
@@ -8212,7 +8284,74 @@ var COF = {
     COF.hopq.push(f);
     if (COF.hopq.length === 1) COF.hopc.port2.postMessage(0);
   },
-  lastMacro: 0
+  lastMacro: 0,
+  activeFetches: 0,
+  fetchQueue: [],
+  maxFetches: 2,
+  assetError(message) {
+    const error = new Error(message);
+    error.permanent = true;
+    return error;
+  },
+  async discardResponse(response) {
+    try {
+      if (response.body) await response.body.cancel();
+    } catch (_) {}
+  },
+  async boundedBody(response, limit, expected) {
+    const declared = response.headers.get("Content-Length"), encoding = response.headers.get("Content-Encoding");
+    const encoded = encoding && encoding.toLowerCase() !== "identity";
+    if (declared !== null && (!Number.isSafeInteger(+declared) || +declared < 0 || (!encoded && (+declared > limit || (expected !== undefined && +declared !== expected))))) {
+      await COF.discardResponse(response);
+      throw COF.assetError("Asset response exceeds its bounded request; refusing a full-pack download.");
+    }
+    if (!response.body) throw COF.assetError("Asset response has no readable stream.");
+    const capacity = expected !== undefined ? expected : !encoded && declared !== null ? +declared : limit;
+    const reader = response.body.getReader(), result = new Uint8Array(capacity);
+    let used = 0;
+    try {
+      for (;;) {
+        const {done, value} = await reader.read();
+        if (done) break;
+        if (used + value.length > result.length) {
+          await reader.cancel();
+          throw COF.assetError("Asset server ignored the bounded request.");
+        }
+        result.set(value, used);
+        used += value.length;
+      }
+    } catch (error) {
+      try {
+        await reader.cancel();
+      } catch (_) {}
+      throw error;
+    }
+    if (expected !== undefined && used !== expected) throw new Error("Truncated asset response.");
+    return used === result.length ? result : result.slice(0, used);
+  },
+  rangeInfo(response, start, end) {
+    const match = /^bytes (\d+)-(\d+)\/(\d+)$/.exec(response.headers.get("Content-Range") || "");
+    if (!match) throw COF.assetError("Asset server returned an invalid Content-Range.");
+    const values = match.slice(1).map(Number), total = values[2];
+    if (!values.every(Number.isSafeInteger) || values[0] !== start || values[1] !== Math.min(end, total - 1) || total <= values[1]) throw COF.assetError("Asset server returned the wrong byte range.");
+    return {
+      total,
+      length: values[1] - start + 1
+    };
+  },
+  withFetchSlot(task) {
+    return new Promise((resolve, reject) => {
+      const run = () => {
+        COF.activeFetches++;
+        Promise.resolve().then(task).then(resolve, reject).finally(() => {
+          COF.activeFetches--;
+          const next = COF.fetchQueue.shift();
+          if (next) next();
+        });
+      };
+      if (COF.activeFetches < COF.maxFetches) run(); else COF.fetchQueue.push(run);
+    });
+  }
 };
 
 var COFSettings = {
@@ -12998,7 +13137,7 @@ Module["lengthBytesUTF8"] = lengthBytesUTF8;
 // End JS library exports
 // end include: postlibrary.js
 var ASM_CONSTS = {
-  1611798432: () => new URLSearchParams(location.search).has("preserve") ? 1 : 0
+  1611798464: () => new URLSearchParams(location.search).has("preserve") ? 1 : 0
 };
 
 function client_mouse_capture(active) {

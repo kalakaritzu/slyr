@@ -4,29 +4,24 @@
 <div id="overlay"><h1>cry of fear</h1><button id="play">Play</button><p id="status" hidden></p><p id="credit" style="margin-top:18px;font-size:13px;opacity:.6">Web port by 98.corbin</p></div>
 <div id="stage" hidden><canvas id="canvas" width="1280" height="720" tabindex="0"></canvas></div>
 <script>
-// The game's data (about 4.6 GB) lives in Down1oads/cof-web-data (pinned to one version) as 90 MiB pieces. The game reads cof.data in
-// 1 MiB blocks using byte ranges, so each range is answered straight from the right piece; only what is played is downloaded.
-// cof.wasm and image.bin are joined from their pieces once and kept in the browser's cache.
+// The game's data (about 4.4 GB) lives in Down1oads/cof-web-data (pinned to one version) as small chunk files that the game
+// downloads on demand, so only what is played is fetched. cof.wasm and image.bin are joined from their pieces once and kept in the
+// browser's cache.
 (function () {
-  const BASE = "https://raw.githubusercontent.com/Down1oads/cof-web-data/76e71af7e27dddf65c698115ee8b8df413956593/";
-  const PART = 94371840, TOTAL = 4603688726, NPARTS = 49;
+  const BASE = "https://raw.githubusercontent.com/Down1oads/cof-web-data/87ab3afd4dd6e242f442885d0aa22c770edca3a6/";
   const BIG = {
-    "cof.wasm": { type: "application/wasm", parts: [["cof.wasm.part01", 58720256], ["cof.wasm.part02", 51087285]] },
+    "cof.wasm": { type: "application/wasm", parts: [["cof.wasm.part01", 58720256], ["cof.wasm.part02", 51088427]] },
     "image.bin": { type: "application/octet-stream", parts: [["image.bin", 84008960]] }
   };
   const realFetch = window.fetch.bind(window);
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const say = t => { const s = document.getElementById("status"); if (s) { s.textContent = t; s.hidden = !t; } };
-  async function get(path, init, expected) {
+  async function get(path, expected) {
     let last;
     for (let attempt = 1; attempt <= 4; attempt++) {
       try {
-        const r = await realFetch(BASE + path + (attempt > 2 ? "?t=" + Date.now() : ""), init);
-        if (r.ok || r.status === 206) {
-          const b = await r.blob();
-          if (expected === undefined || b.size === expected) return b;
-        }
-        last = "http " + r.status;
+        const r = await realFetch(BASE + path + (attempt > 2 ? "?t=" + Date.now() : ""));
+        if (r.ok) { const b = await r.blob(); if (b.size === expected) return b; last = "wrong size"; } else last = "http " + r.status;
       } catch (e) { last = e.message; }
       await sleep(400 * attempt);
     }
@@ -37,38 +32,41 @@
     if (joined[name]) return joined[name];
     return joined[name] = (async () => {
       const f = BIG[name];
-      let cache = null; try { cache = await caches.open("cof-" + "76e71af7e27dddf65c698115ee8b8df413956593".slice(0, 7)); } catch (e) {}
+      let cache = null; try { cache = await caches.open("cof-87ab3af"); } catch (e) {}
       const list = []; let n = 0;
       for (const [path, size] of f.parts) {
         let b = null;
         if (cache) { try { const hit = await cache.match("/__cof/" + path); if (hit) { const hb = await hit.blob(); if (hb.size === size) b = hb; } } catch (e) {} }
-        if (!b) { b = await get(path, undefined, size); if (cache) { try { await cache.put("/__cof/" + path, new Response(b)); } catch (e) {} } }
+        if (!b) { b = await get(path, size); if (cache) { try { await cache.put("/__cof/" + path, new Response(b)); } catch (e) {} } }
         list.push(b); n++; say("Downloading the game engine (" + n + " / " + f.parts.length + ")...");
       }
       say("");
       return new Blob(list, { type: f.type });
     })();
   }
-  async function range(a, b) {
-    const pieces = [];
-    for (let p = Math.floor(a / PART); p <= Math.floor(b / PART) && p < NPARTS; p++) {
-      const lo = Math.max(a, p * PART) - p * PART, hi = Math.min(b, (p + 1) * PART - 1) - p * PART;
-      const name = "cof.data.part" + String(p + 1).padStart(3, "0");
-      pieces.push(await get(name, { headers: { Range: "bytes=" + lo + "-" + hi } }, hi - lo + 1));
+  // The small index file (cof.data) is read with byte ranges, but the host does not let pages see Content-Range, so it is
+  // downloaded once and ranges are answered from it.
+  let indexBlob = null;
+  const index = () => indexBlob || (indexBlob = (async () => {
+    let last;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      try { const r = await realFetch(BASE + "cof.data" + (attempt > 2 ? "?t=" + Date.now() : "")); if (r.ok) return await r.blob(); last = "http " + r.status; } catch (e) { last = e.message; }
+      await sleep(400 * attempt);
     }
-    return new Blob(pieces, { type: "application/octet-stream" });
-  }
+    indexBlob = null; throw new Error("Could not download the game index (" + last + ")");
+  })());
   window.fetch = async function (input, init) {
     const url = typeof input === "string" ? input : (input instanceof URL ? input.href : (input && input.url)) || "";
     const name = decodeURIComponent(url.split("?")[0].split("/").pop());
-    if (name === "cof.data") {
-      let rh = init && init.headers && (init.headers.Range || init.headers.range || (init.headers.get && init.headers.get("Range")));
+    if (name === "cof.data" && url.startsWith(BASE)) {
+      const blob = await index();
+      const rh = init && init.headers && (init.headers.Range || init.headers.range || (init.headers.get && init.headers.get("Range")));
       const m = rh && /bytes=(\d*)-(\d*)/.exec(rh);
-      const a = m && m[1] ? +m[1] : 0, b = m && m[2] ? Math.min(+m[2], TOTAL - 1) : TOTAL - 1;
-      const blob = await range(a, b);
-      return new Response(blob, { status: 206, headers: { "Content-Type": "application/octet-stream", "Content-Range": "bytes " + a + "-" + b + "/" + TOTAL, "Content-Length": String(b - a + 1), "Accept-Ranges": "bytes" } });
+      if (!m) return new Response(blob, { status: 200, headers: { "Content-Length": String(blob.size) } });
+      const lo = m[1] ? +m[1] : 0, hi = m[2] ? Math.min(+m[2], blob.size - 1) : blob.size - 1;
+      return new Response(blob.slice(lo, hi + 1), { status: 206, headers: { "Content-Range": "bytes " + lo + "-" + hi + "/" + blob.size, "Content-Length": String(hi - lo + 1), "Accept-Ranges": "bytes" } });
     }
-    if (BIG[name]) {
+    if (BIG[name] && !url.startsWith(BASE)) {
       const blob = await whole(name);
       return new Response(blob, { status: 200, headers: { "Content-Type": BIG[name].type, "Content-Length": String(blob.size) } });
     }
@@ -86,7 +84,7 @@
   const q = new URLSearchParams(location.search);
                                                                                              
                                                                          
-  const GAME_BASE = '';
+  const GAME_BASE = 'https://raw.githubusercontent.com/Down1oads/cof-web-data/87ab3afd4dd6e242f442885d0aa22c770edca3a6/';
                                                                                
   try { for (const k of ['Vsync', 'Progs']) { const v = localStorage.getItem('sa' + k); if (v !== null) { if (localStorage.getItem('cof' + k) === null) localStorage.setItem('cof' + k, v); localStorage.removeItem('sa' + k); } } } catch (e) {}
   if (!('Suspending' in WebAssembly)) { status('This browser lacks WebAssembly JavaScript Promise Integration: use Chrome or Edge 137 or newer.'); $('play').disabled = true; }
@@ -267,7 +265,7 @@ document.addEventListener('pointerlockchange',()=>{
     $('play').disabled = true; status('Loading…');
     M = {
       canvas, vsync: localStorage.getItem('cofVsync') === '1' || q.has('vsync'),
-      preRun: [m => { Object.assign(m.ENV, {"COF_EXE_PATH": "C:\\game\\cof.exe", "COF_ALWAYS_ACTIVE": "1", "COF_STEAM_APPID": "223710", "COF_GOLDSRC_CVARS": "cg_water=0;gl_screenblur=0;gl_posteffects=0;gl_bump=0;gl_noshaders=1", "COF_SYSTEM_PROXY_DLLS": "opengl32", "COF_GOLDSRC_PERSIST_SETTINGS": "1", "COF_WEB_BRAND": "cof", "COF_GOLDSRC_VERSION_LABEL": "port by 98corbins", "COF_PORT_ID": "cryoffear", "COF_ARGS": "-game cryoffear -gl -windowed -w 1280 -h 720 -nojoy +gl_noshaders 1 +gl_posteffects 0 +gl_bump 0 +cg_water 0 -insecure +sv_lan 1 -console +console 1"}); m.ENV.COF_FPS = String(cap); for (const [k, v] of q) if (k.startsWith('COF_')) m.ENV[k] = v; }],                                         
+      preRun: [m => { Object.assign(m.ENV, {"COF_EXE_PATH": "C:\\game\\cof.exe", "COF_ALWAYS_ACTIVE": "1", "COF_STEAM_APPID": "223710", "COF_GOLDSRC_CVARS": "cg_water=0;gl_screenblur=0;gl_posteffects=0;gl_bump=0;gl_noshaders=1", "COF_SYSTEM_PROXY_DLLS": "opengl32", "COF_GOLDSRC_PERSIST_SETTINGS": "1", "COF_WEB_BRAND": "cof", "COF_GOLDSRC_VERSION_LABEL": "port by 98corbins", "COF_WEB_HOST_HEAP_MB": "128", "COF_PORT_ID": "cryoffear", "COF_ARGS": "-game cryoffear -gl -windowed -w 1280 -h 720 -nojoy +gl_noshaders 1 +gl_posteffects 0 +gl_bump 0 +cg_water 0 -insecure +sv_lan 1 -console +console 1"}); m.ENV.COF_FPS = String(cap); for (const [k, v] of q) if (k.startsWith('COF_')) m.ENV[k] = v; }],                                         
       print: s => {console.log(s);cofRecordLog('log',s);}, printErr: s => {
         console.error(s);cofRecordLog('error',s);
         if (/^(MISSING IMPORT:|FATAL:)/.test(s)) { status('Game stopped: ' + s); $('overlay').hidden=false;$('stage').hidden=true; if(document.pointerLockElement)document.exitPointerLock(); }
