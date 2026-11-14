@@ -12,7 +12,7 @@
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#111113">
 <script>document.documentElement.classList.add("menu-open");(function(){var d=document.createElement("div");d.style.cssText="position:absolute;top:-999px;width:100px;height:100px;overflow:scroll";document.documentElement.appendChild(d);var w=d.offsetWidth-d.clientWidth;d.remove();document.documentElement.style.setProperty("--sbw",w+"px");var sv=function(){document.documentElement.style.setProperty("--vw",innerWidth+"px")};sv();addEventListener("resize",sv)})()</script>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/svg+xml" href="favicon-reaper.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="slyr">
 <meta property="og:title" content="slyr">
@@ -24,103 +24,120 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"slyr","url":"https://slyr.pages.dev/","description":"Free browser games you can play instantly with no downloads.","inLanguage":"en"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f6f6f4;--surface:#fff;--ink:#16161a;--mute:#74747c;--line:#e4e4e0;--hover:#ecece8;
-  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  color-scheme:light;
-}
-@media(prefers-color-scheme:dark){:root{
-  --bg:#111113;--surface:#1a1a1d;--ink:#f2f2f0;--mute:#9a9aa2;--line:#2a2a2e;--hover:#1d1d21;
-  color-scheme:dark;
-}}
+:root{--font:'Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;--ink:#fff;--mute:#c4c4c4;--line:#ffffff30;--red:#ff2b2b;--ease:cubic-bezier(.16,1,.3,1);color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
-html{background:#060203;scrollbar-gutter:stable}   /* the scrollbar's space stays reserved, so locking and unlocking scroll never shifts the layout sideways */
-body{margin:0;background:#060203;color:var(--ink);font:400 14px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+html{background:#000;scrollbar-gutter:stable;scrollbar-color:#3a3a3a #000}   /* the scrollbar's space stays reserved, so locking and unlocking scroll never shifts the layout sideways */
+body{margin:0;background:#000;color:var(--ink);font:500 14px/1.5 var(--font);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer}
-:focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
+::selection{background:#fff;color:#000}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-/* layout: sidebar on the left, games on the right */
-.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-.side{position:sticky;top:0;height:100vh;overflow:hidden;background:#060203;border-right:1px solid rgba(255,43,43,.22);color:var(--ink);--ink:#f2f2f0;--mute:#e2d0d2;--line:rgba(255,255,255,.14);--surface:rgba(6,2,3,.72);--hover:rgba(255,255,255,.09);--bg:#060203}
-.side canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:brightness(1.3)}
-.side-body{position:relative;z-index:1;text-shadow:0 0 7px #060203,0 0 3px #060203,0 1px 1px #060203;height:100%;overflow-y:auto;padding:22px 0;display:flex;flex-direction:column;gap:20px}
-.logo{display:block;padding:0 16px;color:var(--ink)}
-.logo svg{display:block;height:92px;width:auto}
-.sw{position:relative;width:calc(100% - 32px);margin:0 16px}
-.sw::before{content:"";position:absolute;left:12px;top:50%;width:15px;height:15px;margin-top:-7.5px;z-index:1;pointer-events:none;background:var(--mute);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m15.5 15.5 5 5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m15.5 15.5 5 5'/%3E%3C/svg%3E") center/contain no-repeat;transition:background .2s}
-.sw:focus-within::before{background:#ff2b2b}
-.search{display:block;width:100%;margin:0;padding:9px 12px 9px 37px;border-radius:10px;border:1px solid rgba(255,43,43,.3);background:linear-gradient(90deg,rgba(255,43,43,.1),rgba(6,2,3,.72) 70%);transition:border-color .2s,box-shadow .2s,background .2s;font-kerning:none;font-variant-ligatures:none}
-.search:hover{border-color:rgba(255,43,43,.55)}
-.search::placeholder{color:var(--mute)}
-.search:focus{outline:none;border-color:#ff2b2b;box-shadow:0 0 0 3px rgba(255,43,43,.2);background:linear-gradient(90deg,rgba(255,43,43,.16),rgba(6,2,3,.8) 70%)}
-/* typing animation: the real input keeps the text, a copy drawn letter by letter sits on top of it */
+/* pixel snow behind everything */
+#snow{position:fixed;left:0;top:0;width:var(--vw,100vw);height:100%;z-index:0;pointer-events:none;display:block;image-rendering:pixelated}
+#stage{position:relative;z-index:1}
+
+/* glass: the one surface every control is made of */
+.gl{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:6px 14px;border:1px solid var(--line);border-radius:4px;background:#ffffff10;
+  box-shadow:inset 0 1px #ffffff18;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;font-size:12.5px;font-weight:600;text-transform:lowercase;white-space:nowrap;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease,color .2s ease}
+.gl:hover,.gl:focus-visible{transform:translateY(-1px);border-color:#ffffff70;background:#ffffff20;outline:none}
+.gl:active{transform:translateY(0) scale(.97)}
+.gl svg{width:15px;height:15px;fill:currentColor;flex:none}
+
+/* top of the games screen: the name, then one centred row that stays in reach while scrolling */
+.head{padding:34px 0 4px;text-align:center}
+.brand{display:inline-block;font:800 clamp(44px,6vw,66px)/1 var(--font);letter-spacing:-.06em;transition:transform .25s var(--ease)}
+.brand:hover{transform:translateY(-2px)}
+.top{position:-webkit-sticky;position:sticky;top:10px;z-index:30;display:flex;justify-content:center;gap:18px;width:min(680px,94vw);margin:16px auto 0}
+.top .gl,.top .sw{background:#141414e6}
+
+/* search: the real input keeps the text, a copy drawn letter by letter sits on top of it */
+.sw{position:relative;flex:1;min-width:0;height:40px;border:1px solid var(--line);border-radius:4px;background:#ffffff10;box-shadow:inset 0 1px #ffffff18;
+  transition:border-color .2s ease,background .2s ease}
+.sw:hover{border-color:#ffffff70}
+.sw:focus-within{border-color:#fff}
+.sw::before{content:"";position:absolute;left:13px;top:50%;width:15px;height:15px;margin-top:-7.5px;z-index:1;pointer-events:none;background:var(--mute);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m15.5 15.5 5 5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m15.5 15.5 5 5'/%3E%3C/svg%3E") center/contain no-repeat;transition:background .2s}
+.sw:focus-within::before{background:#fff}
+.search{display:block;width:100%;height:100%;margin:0;padding:0 14px 0 38px;border:0;background:none;outline:none;font:500 14px/1 var(--font);font-kerning:none;font-variant-ligatures:none}
+.search::placeholder{color:var(--mute);text-transform:lowercase}
+.search::-webkit-search-cancel-button{display:none}
 .sw.on .search{color:transparent;caret-color:transparent}
 .sw.on .search::selection{background:transparent;color:transparent}
-.sv{position:absolute;left:38px;right:13px;top:1px;bottom:1px;display:flex;align-items:center;overflow:hidden;pointer-events:none;color:var(--ink);font-kerning:none;font-variant-ligatures:none;letter-spacing:0}
-.st{position:relative;white-space:pre;line-height:1.25;transition:transform 170ms cubic-bezier(.16,1,.3,1)}
+.sv{position:absolute;left:38px;right:14px;top:1px;bottom:1px;display:flex;align-items:center;overflow:hidden;pointer-events:none;color:#fff;font:500 14px/1 var(--font);font-kerning:none;font-variant-ligatures:none;letter-spacing:0}
+.st{position:relative;white-space:pre;line-height:1.25;transition:transform 170ms var(--ease)}
 .sc{display:inline-block;white-space:pre}
 .sc.sel{background:rgba(255,255,255,.3)}
-.scaret{position:absolute;left:0;top:50%;width:2px;height:1.3em;margin:-.65em 0 0 -1px;background:var(--ink);will-change:transform;animation:sblinkA 1s steps(1) infinite}
+.scaret{position:absolute;left:0;top:50%;width:2px;height:1.3em;margin:-.65em 0 0 -1px;background:#fff;will-change:transform;animation:sblinkA 1s steps(1) infinite}
 .sw:not(.f) .scaret{display:none}
 @keyframes sblinkA{50%{opacity:0}}
 @keyframes sblinkB{50%{opacity:0}}
-.home{display:flex;align-items:center;gap:9px;margin:0 16px;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,43,43,.35);background:linear-gradient(90deg,rgba(255,43,43,.18),rgba(255,43,43,.05));font-weight:600;color:var(--ink);transition:background .2s,border-color .2s,box-shadow .2s,transform .25s cubic-bezier(.22,1,.36,1)}
-.home svg{width:16px;height:16px;flex:none;fill:#ff2b2b;transition:transform .25s cubic-bezier(.22,1,.36,1)}
-.home:hover{background:linear-gradient(90deg,rgba(255,43,43,.3),rgba(255,43,43,.1));border-color:#ff2b2b;box-shadow:0 0 0 3px rgba(255,43,43,.14)}
-.home:hover svg{transform:translateY(-1px) scale(1.12)}
-.home:active{transform:scale(.98)}
-.label{margin:0 16px 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.cats{display:flex;flex-direction:column;gap:3px;padding:0 16px}
-.cat{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:1px solid transparent;background:transparent;
-  padding:7px 8px 7px 15px;border-radius:10px;font-weight:500;color:var(--mute);transition:background .2s,color .2s,border-color .2s,transform .25s cubic-bezier(.22,1,.36,1)}
-.cat::before{content:"";position:absolute;left:5px;top:50%;width:3px;height:0;border-radius:3px;background:#ff2b2b;transform:translateY(-50%);transition:height .25s cubic-bezier(.22,1,.36,1)}
-.cat:hover{background:var(--hover);color:var(--ink);transform:translateX(3px)}
-.cat:hover::before{height:10px}
-.cat[aria-pressed="true"]{background:linear-gradient(90deg,rgba(255,43,43,.3),rgba(255,43,43,.07));border-color:rgba(255,43,43,.45);color:#fff;text-shadow:none;transform:none}
-.cat[aria-pressed="true"]::before{height:16px}
-.cat small{min-width:26px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.1);font-size:11px;font-weight:600;text-align:center;transition:background .2s,color .2s}
-.cat[aria-pressed="true"] small{background:#ff2b2b;color:#fff}
 
-/* games: tiles sit edge to edge, no gaps */
-.side canvas.gl,#mainBg.gl{filter:none}
-#mainBg{position:fixed;left:0;top:0;width:var(--vw,100vw);height:100%;z-index:0;pointer-events:none;display:block;filter:brightness(1.3)}
-.grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:0;align-content:start;background:transparent}
-@media(min-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1280px){.grid{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:1700px){.grid{grid-template-columns:repeat(4,1fr)}}
+/* categories */
+.cats{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:min(900px,94vw);margin:22px auto 0}
+.chip{min-height:34px;padding:5px 12px;font-size:12px}
+.chip small{font-size:10.5px;font-weight:500;opacity:.6}
+.chip[aria-pressed="true"]{background:#fff;border-color:#fff;color:#000}
+.chip[aria-pressed="true"] small{opacity:.55}
 
-.tile{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;background:#000;isolation:isolate}
-.tile .art{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,hsl(var(--h) 55% 30%),hsl(calc(var(--h) + 40) 55% 18%))}
-.tile .art b{font-size:64px;font-weight:700;letter-spacing:-.03em;color:hsl(var(--h) 70% 80%);opacity:.9}
-.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .7s cubic-bezier(.2,.8,.1,1)}
-.tile:hover img,.tile:focus-visible img{transform:scale(1.07)}
+/* games */
+.grid{position:relative;display:grid;width:min(1180px,94vw);grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin:30px auto 0;padding:0 0 70px;align-content:start}
+.tile{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;border:1px solid #444;border-radius:10px;background:#111;color:#fff;text-align:left;
+  opacity:0;translate:0 22px;transition:border-color .2s ease,transform .25s ease,box-shadow .25s ease,opacity .6s ease var(--d,0s),translate .8s var(--ease) var(--d,0s)}
+.tile.in{opacity:1;translate:none}
+.tile[hidden],.empty[hidden]{display:none}
+.tile:hover,.tile:focus-visible{transform:translateY(-3px);border-color:#fff;box-shadow:0 8px 26px #fff2}
+.tile .art{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,hsl(var(--h) 45% 24%),hsl(calc(var(--h) + 40) 45% 12%))}
+.tile .art b{font:800 60px/1 var(--font);color:hsl(var(--h) 60% 80%);opacity:.9}
+.tile img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.tile:hover img,.tile:focus-visible img{transform:scale(1.05)}
+.t-title{position:absolute;right:0;bottom:0;left:0;margin:0;padding:38px 14px 13px;background:linear-gradient(transparent,#000e 55%);font-size:15px;font-weight:700;line-height:1.25;
+  opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .5s var(--ease)}
+.tile:hover .t-title,.tile:focus-visible .t-title{opacity:1;transform:none}   /* the name and its dark fade only come up while the card is pointed at */
+@media(hover:none){.t-title{opacity:1;transform:none}}                       /* touch screens cannot hover, so there it stays */
+.t-play{position:absolute;top:10px;right:10px;padding:6px 11px;border:1px solid #ffffffa6;border-radius:20px;background:#0009;font-size:12px;font-weight:500;line-height:1;
+  transition:background .2s ease,color .2s ease,border-color .2s ease}
+.tile:hover .t-play,.tile:focus-visible .t-play{background:#fff;color:#000;border-color:#fff}
+.empty{grid-column:1/-1;margin:0;padding:70px 0;text-align:center;color:var(--mute);font-weight:600;text-transform:lowercase}
 
-/* black shadow with the title, shown on hover */
-.tile .shade{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-end;padding:20px;
-  background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.75) 45%,rgba(0,0,0,.35) 100%);
-  opacity:0;transition:opacity .3s ease}
-.tile:hover .shade,.tile:focus-visible .shade{opacity:1}
-.tile .shade h3{margin:0;color:#fff;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15;
-  transform:translateY(10px);transition:transform .4s cubic-bezier(.2,.8,.1,1)}
-.tile:hover .shade h3,.tile:focus-visible .shade h3{transform:none}
+.foot{display:flex;justify-content:center;gap:9px;padding:0 0 46px}
+
+/* cursor: a pixel crosshair with four rounded corner brackets; the brackets move out to the corners of whatever can be clicked */
+html.cur-on,html.cur-on *{cursor:none!important}
+.cur{position:fixed;left:0;top:0;width:0;height:0;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .3s}
+html.cur-on .cur.live{opacity:1}
+.cur i{position:absolute;left:0;top:0;width:26px;height:26px;transform-origin:50% 50%;background:center/100% 100% no-repeat;image-rendering:crisp-edges;image-rendering:pixelated;will-change:transform;filter:drop-shadow(0 0 1.5px rgba(0,0,0,.95))}
+.cur .cross{position:absolute;left:-11px;top:-11px;width:22px;height:22px;display:block;image-rendering:crisp-edges;image-rendering:pixelated;will-change:transform;filter:drop-shadow(0 0 1.5px rgba(0,0,0,.95))}
+.cur em{position:absolute;left:0;top:0;color:#fff;font:500 12px/1 var(--font);font-style:normal;white-space:nowrap;opacity:0;transition:opacity .2s;will-change:transform;text-shadow:0 0 4px #000,0 0 2px #000}
+.cur.lab em{opacity:1}
+
+/* random game: a glass box that flicks through the list, then launches the pick */
+.rou{position:fixed;inset:0;z-index:900;display:grid;place-items:center;padding:24px;background:#0009;-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);opacity:0;pointer-events:none;transition:opacity .3s ease}
+.rou.on{opacity:1;pointer-events:all}
+.rou-box{width:min(620px,100%);padding:18px;border:1px solid #ffffff38;border-radius:16px;background:#121212df;box-shadow:0 24px 90px #000b,inset 0 1px #ffffff20;transform:translateY(16px) scale(.97);transition:transform .45s var(--ease)}
+.rou.on .rou-box{transform:none}
+.rou-card{aspect-ratio:16/9;border:1px solid #ffffff26;border-radius:9px;background:#000 center/cover no-repeat}
+.rou-card.tick{animation:tick .12s ease-out}
+@keyframes tick{0%{transform:translateY(8px);filter:brightness(1.4)}100%{transform:none;filter:none}}
+.rou.lock .rou-card{animation:lock .5s var(--ease);border-color:#fff}
+@keyframes lock{0%{transform:scale(1.04);filter:brightness(1.8)}100%{transform:none;filter:none}}
+.rou-title{margin:14px 2px 2px;font-size:clamp(17px,3vw,23px);font-weight:700;text-align:left}
 
 /* launch: the thumbnail grows to fill the screen, then the game loads */
 html.launching,html.launching body{overflow:hidden}
 .launch{position:fixed;z-index:1000;margin:0;overflow:hidden;background:#000 center/cover no-repeat;pointer-events:all}
-.launch.art{background:linear-gradient(135deg,hsl(var(--h) 55% 30%),hsl(calc(var(--h) + 40) 55% 18%))}
+.launch.art{background:linear-gradient(135deg,hsl(var(--h) 45% 24%),hsl(calc(var(--h) + 40) 45% 12%))}
 .launch::before{content:"";position:absolute;inset:0;background:#000;opacity:0;transition:opacity .55s ease .15s}
-.launch.go::before{opacity:.62}
-.launch h3{position:absolute;left:50%;top:50%;margin:0;width:90%;text-align:center;color:#fff;font-size:clamp(28px,5vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1.1;
-  opacity:0;transform:translate(-50%,-44%);transition:opacity .45s ease .4s,transform .7s cubic-bezier(.2,.8,.1,1) .4s}
+.launch.go::before{opacity:.66}
+.launch h3{position:absolute;left:50%;top:50%;margin:0;width:90%;text-align:center;color:#fff;font:800 clamp(28px,5vw,64px)/1.1 var(--font);letter-spacing:-.03em;
+  opacity:0;transform:translate(-50%,-44%);transition:opacity .45s ease .4s,transform .7s var(--ease) .4s}
 .launch.go h3{opacity:1;transform:translate(-50%,-50%)}
-.launch .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#fff;transform:scaleX(0);transform-origin:0 50%;transition:transform 3s cubic-bezier(.1,.6,.2,1) .6s}
-.launch.go .bar{transform:scaleX(.92)}
+.launch .l-bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#fff;transform:scaleX(0);transform-origin:0 50%;transition:transform 3s cubic-bezier(.1,.6,.2,1) .6s}
+.launch.go .l-bar{transform:scaleX(.92)}
 
 /* page transition (see the script): the browser freezes the old screen as a picture; the new one is cut in through slanted blades */
 /* start menu */
@@ -213,45 +230,56 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
   .m-reaper{--rh:min(44vh,360px)}
 }
 @media(prefers-reduced-motion:reduce){.menu{transition:none}.menu *,.menu canvas,.menu::after{animation:none!important}.m-reaper .par{transition:none}}
-.tile[hidden],.empty[hidden]{display:none}
-.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.empty{grid-column:1/-1;margin:0;padding:40px 24px;color:var(--mute)}
+/* the start screen in the same look: black, snow, one typeface */
+.menu,.app{background:#000}
+.menu canvas{filter:none;transform:none;image-rendering:pixelated}
+.menu::after{background:radial-gradient(120% 90% at 50% 50%,transparent 55%,rgba(0,0,0,.55))}
+.m-embers,.m-glow{display:none}
+.m-inner,.m-title,.m-gh,.m-link{font-family:var(--font)}
+.m-title{letter-spacing:-.07em;font-weight:800;filter:none}
+.m-title .l{padding:.34em .02em .08em;margin:-.34em -.02em -.08em}
+.m-title .l>span{position:relative}
+.menu canvas.stick{position:absolute;inset:auto;display:block;animation:none;filter:none;transform:none;image-rendering:crisp-edges;image-rendering:pixelated;pointer-events:none}
+.pxw{display:block;image-rendering:crisp-edges;image-rendering:pixelated}
+.menu canvas.pxw{position:static;inset:auto;animation:none}   /* the name, drawn small in the same typeface and blown up so its pixels show */
+.m-link,.m-gh{text-transform:lowercase}
+.m-link{font-weight:800;letter-spacing:-.04em;padding-right:.1em}   /* the tight spacing would otherwise clip the last letter */
+.m-gh{font-weight:600;letter-spacing:0;margin-top:-1.55em}
+/* black and white only */
+.m-title .l:last-child span{color:#f6f2ee}
+.m-link:hover,html.kb .m-link:focus-visible{color:#fff}
+.m-link .t::before,.m-gh::after{background:#fff}
+/* the other menu words dim only while one of them is actually under the pointer, not anywhere in the empty space beside them */
+.m-nav:hover .m-link:not(:hover){opacity:1}
+.m-nav:hover .m-link[aria-disabled=true]:not(:hover){opacity:1}
+.m-nav:has(.m-link:hover) .m-link:not(:hover){opacity:.32}
+.m-nav:has(.m-link:hover) .m-link[aria-disabled=true]:not(:hover){opacity:.2}
+.m-reaper .back{display:none}
+.m-reaper{--rh:min(74vh,720px,46vw);left:clamp(12px,4vw,80px);bottom:0;width:calc(var(--rh)*.84)}
+.m-reaper .floor{display:none}
+.m-reaper img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:contain;object-position:center bottom;image-rendering:pixelated;
+  animation:m-sway-px 9s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes m-sway-px{0%,100%{transform:none}50%{transform:rotate(-.6deg)}}
 
-/* narrow screens: sidebar turns into a bar on top */
-@media(max-width:820px){
-  .app{grid-template-columns:1fr}
-  .side{position:static;height:auto;border-right:0;border-bottom:1px solid rgba(255,43,43,.22)}
-  .side-body{height:auto;overflow:visible;padding:14px 16px;gap:12px}
-  .logo{padding:0}
-  .logo svg{height:46px}
-  .sw{width:100%;margin:0}
-  .home{margin:0}
-  .label{display:none}
-  .cats{flex-direction:row;overflow-x:auto;gap:6px;padding:0 0 2px}
-  .cat{width:auto;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
-  .cat::before{display:none}
-  .cat:hover{transform:none}
-  .cat small{padding:0 6px}
-  .cat[aria-pressed="true"]{border-color:#ff2b2b}
+@media(max-width:640px){
+  .gl .t{display:none}
+  .gl.ico{padding:6px 11px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 }
-@media(min-width:560px) and (max-width:959px){.grid{grid-template-columns:repeat(2,1fr)}}
-
-/* touch screens have no hover, so keep the title readable */
-@media(hover:none){
-  .tile .shade{opacity:1;background:linear-gradient(to top,rgba(0,0,0,.85),transparent 55%)}
-  .tile .shade h3{transform:none;font-size:18px}
+/* touch screens have no pointer to hide */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important}
+  .tile{opacity:1;translate:none}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="reaper" viewBox="0 0 502.7 444.0"><path fill="#0a0a0c" fill-rule="evenodd" d="M202.6,441.2L208.0,433.4L198.0,426.9L194.3,433.6L190.3,410.2L185.6,405.3L152.0,219.9L147.6,214.2L135.1,157.5L114.0,169.4L112.3,163.6L108.6,167.4L107.7,174.6L86.5,191.5L66.5,215.3L58.5,215.2L60.4,226.9L33.2,276.8L28.9,276.7L30.5,288.5L21.3,318.8L13.3,384.6L3.6,348.2L3.0,310.5L8.4,270.8L19.6,232.5L29.2,213.8L56.3,177.8L106.6,131.8L129.3,117.0L129.0,106.8L133.6,101.8L141.4,99.3L152.4,102.2L169.3,211.8L168.4,222.2L187.3,311.7L196.7,280.7L217.7,392.1L212.0,423.1L212.2,391.0L208.3,407.7L212.3,440.6z"/><path fill="#0a0a0c" fill-rule="evenodd" d="M347.2,438.6L311.2,433.0L304.5,423.6L274.7,435.7L259.9,405.0L252.6,421.7L238.2,420.8L232.7,405.8L222.7,410.5L196.3,279.8L222.7,192.4L222.0,162.7L205.6,116.2L204.7,63.1L193.2,37.0L205.8,25.7L341.2,4.1L350.3,87.8L373.9,96.3L387.6,115.8L453.4,253.5L488.1,390.5L478.7,406.6L500.0,422.1L493.2,428.2L416.7,434.4L394.3,430.7L391.2,422.7z"/><path fill="#b00000" fill-rule="evenodd" d="M211.3,423.4L212.0,391.2L207.7,407.7L196.0,358.1L200.0,347.6L204.3,370.0L207.0,339.7L218.1,392.0zM190.5,399.4L185.8,375.2L189.0,377.4zM185.8,373.4L184.8,369.8L187.2,369.6L187.8,373.2zM184.7,367.3L183.7,364.4L186.3,364.0L187.0,366.9zM183.4,361.7L185.3,358.0L186.0,360.9zM17.0,315.3L8.0,301.0L10.2,270.5L16.9,250.1L22.4,242.5L27.2,253.0L27.2,233.8L33.0,242.7L34.3,223.7L43.0,234.0L45.2,218.8L47.9,220.4L53.7,202.0L61.2,203.0L67.8,193.0L73.9,193.0L81.0,188.3L68.6,210.3L65.4,208.6L61.3,212.4L55.3,211.6L57.0,228.2L32.6,272.8L26.8,273.3L26.5,291.8L18.3,267.6L23.6,298.2L20.2,301.8L13.9,277.7L11.4,288.6L18.8,314.6zM173.4,290.7L166.2,246.8L173.6,279.3z"/><path fill="#b00000" fill-rule="evenodd" d="M346.2,439.6L310.2,434.0L305.6,425.0L273.7,436.7L262.3,406.7L253.6,422.7L237.2,421.8L231.7,406.8L222.3,413.0L206.7,340.5L224.0,221.0L227.1,213.0L242.3,211.0L249.0,401.3L257.9,399.8L256.9,263.2L267.3,296.8L271.4,371.5L280.4,362.4L270.0,232.7L278.1,243.4L280.0,302.9L290.5,325.0L297.2,301.0L306.8,353.8L308.2,340.8L312.4,350.5L314.2,336.2L318.9,343.7L322.2,331.7L327.4,361.7L329.7,301.2L339.7,386.5L346.2,393.2L334.8,237.2L324.4,294.4L325.7,228.9L303.0,173.7L267.3,100.9L234.8,62.2L204.7,40.6L207.0,33.7L225.3,42.7L233.3,37.7L265.7,78.0L298.8,139.8L277.9,71.5L275.4,22.8L254.7,21.6L293.2,6.8L331.1,13.8L318.7,89.8L324.7,140.8L329.5,101.4L338.7,92.7L349.1,100.3L341.7,146.0L365.2,112.0L370.7,113.8L344.8,183.1L359.0,150.0L377.3,147.2L407.0,211.7L411.9,255.6L426.7,280.5L436.9,323.0L453.0,345.1L459.0,379.1L466.2,377.8L475.9,393.0L480.2,362.7L489.0,389.5L479.7,405.5L501.0,419.7L494.2,429.2L415.7,435.4L393.3,431.7L392.2,423.7zM361.9,403.3L369.0,395.0L361.0,354.0L366.0,345.0L354.3,328.6L359.0,317.5L347.7,289.2L343.4,227.7L347.3,336.8zM236.0,375.7L234.4,219.0L217.7,327.8L223.1,353.2L231.2,329.0zM472.0,359.0L475.8,346.7L479.3,355.4zM384.1,353.2L383.0,285.3L360.7,187.7L374.2,321.4zM393.9,294.0L402.5,275.1L369.9,156.9zM285.8,282.7L283.2,248.5L289.7,242.3L294.1,281.7zM281.9,234.3L230.7,199.7L223.0,150.8L207.3,113.7L208.7,93.0L216.9,93.3L223.4,74.7L228.9,76.6L224.8,134.5L237.7,176.5L279.7,218.7z"/><path fill="#f01212" fill-rule="evenodd" d="M202.3,441.5L207.7,433.7L198.2,427.6L194.0,434.0L155.5,222.0L158.4,222.6L189.3,392.8L176.0,307.9L177.6,305.7L195.8,402.9L202.0,405.7L202.0,403.0L187.3,322.3L207.6,402.8L212.7,441.0zM203.5,371.0L198.6,352.6L204.0,321.9L208.0,339.2zM186.7,322.0L185.9,318.3L188.0,318.3L188.7,322.0zM185.7,316.3L175.0,256.6L187.7,309.1zM175.7,305.3L173.9,295.3L176.7,299.1L177.7,305.3z"/><path fill="#f01212" fill-rule="evenodd" d="M359.1,405.3L345.3,338.8L341.4,225.7L350.1,234.1L350.0,287.8L361.3,316.1L356.7,327.2L368.3,343.6L363.4,352.5L371.4,396.5zM233.4,377.7L229.0,328.4L236.2,276.7L241.5,369.8zM274.4,371.0L272.0,281.3L282.4,360.5zM323.0,366.0L323.0,290.3L329.5,349.5zM206.3,339.0L203.3,318.5L220.4,249.7zM289.5,327.7L287.7,280.0L295.2,282.8L296.6,298.3L296.6,322.5zM234.0,275.3L238.0,243.3L240.5,269.9zM321.0,262.0L282.0,134.7L327.7,226.8zM272.0,116.0L235.7,69.1L206.5,46.5L202.7,28.4L217.3,24.3L229.5,34.9L228.0,45.0L206.6,38.5L265.2,93.5zM206.5,113.7L204.5,62.0L211.7,63.1L213.0,89.3zM218.8,83.7L217.7,73.2L224.0,71.3z"/><path fill="#b7b9cc" fill-rule="evenodd" d="M26.4,254.0L21.0,242.0L32.6,217.8L61.6,181.9L95.0,152.7L95.0,175.4L90.0,158.9L89.5,180.5L83.6,166.5L81.0,169.3L81.0,188.2L74.5,193.7L68.4,193.7L61.9,203.7L54.4,202.7L48.7,221.0L45.8,219.7L43.5,234.8L34.7,224.7L33.5,243.5L27.7,234.7zM100.0,170.7L96.0,150.4L110.6,137.2L131.4,126.9L105.7,146.1z"/><path fill="#b7b9cc" fill-rule="evenodd" d="M294.3,227.0L285.3,206.7L283.0,210.7L280.0,206.0L284.4,204.3L265.7,191.2L280.1,205.1L275.9,205.3L263.3,195.7L256.0,173.4L258.0,166.0L259.0,173.0L264.3,170.3L265.4,153.3L267.0,159.7L269.0,154.3L271.9,160.5L272.5,155.2L276.2,160.3L277.5,154.3L281.4,159.1L283.3,151.3L288.4,163.5L287.3,166.7L291.7,172.7L288.3,170.5L289.2,177.5L283.7,180.7L282.3,177.7L287.1,175.0L283.0,167.9L279.7,169.0L280.7,179.9L276.0,181.3L274.7,169.5L273.7,179.7L270.0,181.1L268.3,170.7L262.9,176.4L267.4,180.5L266.3,182.9L274.7,190.0L275.2,185.2L277.3,185.0L280.3,189.3L276.7,191.8L282.2,193.1L299.4,190.0L301.7,217.3L295.7,208.3L300.8,224.6L299.1,225.7L291.2,208.4zM282.8,192.6L283.0,185.7L280.7,184.4L287.9,184.0L288.5,188.5zM292.0,188.7L288.3,184.9L292.7,180.7L294.7,185.6zM295.3,188.3L296.6,179.7L299.1,185.7zM257.9,165.3L258.4,162.7L244.5,156.0L240.3,146.2L237.8,126.2L240.2,128.3L241.3,122.6L243.8,129.7L245.5,121.5L247.7,129.8L248.6,119.3L251.0,129.7L253.5,118.2L254.9,129.0L256.5,115.5L258.7,128.5L258.8,114.2L262.8,123.0L264.4,113.3L271.3,122.6L268.3,127.4L265.7,127.1L264.7,145.3L269.4,137.7L266.8,151.8L261.0,149.0L263.0,129.0L259.5,133.7L241.4,135.2L243.7,146.0L258.6,150.0L261.3,153.1z"/><path fill="#f6f2ee" fill-rule="evenodd" d="M19.0,245.7L23.9,229.8L55.7,182.2L106.4,134.5L130.1,120.0L137.0,120.3L136.3,124.3L111.3,137.8L62.3,182.6L33.2,218.5zM155.5,217.3L151.0,214.2L139.4,157.2L144.6,159.4L156.4,211.8zM129.4,117.3L128.3,108.3L137.0,108.0L137.0,116.3z"/><path fill="#f6f2ee" fill-rule="evenodd" d="M281.0,206.7L265.4,193.7L264.2,188.5L286.8,204.5L287.0,206.7zM281.4,191.7L277.5,185.2L283.7,185.0zM273.8,190.6L270.7,185.3L275.5,185.5zM289.0,190.7L288.9,184.0L293.3,188.1zM294.8,187.4L292.0,182.4L295.3,179.9L296.8,187.2zM275.8,179.7L273.8,169.0L276.7,169.8L277.6,174.5zM269.0,179.3L265.4,173.8L267.6,170.0L270.3,171.0zM282.3,178.3L278.6,168.8L284.2,167.5L288.2,175.3zM258.3,173.7L261.0,154.6L257.9,150.7L243.1,146.7L240.5,134.6L258.8,133.0L263.4,128.0L261.6,148.0L264.9,148.0L266.3,152.2L265.3,169.9z"/><path fill="#f5d90a" fill-rule="evenodd" d="M157.0,217.3L144.2,162.2L143.9,160.0L148.7,160.5L143.7,127.5L134.3,125.7L137.1,118.0L136.2,107.2L139.8,106.0L146.0,107.0L143.3,113.6L148.0,124.4L147.7,140.4L154.3,157.0L152.1,164.3L156.7,168.0L155.2,174.2L159.8,176.5L157.3,185.1L160.1,188.0L158.6,193.3L161.4,197.0L162.7,214.3z"/></symbol></svg>
 <div class="menu" id="menu" role="dialog" aria-label="slyr start menu">
   <canvas id="bg" aria-hidden="true"></canvas>
   <div class="m-glow" id="mGlow" aria-hidden="true"></div>
   <div class="m-embers" aria-hidden="true"><i style="--x:6%;--s:3px;--d:14s;--w:-3s;--dx:40px"></i><i style="--x:14%;--s:2px;--d:18s;--w:-9s;--dx:-30px"></i><i style="--x:22%;--s:4px;--d:16s;--w:-5s;--dx:60px"></i><i style="--x:31%;--s:2px;--d:20s;--w:-12s;--dx:-50px"></i><i style="--x:40%;--s:3px;--d:15s;--w:-7s;--dx:30px"></i><i style="--x:49%;--s:2px;--d:19s;--w:-2s;--dx:-40px"></i><i style="--x:57%;--s:4px;--d:17s;--w:-10s;--dx:50px"></i><i style="--x:66%;--s:2px;--d:21s;--w:-6s;--dx:-20px"></i><i style="--x:74%;--s:3px;--d:16s;--w:-13s;--dx:45px"></i><i style="--x:83%;--s:2px;--d:18s;--w:-4s;--dx:-55px"></i><i style="--x:91%;--s:3px;--d:20s;--w:-8s;--dx:25px"></i><i style="--x:97%;--s:2px;--d:15s;--w:-11s;--dx:-35px"></i></div>
-  <div class="m-reaper" id="mReaper" aria-hidden="true"><div class="par"><div class="back"></div><div class="floor"></div><svg viewBox="0 0 502.7 444.0" fill="currentColor" fill-rule="evenodd"><use href="#reaper"/></svg></div></div>
+  <div class="m-reaper" id="mReaper" aria-hidden="true"><div class="par"><div class="back"></div><div class="floor"></div><img src="reaper-pixel.png" alt="" onerror="this.remove()"></div></div>
   <div class="m-inner">
     <h2 class="m-title" aria-label="slyr"><span class="l"><span style="--i:0">s</span></span><span class="l"><span style="--i:1">l</span></span><span class="l"><span style="--i:2">y</span></span><span class="l"><span style="--i:3">r</span></span></h2>
     <a class="m-gh" href="https://github.com/kalakaritzu/slyr" target="_blank" rel="noopener">github</a>
@@ -262,29 +290,34 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
     </nav>
   </div>
 </div>
-<canvas id="mainBg" aria-hidden="true"></canvas>
+<canvas id="snow" aria-hidden="true"></canvas>
 <div class="app" id="app">
-  <aside class="side">
-    <canvas id="sideBg" aria-hidden="true"></canvas>
-    <div class="side-body">
-    <a class="home" id="home" href="./" aria-label="Back to the start screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 12h3v8h5v-6h4v6h5v-8h3z"/></svg>Home</a>
-    <input class="search" id="search" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
-    <nav aria-label="Categories">
-      <p class="label">Categories</p>
-      <div class="cats" id="cats"></div>
-    </nav>
+  <div id="stage">
+    <header class="head"><a class="brand ct" data-home href="./" aria-label="Back to the start screen">slyr</a></header>
+    <div class="top" id="bar">
+      <input class="search" id="search" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
+      <button class="gl ico ct" id="rnd" type="button" data-pad="5" aria-label="Play a random game"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 3.5A1.5 1.5 0 1 0 8 9.5 1.5 1.5 0 0 0 8 6.500zm8 0a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3zm-4 4a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3zm-4 4a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3zm8 0a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3z" fill-rule="evenodd"/></svg></button>
     </div>
-  </aside>
-  <main class="grid" id="grid"><h1 class="sr-only">slyr - free browser games, play instantly</h1><noscript><p class="empty">slyr needs JavaScript to show its games as tiles. Here is the full list of free browser games you can play:</p><ul class="empty"><li><a href="https://smackabooble.github.io/oad" rel="nofollow noopener">0 A.D.</a></li><li><a href="ports/adifficultgameaboutclimbing/" rel="nofollow noopener">A Difficult Game About Climbing</a></li><li><a href="ports/agameaboutfeedingablackhole/" rel="nofollow noopener">A Game About Feeding a Black Hole</a></li><li><a href="https://down1oads.github.io/sausageweb/" rel="nofollow noopener">A Weird Game About Sausage</a></li><li><a href="ports/amongusold/" rel="nofollow noopener">Among Us (Legacy)</a></li><li><a href="ports/balatro/" rel="nofollow noopener">Balatro</a></li><li><a href="ports/baldisbasics/" rel="nofollow noopener">Baldi's Basics</a></li><li><a href="ports/bendyandtheinkmachine/" rel="nofollow noopener">Bendy and the Ink Machine</a></li><li><a href="ports/boilnoodlesatnight/" rel="nofollow noopener">Boil Noodles at Night</a></li><li><a href="https://down1oads.github.io/BonerWeb/" rel="nofollow noopener">Bonerooms</a></li><li><a href="ports/brainrotonline/" rel="nofollow noopener">Brainrot Online</a></li><li><a href="ports/brotato/" rel="nofollow noopener">Brotato</a></li><li><a href="ports/cheeserolling.html" rel="nofollow noopener">Cheese Rolling</a></li><li><a href="ports/cloverpit.html" rel="nofollow noopener">CloverPit</a></li><li><a href="ports/clustertruck/" rel="nofollow noopener">Clustertruck</a></li><li><a href="ports/crashoutcrew/" rel="nofollow noopener">Crashout Crew</a></li><li><a href="https://surfd.net/" rel="nofollow noopener">CS Surf</a></li><li><a href="ports/cuphead.html" rel="nofollow noopener">Cuphead</a></li><li><a href="ports/diablo/" rel="nofollow noopener">Diablo</a></li><li><a href="ports/feedthepit.html" rel="nofollow noopener">Feed The Pit</a></li><li><a href="https://kalakaritzu.github.io/eaglercraft/" rel="nofollow noopener">Minecraft</a></li><li><a href="ports/gartenofbanban/index.html" rel="nofollow noopener">Garten of Banban</a></li><li><a href="ports/findtheneedle/index.html" rel="nofollow noopener">Find The Needle</a></li><li><a href="ports/gambonanza.html" rel="nofollow noopener">Gambonanza</a></li><li><a href="ports/gamblewithyourfriends/index.html" rel="nofollow noopener">Gamble With Your Friends</a></li><li><a href="ports/granny.html" rel="nofollow noopener">Granny</a></li><li><a href="ports/granny2.html" rel="nofollow noopener">Granny 2</a></li><li><a href="ports/granny3/" rel="nofollow noopener">Granny 3</a></li><li><a href="https://gta.deloskiyt.pl/" rel="nofollow noopener">GTA V</a></li><li><a href="https://joncodeofficial.github.io/gta-vice-city-wasm" rel="nofollow noopener">GTA Vice City</a></li><li><a href="https://down1oads.github.io/gutsweb/" rel="nofollow noopener">Guts and Glory</a></li><li><a href="ports/halflife/" rel="nofollow noopener">Half Life</a></li><li><a href="ports/halflife2/" rel="nofollow noopener">Half-Life 2</a></li><li><a href="ports/halflifeazuresheep/" rel="nofollow noopener">Half-Life: Azure Sheep</a></li><li><a href="ports/halflifeblueshift/" rel="nofollow noopener">Half-Life: Blue Shift</a></li><li><a href="ports/halflifedeltaparticles/" rel="nofollow noopener">Half-Life: Delta Particles</a></li><li><a href="ports/halflifeopposingforce/" rel="nofollow noopener">Half-Life: Opposing Force</a></li><li><a href="ports/fnash2.html" rel="nofollow noopener">Five Nights at Shrek's Hotel 2</a></li><li><a href="ports/sunshine/" rel="nofollow noopener">Super Mario Sunshine</a></li><li><a href="ports/luigimansion/" rel="nofollow noopener">Luigi's Mansion</a></li><li><a href="ports/melee/" rel="nofollow noopener">Super Smash Bros. Melee</a></li><li><a href="ports/bloodhockey/" rel="nofollow noopener">Super Blood Hockey</a></li><li><a href="ports/spongebobps2/" rel="nofollow noopener">The SpongeBob SquarePants Movie</a></li><li><a href="ports/fallout2/" rel="nofollow noopener">Fallout 2</a></li><li><a href="ports/absw2/" rel="nofollow noopener">Angry Birds Star Wars II</a></li><li><a href="ports/happyhills/index.html" rel="nofollow noopener">The Happyhills Homicide</a></li><li><a href="ports/deadseat/index.html" rel="nofollow noopener">The Deadseat</a></li><li><a href="ports/beforeclose/index.html" rel="nofollow noopener">Before Close</a></li><li><a href="ports/apesvshelium.html" rel="nofollow noopener">Apes vs Helium</a></li><li><a href="ports/vrgds/index.html" rel="nofollow noopener">Very Realistic Game Dev Simulator</a></li><li><a href="ports/spore.html" rel="nofollow noopener">Spore</a></li><li><a href="ports/cod4/" rel="nofollow noopener">Call of Duty 4: Modern Warfare</a></li><li><a href="ports/horizon/" rel="nofollow noopener">Horizon: Minecraft Rust Edition</a></li><li><a href="https://vel.gg/bsz" rel="nofollow noopener">Call of Duty: Black Ops</a></li><li><a href="ports/ggc2.html" rel="nofollow noopener">Guns, Gore and Cannoli 2</a></li><li><a href="https://down1oads.github.io/SH2WEB/" rel="nofollow noopener">Silent Hill 2</a></li><li><a href="https://down1oads.github.io/LSWWEB/" rel="nofollow noopener">LEGO Star Wars: The Video Game</a></li><li><a href="ports/cof.html" rel="nofollow noopener">Cry of Fear</a></li><li><a href="ports/fish.html" rel="nofollow noopener">FISH</a></li><li><a href="ports/fnafpit.html" rel="nofollow noopener">Five Nights at Freddy's: Into the Pit</a></li><li><a href="ports/btd6/" rel="nofollow noopener">Bloons TD 6</a></li><li><a href="https://down1oads.github.io/LBWEB/" rel="nofollow noopener">LEGO Batman: The Videogame</a></li><li><a href="https://down1oads.github.io/SHREK2WEB/" rel="nofollow noopener">Shrek 2</a></li><li><a href="https://down1oads.github.io/MSCWEB/" rel="nofollow noopener">My Summer Car</a></li><li><a href="ports/stanleyparable.html" rel="nofollow noopener">The Stanley Parable: Ultra Deluxe</a></li><li><a href="ports/pdta3d.html" rel="nofollow noopener">Please, Don't Touch Anything 3D</a></li><li><a href="ports/crueltysquad.html" rel="nofollow noopener">Cruelty Squad</a></li><li><a href="ports/horseygame/index.html" rel="nofollow noopener">Horsey Game</a></li><li><a href="ports/hillclimbracing.html" rel="nofollow noopener">Hill Climb Racing</a></li><li><a href="ports/hollowknight/" rel="nofollow noopener">Hollow Knight</a></li><li><a href="ports/hollowknightsilksong/" rel="nofollow noopener">Hollow Knight: Silksong</a></li><li><a href="ports/hotlinemiami/" rel="nofollow noopener">Hotline Miami</a></li><li><a href="ports/howtofish.html" rel="nofollow noopener">How to Fish</a></li><li><a href="ports/ironlung.html" rel="nofollow noopener">Iron Lung</a></li><li><a href="ports/inscryption/" rel="nofollow noopener">Inscryption</a></li><li><a href="ports/karlson/" rel="nofollow noopener">Karlson</a></li><li><a href="ports/kerbal.html" rel="nofollow noopener">Kerbal Space Program</a></li><li><a href="ports/leafblower.html" rel="nofollow noopener">Leaf Blower Revolution</a></li><li><a href="ports/kindergarten/" rel="nofollow noopener">Kindergarten</a></li><li><a href="ports/kindergarten2/" rel="nofollow noopener">Kindergarten 2</a></li><li><a href="ports/lamadriguera.html" rel="nofollow noopener">La Madriguera</a></li><li><a href="ports/kindergarten3/" rel="nofollow noopener">Kindergarten 3</a></li><li><a href="ports/mechachameleon/index.html" rel="nofollow noopener">Meccha Chameleon</a></li><li><a href="ports/miside.html" rel="nofollow noopener">MiSide</a></li><li><a href="https://nfsmw-port-2-web.netlify.app/nfsmw/" rel="nofollow noopener">Need for Speed: Most Wanted</a></li><li><a href="ports/nodebuster/" rel="nofollow noopener">Nodebuster</a></li><li><a href="ports/peak/" rel="nofollow noopener">PEAK</a></li><li><a href="ports/peopleplayground/" rel="nofollow noopener">People Playground</a></li><li><a href="ports/zomboid.html" rel="nofollow noopener">Project Zomboid (Tech Demo)</a></li><li><a href="ports/postal.html" rel="nofollow noopener">POSTAL</a></li><li><a href="ports/portal/" rel="nofollow noopener">Portal</a></li><li><a href="https://q1.pieter.com/" rel="nofollow noopener">Quake 1</a></li><li><a href="https://q2.pieter.com/" rel="nofollow noopener">Quake 2</a></li><li><a href="https://q3.pieter.com/" rel="nofollow noopener">Quake 3</a></li><li><a href="ports/ravenfield/" rel="nofollow noopener">Ravenfield</a></li><li><a href="ports/repo/" rel="nofollow noopener">R.E.P.O.</a></li><li><a href="ports/rerun/" rel="nofollow noopener">ReRun</a></li><li><a href="https://rtcw.pieter.com/" rel="nofollow noopener">Return to Castle Wolfenstein</a></li><li><a href="https://down1oads.github.io/rorweb/" rel="nofollow noopener">Rigs of Rods</a></li><li><a href="ports/rounds/" rel="nofollow noopener">ROUNDS</a></li><li><a href="ports/schoolboyrunaway/" rel="nofollow noopener">Schoolboy Runaway</a></li><li><a href="https://down1oads.github.io/SWYFWEB/" rel="nofollow noopener">Scam With Your Friends</a></li><li><a href="ports/scpcontainmentbreach/" rel="nofollow noopener">SCP: Containment Breach</a></li><li><a href="ports/shiftatmidnight/" rel="nofollow noopener">Shift at Midnight</a></li><li><a href="https://skate.aaddpp.lol/" rel="nofollow noopener">Skate 3</a></li><li><a href="ports/slime/" rel="nofollow noopener">Slime Rancher</a></li><li><a href="ports/spongeglocksquarepants/" rel="nofollow noopener">SpongeGlock SquarePants</a></li><li><a href="ports/snaptic/index.html" rel="nofollow noopener">SNAPTIC</a></li><li><a href="ports/stardewvalley/" rel="nofollow noopener">Stardew Valley</a></li><li><a href="ports/thatsnotmyneighbor/" rel="nofollow noopener">That's Not My Neighbor</a></li><li><a href="https://shar-wasm.cjoseph.workers.dev/?skipmovie" rel="nofollow noopener">The Simpsons: Hit &amp; Run</a></li><li><a href="https://down1oads.github.io/TheForestWeb/" rel="nofollow noopener">The Forest</a></li><li><a href="ports/tabs/" rel="nofollow noopener">Totally Accurate Battle Simulator</a></li><li><a href="ports/ultrakill/" rel="nofollow noopener">ULTRAKILL</a></li><li><a href="ports/undertale/" rel="nofollow noopener">Undertale</a></li><li><a href="https://ut.pieter.com/" rel="nofollow noopener">Unreal Tournament</a></li><li><a href="ports/untitledgoosegame/" rel="nofollow noopener">Untitled Goose Game</a></li><li><a href="ports/webecomewhatwebehold/" rel="nofollow noopener">We Become What We Behold</a></li><li><a href="ports/webfishing/" rel="nofollow noopener">WEBFISHING</a></li><li><a href="ports/whosyourdaddy/" rel="nofollow noopener">Who's Your Daddy</a></li></ul></noscript></main>
+    <main class="grid" id="grid"><h1 class="sr-only">slyr - free browser games, play instantly</h1><noscript><p class="empty">slyr needs JavaScript to show its games as tiles. Here is the full list of free browser games you can play:</p><ul class="empty"><li><a href="https://smackabooble.github.io/oad" rel="nofollow noopener">0 A.D.</a></li><li><a href="ports/adifficultgameaboutclimbing/" rel="nofollow noopener">A Difficult Game About Climbing</a></li><li><a href="ports/agameaboutfeedingablackhole/" rel="nofollow noopener">A Game About Feeding a Black Hole</a></li><li><a href="https://down1oads.github.io/sausageweb/" rel="nofollow noopener">A Weird Game About Sausage</a></li><li><a href="ports/amongusold/" rel="nofollow noopener">Among Us (Legacy)</a></li><li><a href="ports/balatro/" rel="nofollow noopener">Balatro</a></li><li><a href="ports/baldisbasics/" rel="nofollow noopener">Baldi's Basics</a></li><li><a href="ports/bendyandtheinkmachine/" rel="nofollow noopener">Bendy and the Ink Machine</a></li><li><a href="ports/boilnoodlesatnight/" rel="nofollow noopener">Boil Noodles at Night</a></li><li><a href="https://down1oads.github.io/BonerWeb/" rel="nofollow noopener">Bonerooms</a></li><li><a href="ports/brainrotonline/" rel="nofollow noopener">Brainrot Online</a></li><li><a href="ports/brotato/" rel="nofollow noopener">Brotato</a></li><li><a href="ports/cheeserolling.html" rel="nofollow noopener">Cheese Rolling</a></li><li><a href="ports/cloverpit.html" rel="nofollow noopener">CloverPit</a></li><li><a href="ports/clustertruck/" rel="nofollow noopener">Clustertruck</a></li><li><a href="ports/crashoutcrew/" rel="nofollow noopener">Crashout Crew</a></li><li><a href="https://surfd.net/" rel="nofollow noopener">CS Surf</a></li><li><a href="ports/cuphead.html" rel="nofollow noopener">Cuphead</a></li><li><a href="ports/diablo/" rel="nofollow noopener">Diablo</a></li><li><a href="ports/feedthepit.html" rel="nofollow noopener">Feed The Pit</a></li><li><a href="https://kalakaritzu.github.io/eaglercraft/" rel="nofollow noopener">Minecraft</a></li><li><a href="ports/gartenofbanban/index.html" rel="nofollow noopener">Garten of Banban</a></li><li><a href="ports/findtheneedle/index.html" rel="nofollow noopener">Find The Needle</a></li><li><a href="ports/gambonanza.html" rel="nofollow noopener">Gambonanza</a></li><li><a href="ports/gamblewithyourfriends/index.html" rel="nofollow noopener">Gamble With Your Friends</a></li><li><a href="ports/granny.html" rel="nofollow noopener">Granny</a></li><li><a href="ports/granny2.html" rel="nofollow noopener">Granny 2</a></li><li><a href="ports/granny3/" rel="nofollow noopener">Granny 3</a></li><li><a href="https://gta.deloskiyt.pl/" rel="nofollow noopener">GTA V</a></li><li><a href="https://joncodeofficial.github.io/gta-vice-city-wasm" rel="nofollow noopener">GTA Vice City</a></li><li><a href="https://down1oads.github.io/gutsweb/" rel="nofollow noopener">Guts and Glory</a></li><li><a href="ports/halflife/" rel="nofollow noopener">Half Life</a></li><li><a href="ports/halflife2/" rel="nofollow noopener">Half-Life 2</a></li><li><a href="ports/halflifeazuresheep/" rel="nofollow noopener">Half-Life: Azure Sheep</a></li><li><a href="ports/halflifeblueshift/" rel="nofollow noopener">Half-Life: Blue Shift</a></li><li><a href="ports/halflifedeltaparticles/" rel="nofollow noopener">Half-Life: Delta Particles</a></li><li><a href="ports/halflifeopposingforce/" rel="nofollow noopener">Half-Life: Opposing Force</a></li><li><a href="ports/fnash2.html" rel="nofollow noopener">Five Nights at Shrek's Hotel 2</a></li><li><a href="ports/sunshine/" rel="nofollow noopener">Super Mario Sunshine</a></li><li><a href="ports/luigimansion/" rel="nofollow noopener">Luigi's Mansion</a></li><li><a href="ports/melee/" rel="nofollow noopener">Super Smash Bros. Melee</a></li><li><a href="ports/bloodhockey/" rel="nofollow noopener">Super Blood Hockey</a></li><li><a href="ports/spongebobps2/" rel="nofollow noopener">The SpongeBob SquarePants Movie</a></li><li><a href="ports/fallout2/" rel="nofollow noopener">Fallout 2</a></li><li><a href="ports/absw2/" rel="nofollow noopener">Angry Birds Star Wars II</a></li><li><a href="ports/happyhills/index.html" rel="nofollow noopener">The Happyhills Homicide</a></li><li><a href="ports/deadseat/index.html" rel="nofollow noopener">The Deadseat</a></li><li><a href="ports/beforeclose/index.html" rel="nofollow noopener">Before Close</a></li><li><a href="ports/apesvshelium.html" rel="nofollow noopener">Apes vs Helium</a></li><li><a href="ports/vrgds/index.html" rel="nofollow noopener">Very Realistic Game Dev Simulator</a></li><li><a href="ports/spore.html" rel="nofollow noopener">Spore</a></li><li><a href="ports/cod4/" rel="nofollow noopener">Call of Duty 4: Modern Warfare</a></li><li><a href="ports/horizon/" rel="nofollow noopener">Horizon: Minecraft Rust Edition</a></li><li><a href="https://vel.gg/bsz" rel="nofollow noopener">Call of Duty: Black Ops</a></li><li><a href="ports/ggc2.html" rel="nofollow noopener">Guns, Gore and Cannoli 2</a></li><li><a href="https://down1oads.github.io/SH2WEB/" rel="nofollow noopener">Silent Hill 2</a></li><li><a href="https://down1oads.github.io/LSWWEB/" rel="nofollow noopener">LEGO Star Wars: The Video Game</a></li><li><a href="ports/cof.html" rel="nofollow noopener">Cry of Fear</a></li><li><a href="ports/fish.html" rel="nofollow noopener">FISH</a></li><li><a href="ports/fnafpit.html" rel="nofollow noopener">Five Nights at Freddy's: Into the Pit</a></li><li><a href="ports/btd6/" rel="nofollow noopener">Bloons TD 6</a></li><li><a href="https://down1oads.github.io/LBWEB/" rel="nofollow noopener">LEGO Batman: The Videogame</a></li><li><a href="https://down1oads.github.io/SHREK2WEB/" rel="nofollow noopener">Shrek 2</a></li><li><a href="https://down1oads.github.io/MSCWEB/" rel="nofollow noopener">My Summer Car</a></li><li><a href="ports/stanleyparable.html" rel="nofollow noopener">The Stanley Parable: Ultra Deluxe</a></li><li><a href="ports/pdta3d.html" rel="nofollow noopener">Please, Don't Touch Anything 3D</a></li><li><a href="ports/crueltysquad.html" rel="nofollow noopener">Cruelty Squad</a></li><li><a href="ports/horseygame/index.html" rel="nofollow noopener">Horsey Game</a></li><li><a href="ports/hillclimbracing.html" rel="nofollow noopener">Hill Climb Racing</a></li><li><a href="ports/hollowknight/" rel="nofollow noopener">Hollow Knight</a></li><li><a href="ports/hollowknightsilksong/" rel="nofollow noopener">Hollow Knight: Silksong</a></li><li><a href="ports/hotlinemiami/" rel="nofollow noopener">Hotline Miami</a></li><li><a href="ports/howtofish.html" rel="nofollow noopener">How to Fish</a></li><li><a href="ports/ironlung.html" rel="nofollow noopener">Iron Lung</a></li><li><a href="ports/inscryption/" rel="nofollow noopener">Inscryption</a></li><li><a href="ports/karlson/" rel="nofollow noopener">Karlson</a></li><li><a href="ports/kerbal.html" rel="nofollow noopener">Kerbal Space Program</a></li><li><a href="ports/leafblower.html" rel="nofollow noopener">Leaf Blower Revolution</a></li><li><a href="ports/kindergarten/" rel="nofollow noopener">Kindergarten</a></li><li><a href="ports/kindergarten2/" rel="nofollow noopener">Kindergarten 2</a></li><li><a href="ports/lamadriguera.html" rel="nofollow noopener">La Madriguera</a></li><li><a href="ports/kindergarten3/" rel="nofollow noopener">Kindergarten 3</a></li><li><a href="ports/mechachameleon/index.html" rel="nofollow noopener">Meccha Chameleon</a></li><li><a href="ports/miside.html" rel="nofollow noopener">MiSide</a></li><li><a href="https://nfsmw-port-2-web.netlify.app/nfsmw/" rel="nofollow noopener">Need for Speed: Most Wanted</a></li><li><a href="ports/nodebuster/" rel="nofollow noopener">Nodebuster</a></li><li><a href="ports/peak/" rel="nofollow noopener">PEAK</a></li><li><a href="ports/peopleplayground/" rel="nofollow noopener">People Playground</a></li><li><a href="ports/zomboid.html" rel="nofollow noopener">Project Zomboid (Tech Demo)</a></li><li><a href="ports/postal.html" rel="nofollow noopener">POSTAL</a></li><li><a href="ports/portal/" rel="nofollow noopener">Portal</a></li><li><a href="https://q1.pieter.com/" rel="nofollow noopener">Quake 1</a></li><li><a href="https://q2.pieter.com/" rel="nofollow noopener">Quake 2</a></li><li><a href="https://q3.pieter.com/" rel="nofollow noopener">Quake 3</a></li><li><a href="ports/ravenfield/" rel="nofollow noopener">Ravenfield</a></li><li><a href="ports/repo/" rel="nofollow noopener">R.E.P.O.</a></li><li><a href="ports/rerun/" rel="nofollow noopener">ReRun</a></li><li><a href="https://rtcw.pieter.com/" rel="nofollow noopener">Return to Castle Wolfenstein</a></li><li><a href="https://down1oads.github.io/rorweb/" rel="nofollow noopener">Rigs of Rods</a></li><li><a href="ports/rounds/" rel="nofollow noopener">ROUNDS</a></li><li><a href="ports/schoolboyrunaway/" rel="nofollow noopener">Schoolboy Runaway</a></li><li><a href="https://down1oads.github.io/SWYFWEB/" rel="nofollow noopener">Scam With Your Friends</a></li><li><a href="ports/scpcontainmentbreach/" rel="nofollow noopener">SCP: Containment Breach</a></li><li><a href="ports/shiftatmidnight/" rel="nofollow noopener">Shift at Midnight</a></li><li><a href="https://skate.aaddpp.lol/" rel="nofollow noopener">Skate 3</a></li><li><a href="ports/slime/" rel="nofollow noopener">Slime Rancher</a></li><li><a href="ports/spongeglocksquarepants/" rel="nofollow noopener">SpongeGlock SquarePants</a></li><li><a href="ports/snaptic/index.html" rel="nofollow noopener">SNAPTIC</a></li><li><a href="ports/stardewvalley/" rel="nofollow noopener">Stardew Valley</a></li><li><a href="ports/thatsnotmyneighbor/" rel="nofollow noopener">That's Not My Neighbor</a></li><li><a href="https://shar-wasm.cjoseph.workers.dev/?skipmovie" rel="nofollow noopener">The Simpsons: Hit &amp; Run</a></li><li><a href="https://down1oads.github.io/TheForestWeb/" rel="nofollow noopener">The Forest</a></li><li><a href="ports/tabs/" rel="nofollow noopener">Totally Accurate Battle Simulator</a></li><li><a href="ports/ultrakill/" rel="nofollow noopener">ULTRAKILL</a></li><li><a href="ports/undertale/" rel="nofollow noopener">Undertale</a></li><li><a href="https://ut.pieter.com/" rel="nofollow noopener">Unreal Tournament</a></li><li><a href="ports/untitledgoosegame/" rel="nofollow noopener">Untitled Goose Game</a></li><li><a href="ports/webecomewhatwebehold/" rel="nofollow noopener">We Become What We Behold</a></li><li><a href="ports/webfishing/" rel="nofollow noopener">WEBFISHING</a></li><li><a href="ports/whosyourdaddy/" rel="nofollow noopener">Who's Your Daddy</a></li></ul></noscript></main>
+    <footer class="foot">
+      <a class="gl ct" href="https://github.com/kalakaritzu/slyr" target="_blank" rel="noopener">github</a>
+      <a class="gl ct" href="https://discord.gg/m3xdMUfa4Z" target="_blank" rel="noopener">discord</a>
+    </footer>
+  </div>
 </div>
+<div class="rou" id="rou" role="dialog" aria-label="Random game" aria-hidden="true"><div class="rou-box"><div class="rou-card" id="rouCard"></div><h3 class="rou-title" id="rouTitle"></h3></div></div>
+<div class="cur" id="cur" aria-hidden="true"><i></i><i></i><i></i><i></i><em></em></div>
 
 <script>
 (function(){
 'use strict';
 const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const mk=(t,p={})=>Object.assign(document.createElement(t),p);
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fine=matchMedia('(hover: hover) and (pointer: fine)').matches;
 const hash=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h};
+const root=document.documentElement;
 
 /* games: G(id, title, link, image, [categories]) */
 const STEAM='https://cdn.akamai.steamstatic.com/steam/apps/';
@@ -477,7 +510,7 @@ let query='',cat='All';
 
 /* each game loads in this tab, full screen (browser back returns here) */
 function tile(g){
-  const a=mk('a',{className:'tile',href:g.url});
+  const a=mk('a',{className:'tile ct',href:g.url});
   a.dataset.id=g.id;
   a.setAttribute('aria-label','Play '+g.title);
   a.style.setProperty('--h',hash(g.title)%360);
@@ -489,9 +522,7 @@ function tile(g){
     img.onerror=()=>img.remove();
     a.append(img);
   }
-  const shade=mk('div',{className:'shade'});
-  shade.append(mk('h3',{textContent:g.title}));
-  a.append(shade);
+  a.append(mk('h3',{className:'t-title',textContent:g.title}));
   a.addEventListener('click',e=>{
     if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;  /* let new-tab clicks work normally */
     e.preventDefault();
@@ -501,19 +532,20 @@ function tile(g){
 }
 
 let launching=null;
-function launch(a,g){
+function launch(el,g,picture){
   if(launching)return;
-  const r=a.getBoundingClientRect();
-  const vw=document.documentElement.clientWidth,vh=innerHeight;
-  const img=a.querySelector('img');
+  const r=el.getBoundingClientRect();
+  const vw=root.clientWidth,vh=innerHeight;
+  const img=el.querySelector('img');
   const ov=mk('div',{className:'launch'});
-  ov.style.setProperty('--h',a.style.getPropertyValue('--h'));
-  if(img&&img.complete&&img.naturalWidth)ov.style.backgroundImage='url("'+img.src+'")';
+  ov.style.setProperty('--h',hash(g.title)%360);
+  const url=picture||(img&&img.complete&&img.naturalWidth?img.src:'');
+  if(url)ov.style.backgroundImage='url("'+url+'")';
   else ov.classList.add('art');
-  ov.append(mk('h3',{textContent:g.title}),mk('div',{className:'bar'}));
+  ov.append(mk('h3',{textContent:g.title}),mk('div',{className:'l-bar'}));
   ov.style.cssText+=';left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px';
   document.body.append(ov);
-  document.documentElement.classList.add('launching');
+  root.classList.add('launching');
   launching=ov;
   let gone=false;
   const go=()=>{if(gone)return;gone=true;location.href=g.url};
@@ -521,42 +553,50 @@ function launch(a,g){
   void ov.offsetWidth;   /* commit the start state so the transitions run */
   ov.classList.add('go');
   const an=ov.animate([
-    {left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'},
-    {left:'0px',top:'0px',width:vw+'px',height:vh+'px'}
+    {left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',borderRadius:'10px'},
+    {left:'0px',top:'0px',width:vw+'px',height:vh+'px',borderRadius:'0px'}
   ],{duration:700,easing:'cubic-bezier(.16,1,.3,1)',fill:'forwards'});
   an.onfinish=()=>setTimeout(go,150);
   setTimeout(go,1200);   /* safety net */
 }
-/* coming back with the Back button: drop the overlay */
-addEventListener('pageshow',e=>{
-  if(launching){launching.remove();launching=null;document.documentElement.classList.remove('launching')}
+/* coming back with the Back button: drop the overlays */
+addEventListener('pageshow',()=>{
+  if(launching){launching.remove();launching=null;root.classList.remove('launching')}
+  closeRoulette();
 });
 
 const inCat=(g,c)=>c==='All'||g.tags.includes(c);
 let words=[],typoMode=false;
 const matches=g=>inCat(g,cat)&&(!words.length||(typoMode?fuzzy(g,words):exact(g,words)));
 function setQuery(q){
+  query=q;
   words=norm(q).split(' ').filter(Boolean);
   typoMode=words.length>0&&!GAMES.some(g=>inCat(g,cat)&&exact(g,words));    /* nothing matches exactly: forgive typos */
 }
 
+const chips=new Map();
 function renderCats(){
-  const box=$('#cats');box.innerHTML='';
+  const box=$('#cats');if(!box)return;
   CATS.forEach(c=>{
     const n=GAMES.filter(g=>inCat(g,c)).length;
     if(!n)return;
-    const b=mk('button',{className:'cat',type:'button'});
+    const b=mk('button',{className:'gl chip ct',type:'button'});
     b.setAttribute('aria-pressed',String(c===cat));
     b.append(mk('span',{textContent:c}),mk('small',{textContent:n}));
-    b.onclick=()=>{cat=c;setQuery($('#search').value);renderCats();renderGames(true)};
-    box.append(b);
+    b.onclick=()=>{
+      if(c===cat)return;
+      cat=c;chips.forEach((x,name)=>x.setAttribute('aria-pressed',String(name===cat)));
+      setQuery($('#search').value);renderGames(true);
+    };
+    chips.set(c,b);box.append(b);
   });
 }
+
 /* games are built once; filtering animates them in, out and into their new spots */
 const EASE='cubic-bezier(.16,1,.3,1)';
 const grid=$('#grid');
 const tiles=GAMES.map(g=>{const t=tile(g);grid.append(t);return t});
-const empty=mk('p',{className:'empty',textContent:'No games found.',hidden:true});
+const empty=mk('p',{className:'empty',textContent:'no games found',hidden:true});
 grid.append(empty);
 let settle=null;
 const unpin=t=>{t._leaving=false;t.hidden=true;['position','left','top','width','height','pointerEvents','zIndex'].forEach(k=>t.style[k]='')};
@@ -565,7 +605,7 @@ function renderGames(animate){
   const wanted=new Set(GAMES.filter(matches).map(g=>g.id));
   const want=t=>wanted.has(t.dataset.id);
   if(!animate||reduce){
-    tiles.forEach(t=>{t._leaving&&unpin(t);t.hidden=!want(t)});
+    tiles.forEach(t=>{t._leaving&&unpin(t);t.hidden=!want(t);if(animate)t.classList.add('in')});
     empty.hidden=wanted.size>0;
     return;
   }
@@ -587,7 +627,7 @@ function renderGames(animate){
     t._leaving=true;
     Object.assign(t.style,{position:'absolute',left:(r.left-gr.left)+'px',top:(r.top-gr.top)+'px',width:r.width+'px',height:r.height+'px',pointerEvents:'none',zIndex:'2'});
   });
-  enter.forEach(t=>{t.hidden=false});
+  enter.forEach(t=>{t.hidden=false;t.style.setProperty('--d','0s');t.classList.add('in')});
   empty.hidden=wanted.size>0;
 
   leave.forEach(t=>{
@@ -600,13 +640,13 @@ function renderGames(animate){
     const f=first.get(t),l=t.getBoundingClientRect(),dx=f.left-l.left,dy=f.top-l.top;
     if(dx||dy)t.animate([{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'none'}],{duration:650,easing:EASE});
   });
-  enter.forEach(t=>{                                   /* rise in, slightly staggered */
-    t.animate([{opacity:0,transform:'scale(.94) translateY(14px)'},{opacity:1,transform:'none'}],
-      {duration:600,easing:EASE,fill:'backwards'});
+  enter.forEach(t=>{                                       /* rise in */
+    t.animate([{opacity:0,transform:'scale(.94) translateY(14px)'},{opacity:1,transform:'none'}],{duration:600,easing:EASE,fill:'backwards'});
   });
   if(!empty.hidden)empty.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:500,easing:EASE,fill:'backwards'});
 }
 $('#search').addEventListener('input',e=>{setQuery(e.target.value);renderGames(true)});
+
 /* typing animation for the search box: new letters pop in, deleted ones fade out and the gap closes, the caret glides.
    The real <input> still holds the text, so search, focus and the clear button work as before. */
 (function(){
@@ -709,79 +749,75 @@ $('#search').addEventListener('input',e=>{setQuery(e.target.value);renderGames(t
   sync();
 })();
 
+const searchBox=$('#searchbox');if(searchBox)searchBox.dataset.pad=5;   /* it sits right beside the dice button, so its outline keeps closer */
 
-/* ---------- animated red contour lines (start menu + sidebar) ---------- */
-function createContours2D(cv,o){
-  o=Object.assign({maxDpr:1.25,fps:60,major:1.8,minor:0.9,alphaMajor:1,alphaMinor:0.8,dim:1,zoom:1,lo:[92,11,18],hi:[255,43,43],parent:false},o||{});
+/* tiles fade up as they scroll into view */
+const io=new IntersectionObserver(es=>{
+  let k=0;
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.style.setProperty('--d',(Math.min(k++,10)*.04).toFixed(2)+'s');
+    e.target.classList.add('in');io.unobserve(e.target);
+    setTimeout(()=>e.target.style.setProperty('--d','0s'),900);
+  });
+},{rootMargin:'0px 0px -4% 0px'});
+tiles.forEach(t=>io.observe(t));
+
+/* ---------- pixel snow: square flakes on a coarse grid, a few layers deep, that drift away from the pointer ---------- */
+let px=-9999,py=-9999,moved=false,seenPointer=false;
+addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY;moved=true;seenPointer=true},{passive:true});
+function createSnow(cv,o){
+  o=Object.assign({density:.72,speed:.1,wind:.015,cell:4,parent:false},o||{});
   const ctx=cv.getContext('2d');
-  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const dpr=Math.min(window.devicePixelRatio||1,o.maxDpr);
-  let W=1,H=1,cell=8,cols=1,rows=1,field=new Float32Array(4),t=Math.random()*20,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false,painted=false;
-  const LEVELS=[];for(let l=-2;l<=2.0001;l+=0.25)LEVELS.push(+l.toFixed(2));
+  let W=1,H=1,flakes=[],raf=0,running=false,wanted=false,painted=false,last=0,t=Math.random()*100;
+  const make=(anywhere)=>{
+    const z=Math.random();                                   /* depth: far flakes are small, slow and faint */
+    return{x:Math.random()*W,y:anywhere?Math.random()*H:-12,z,vx:0,vy:0,ph:Math.random()*6.28,plus:z>.8&&Math.random()<.5,tw:Math.random()*6.28,ts:.5+Math.random()*2.2};
+  };
   function resize(){
     const w=o.parent?cv.parentElement.clientWidth:innerWidth,h=o.parent?cv.parentElement.clientHeight:innerHeight;
-    W=cv.width=Math.max(2,Math.floor(w*dpr));H=cv.height=Math.max(2,Math.floor(h*dpr));
-    cell=Math.max(6,Math.round(7*dpr));cols=Math.ceil(W/cell);rows=Math.ceil(H/cell);
-    field=new Float32Array((cols+1)*(rows+1));
-    if(running||painted)draw();            /* resizing wipes a canvas, so repaint even while paused */
+    W=cv.width=Math.max(2,w);H=cv.height=Math.max(2,h);
+    const n=Math.round(W*H/9000*o.density*5);
+    flakes=Array.from({length:n},()=>make(true));
+    if(wanted||painted)draw();
   }
-  function fill(tt){
-    const asp=W/H,z=o.zoom;let k=0;
-    const cx=1.6*Math.cos(tt*0.21)*z,cy=1.0*Math.sin(tt*0.17)*z;
-    for(let j=0;j<=rows;j++){
-      const v=((j/rows)*4-2)*z;
-      for(let i=0;i<=cols;i++){
-        const u=((i/cols)*4-2)*asp*z;
-        field[k++]=
-          0.55*Math.sin(u*1.3+tt*0.40+1.5*Math.sin(v*0.9-tt*0.30))+
-          0.55*Math.sin(v*1.7-tt*0.35+1.2*Math.sin(u*0.8+tt*0.25))+
-          0.40*Math.sin((u+v)*1.1+tt*0.20)+
-          0.65*Math.sin(Math.hypot(u-cx*asp,v-cy)*1.8-tt*0.60);
+  function step(dt){
+    const c=o.cell,rect=o.parent?cv.getBoundingClientRect():null;
+    const mx=rect?px-rect.left:px,my=rect?py-rect.top:py;
+    t+=dt;
+    for(let i=0;i<flakes.length;i++){
+      const f=flakes[i];
+      const fall=(18+70*f.z)*o.speed,drift=o.wind*40*(.4+f.z);   /* stars: they barely drift */
+      const dx=f.x-mx,dy=f.y-my,d2=dx*dx+dy*dy;
+      if(d2<40000){                                            /* within 200px of the pointer: it runs away, harder the closer it is */
+        const d=Math.sqrt(d2)||1,near=1-d/200,p=near*near*4200;
+        f.vx+=dx/d*p*dt;f.vy+=dy/d*p*dt;
       }
+      f.vx*=Math.exp(-dt*3.2);f.vy*=Math.exp(-dt*3.2);
+      f.x+=(drift+f.vx)*dt;f.y+=(fall+f.vy)*dt;
+      if(f.y>H+c*3){Object.assign(f,make(false));f.x=Math.random()*W}
+      if(f.x>W+c*3)f.x-=W+c*6;else if(f.x<-c*3)f.x+=W+c*6;
     }
   }
-  /* marching squares edge pairs: 0 top, 1 right, 2 bottom, 3 left */
-  const TB=[[],[[3,2]],[[2,1]],[[3,1]],[[0,1]],[[0,3],[2,1]],[[0,2]],[[0,3]],[[0,3]],[[0,2]],[[0,1],[3,2]],[[0,1]],[[3,1]],[[2,1]],[[3,2]],[]];
-  const pts=new Array(8).fill(0);
-  function contour(L){
-    const stride=cols+1;
-    for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){
-      const p=j*stride+i,a=field[p],b=field[p+1],c=field[p+stride+1],d=field[p+stride];
-      const idx=(a>L?8:0)|(b>L?4:0)|(c>L?2:0)|(d>L?1:0);
-      if(idx===0||idx===15)continue;
-      const x0=i*cell,y0=j*cell;
-      pts[0]=x0+cell*(L-a)/(b-a);pts[1]=y0;
-      pts[2]=x0+cell;pts[3]=y0+cell*(L-b)/(c-b);
-      pts[4]=x0+cell*(L-d)/(c-d);pts[5]=y0+cell;
-      pts[6]=x0;pts[7]=y0+cell*(L-a)/(d-a);
-      const segs=TB[idx];
-      for(let q=0;q<segs.length;q++){
-        const e1=segs[q][0]*2,e2=segs[q][1]*2;
-        ctx.moveTo(pts[e1],pts[e1+1]);ctx.lineTo(pts[e2],pts[e2+1]);
-      }
-    }
-  }
-  const mix=x=>'rgb('+Math.round(o.lo[0]+(o.hi[0]-o.lo[0])*x)+','+Math.round(o.lo[1]+(o.hi[1]-o.lo[1])*x)+','+Math.round(o.lo[2]+(o.hi[2]-o.lo[2])*x)+')';
   function draw(){
     painted=true;
-    ctx.fillStyle='#060203';ctx.fillRect(0,0,W,H);
-    fill(t);ctx.lineCap='round';
-    for(let n=0;n<LEVELS.length;n++){
-      const major=n%4===0;
-      ctx.beginPath();contour(LEVELS[n]);
-      ctx.strokeStyle=mix(n/(LEVELS.length-1));
-      ctx.lineWidth=(major?o.major:o.minor)*dpr;
-      ctx.globalAlpha=(major?o.alphaMajor:o.alphaMinor)*o.dim;ctx.stroke();
+    const c=o.cell;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#fff';
+    for(let i=0;i<flakes.length;i++){
+      const f=flakes[i];
+      const x=Math.round(f.x/c)*c,y=Math.round(f.y/c)*c;
+      ctx.globalAlpha=(.2+.8*f.z)*(.5+.5*Math.sin(t*f.ts+f.tw));    /* each one twinkles at its own pace */
+      if(f.plus){ctx.fillRect(x-c,y,c*3,c);ctx.fillRect(x,y-c,c,c*3)}   /* the brightest ones are small crosses */
+      else{const s=f.z>.45?c:c/2;ctx.fillRect(x,y,s,s)}
     }
     ctx.globalAlpha=1;
   }
   function frame(now){
     if(!running)return;
     raf=requestAnimationFrame(frame);
-    if(now-lastDraw<1000/o.fps-2)return;
-    const dt=Math.min(0.05,(now-last)/1000);last=now;lastDraw=now;
-    t+=dt*(calm?0.08:0.5);
-    draw();
+    const dt=Math.min(.05,(now-last)/1000);last=now;
+    step(reduce?dt*.25:dt);draw();
   }
   function run(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(frame)}
   function halt(){running=false;cancelAnimationFrame(raf)}
@@ -794,160 +830,259 @@ function createContours2D(cv,o){
   return{
     start(){wanted=true;draw();if(!document.hidden)run()},
     stop(){wanted=false;halt()},
-    ensure(){if(!painted)draw()},          /* one picture if there has never been one, and nothing more */
-    destroy(){wanted=false;halt();document.removeEventListener('visibilitychange',onVis);removeEventListener('resize',resize);if(ro)ro.disconnect()}
+    ensure(){if(!painted)draw()}
   };
 }
 
-/* ---------- topo lines on the GPU: layered simplex noise, thin on steep ground and fat on flat ground ---------- */
-const TOPO_VERT='attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
-const TOPO_BODY=`
-uniform vec2 res;
-uniform float t;
-uniform float inten;
-uniform float uvs;
-vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
-vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
-vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
-vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
-float snoise(vec3 v){
-  const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
-  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
-  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g;
-  vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
-  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
-  i=mod289(i);
-  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
-  float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;
-  vec4 j=p-49.0*floor(p*ns.z*ns.z);
-  vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
-  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
-  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
-  vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
-  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
-  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
-  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
-  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
-  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
-  return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
-}
-float field(vec2 uv,float z){
-  float f=0.0;
-  f+=snoise(vec3(uv*1.0,z))*0.55;
-  f+=snoise(vec3(uv*2.1+7.3,z*1.3))*0.28;
-  f+=snoise(vec3(uv*4.3+19.1,z*1.7))*0.12;
-  f+=snoise(vec3(uv*8.7+3.7,z*2.1))*0.05;
-  return f;
-}
-void main(){
-  vec2 uv=(gl_FragCoord.xy-0.5*res)/res.y;
-  uv*=uvs;
-  float z=t*0.045;
-  float h=field(uv,z);
-  float v=h*13.0;
-  float line=abs(fract(v+0.5)-0.5);
-#ifdef NO_DERIV
-  float fw=0.03;
-#else
-  float fw=fwidth(v);
-#endif
-  float width=0.055+fw*0.55;
-  float a=1.0-smoothstep(width-fw*0.8,width+fw*0.8,line);
-  vec3 red=vec3(1.0,0.09,0.09);
-  vec3 base=vec3(0.024,0.008,0.012);
-  gl_FragColor=vec4(base+red*a*inten,1.0);
-}`;
-const topoSource=deriv=>(deriv?'#extension GL_OES_standard_derivatives : enable\n':'#define NO_DERIV\n')+'precision highp float;\n'+TOPO_BODY;
-
-/* can this browser run the shader? checked once on a throw-away canvas */
-const TOPO_GL=(()=>{
-  try{
-    const c=document.createElement('canvas'),gl=c.getContext('webgl',{antialias:false});
-    if(!gl)return null;
-    const deriv=!!gl.getExtension('OES_standard_derivatives');
-    const sh=(type,src)=>{const x=gl.createShader(type);gl.shaderSource(x,src);gl.compileShader(x);return gl.getShaderParameter(x,gl.COMPILE_STATUS)?x:null};
-    const v=sh(gl.VERTEX_SHADER,TOPO_VERT),f=sh(gl.FRAGMENT_SHADER,topoSource(deriv));
-    if(!v||!f)return null;
-    const pr=gl.createProgram();gl.attachShader(pr,v);gl.attachShader(pr,f);gl.linkProgram(pr);
-    const ok=gl.getProgramParameter(pr,gl.LINK_STATUS);
-    const lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();
-    return ok?{deriv}:null;
-  }catch(e){return null}
+/* ---------- cursor: pixel crosshair + rounded corner brackets ---------- */
+(function(){
+  if(!fine||reduce)return;
+  const box=$('#cur'),cs=$$('i',box),lab=$('em',box);
+  root.classList.add('cur-on');
+  /* each bracket is drawn on a 13 by 13 grid and shown twice as large: two straight arms joined by a rounded corner */
+  const N=13,SZ=26,RAD=6,TH=1;
+  cs.forEach((el,i)=>{
+    const cv=document.createElement('canvas');cv.width=cv.height=N;
+    const g=cv.getContext('2d');g.fillStyle='#fff';
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+      const X=(i===1||i===2)?N-1-x:x,Y=(i>=2)?N-1-y:y;        /* mirrored for the other three corners */
+      let on;
+      if(X<RAD&&Y<RAD){const d=Math.hypot(X+.5-RAD,Y+.5-RAD);on=d<=RAD+.1&&d>RAD-TH-.2}
+      else on=(Y<TH&&X>=RAD)||(X<TH&&Y>=RAD);
+      if(on)g.fillRect(x,y,1,1);
+    }
+    el.style.backgroundImage='url('+cv.toDataURL()+')';
+  });
+  const c=[0,1,2,3].map(()=>({x:0,y:0,vx:0,vy:0}));
+  let target=null,lastEl=null,scrollSeen=-1,inside=true,last=0,placed=false,sc=.5,cx=0,cy=0,hw=13,hh=13,ang=0,settle=0;
+  root.addEventListener('mouseleave',()=>{inside=false;box.classList.remove('live')});
+  root.addEventListener('mouseenter',()=>{inside=true});
+  const searchInput=$('#search');
+  ['focus','blur'].forEach(t=>searchInput.addEventListener(t,()=>{lastEl=null;moved=true}));   /* clicking in or out is checked straight away */
+  (function loop(ts){
+    requestAnimationFrame(loop);
+    const dt=last?Math.min(50,ts-last):16;last=ts;
+    if(!seenPointer)return;
+    box.classList.toggle('live',inside);
+    const y=scrollY;
+    if(moved||y!==scrollSeen){
+      scrollSeen=y;
+      const el=document.elementFromPoint(px,py);
+      if(el!==lastEl){
+        lastEl=el;target=el&&el.closest?el.closest('.ct'):null;
+        if(!target&&searchBox&&el&&searchBox.contains(el)&&document.activeElement===searchInput)target=searchBox;   /* the search bar only gets the outline once you have clicked into it */
+      }
+    }
+    moved=false;
+    if(target&&(target.hidden||!target.isConnected||!target.getClientRects().length)){target=null;lastEl=null}
+    const opening=launching&&launching.isConnected;
+    if(opening)target=launching;                              /* a game is opening: the outline rides its picture as it grows to fill the screen */
+    let L,T,R,Bm,want=.5;
+    if(target){
+      const r=target.getBoundingClientRect(),p=+target.dataset.pad||10;             /* the real box, measured every frame; the gap is wider than the lean below, so the outline never touches what it frames */
+      L=r.left-p;T=r.top-p;R=r.right+p;Bm=r.bottom+p;
+      if(opening){L=Math.max(6,L);T=Math.max(6,T);R=Math.min(innerWidth-6,R);Bm=Math.min(innerHeight-6,Bm)}   /* and ends up just inside the edges of the screen */
+      want=Math.min(R-L,Bm-T)<110?.5:1;                         /* small buttons get half-size brackets, so the corners never crowd each other */
+      L=Math.round(L);T=Math.round(T);R=Math.round(R);Bm=Math.round(Bm);
+    }else{L=Math.round(px)-13;T=Math.round(py)-13;R=L+26;Bm=T+26}                    /* at rest the four brackets shrink and close into one small rounded square on the pointer */
+    sc+=(want-sc)*(1-Math.exp(-dt/40));if(Math.abs(want-sc)<.02)sc=want;const z=SZ*sc;   /* it settles on exactly half or full size, so its lines stay sharp and full white */
+    /* every corner flies on its own. At rest the four circle the pointer; over something clickable each one goes
+       straight to the nearest corner of it and turns the last few degrees to sit square, so nothing swings around */
+    let goal,rotGoal;
+    if(target){
+      const n=Math.round(ang/90);rotGoal=n*90;
+      const mx=opening?0:(+target.dataset.pad||10)/2,lim=v=>Math.max(-mx,Math.min(mx,v)),ox=lim((px-(L+R)/2)*.06),oy=lim((py-(T+Bm)/2)*.06);   /* never more than half the gap */   /* it leans a little towards the pointer, so it moves as you move */
+      const slot=[[L+z/2+ox,T+z/2+oy],[R-z/2+ox,T+z/2+oy],[R-z/2+ox,Bm-z/2+oy],[L+z/2+ox,Bm-z/2+oy]];
+      goal=[0,1,2,3].map(i=>slot[(((i+n)%4)+4)%4]);
+      ang+=(rotGoal-ang)*(1-Math.exp(-dt/60));if(Math.abs(rotGoal-ang)<.5)ang=rotGoal;
+    }else{
+      ang+=dt*.15;                                             /* at rest it spins, one turn every 2.4 seconds */
+      const a=ang*Math.PI/180,co=Math.cos(a),sn=Math.sin(a),h=13-z/2;
+      goal=[[-h,-h],[h,-h],[h,h],[-h,h]].map(([dx,dy])=>[px+dx*co-dy*sn,py+dx*sn+dy*co]);
+    }
+    if(!placed){placed=true;c.forEach((q,i)=>{q.x=goal[i][0];q.y=goal[i][1]})}
+    /* a soft spring carries each corner: it overshoots a touch and settles, which gives the little bounce */
+    const h=Math.min(.034,dt/1000),K=opening?1400:target?230:900,D=opening?75:target?17:60;
+    if(target)settle=260;else if(settle>0)settle-=dt;       /* after leaving a button it gets a moment to spring back before locking up again */
+    for(let i=0;i<4;i++){
+      const q=c[i];
+      if(target||settle>0){                                    /* the spring only works on and just after a button */
+        q.vx+=((goal[i][0]-q.x)*K-q.vx*D)*h;q.vy+=((goal[i][1]-q.y)*K-q.vy*D)*h;
+        q.x+=q.vx*h;q.y+=q.vy*h;
+      }else{q.x=goal[i][0];q.y=goal[i][1];q.vx=q.vy=0}          /* at rest the four corners are locked together, so the little square never comes apart */
+      cs[i].style.transform='translate3d('+(q.x-13).toFixed(2)+'px,'+(q.y-13).toFixed(2)+'px,0) rotate('+ang.toFixed(1)+'deg) scale('+sc.toFixed(3)+')';
+    }
+    const text=target?(target.dataset.cursor||''):'';
+    if(text){if(lab.textContent!==text)lab.textContent=text;box.classList.add('lab')}else box.classList.remove('lab');
+    lab.style.transform='translate3d('+Math.min(px+16,innerWidth-70)+'px,'+Math.min(py+18,innerHeight-26)+'px,0)';
+  })(0);
 })();
 
-function createTopoGL(cv,o){
-  o=Object.assign({fps:30,dim:1,zoom:1,scale:1,parent:false},o||{});
-  const gl=cv.getContext('webgl',{antialias:false,alpha:false});
-  cv.classList.add('gl');
-  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(TOPO_GL.deriv)gl.getExtension('OES_standard_derivatives');
-  const mkShader=(type,src)=>{const x=gl.createShader(type);gl.shaderSource(x,src);gl.compileShader(x);return x};
-  const prog=gl.createProgram();
-  gl.attachShader(prog,mkShader(gl.VERTEX_SHADER,TOPO_VERT));
-  gl.attachShader(prog,mkShader(gl.FRAGMENT_SHADER,topoSource(TOPO_GL.deriv)));
-  gl.linkProgram(prog);gl.useProgram(prog);
-  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
-  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-  const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  const uRes=gl.getUniformLocation(prog,'res'),uT=gl.getUniformLocation(prog,'t'),uI=gl.getUniformLocation(prog,'inten'),uS=gl.getUniformLocation(prog,'uvs');
-  let t=40+Math.random()*30,last=performance.now(),lastDraw=0,raf=0,running=false,wanted=false,painted=false;
-  function resize(){
-    const w=o.parent?cv.parentElement.clientWidth:innerWidth,h=o.parent?cv.parentElement.clientHeight:innerHeight;
-    const k=Math.min(window.devicePixelRatio||1,1)*o.scale;       /* lines are soft anyway, so a lighter render is fine */
-    cv.width=Math.max(2,Math.floor(w*k));cv.height=Math.max(2,Math.floor(h*k));
-    gl.viewport(0,0,cv.width,cv.height);
-    if(wanted||painted)draw();             /* resizing wipes a canvas, so repaint even while paused */
-  }
-  function draw(){
-    painted=true;
-    gl.uniform2f(uRes,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform1f(uI,o.dim);gl.uniform1f(uS,3.2*o.zoom);
-    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-  }
-  function frame(now){
-    if(!running)return;
-    raf=requestAnimationFrame(frame);
-    if(now-lastDraw<1000/o.fps-2)return;
-    const dt=Math.min(0.05,(now-last)/1000);last=now;lastDraw=now;
-    t+=dt*(calm?0.08:1);
-    draw();
-  }
-  function run(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(frame)}
-  function halt(){running=false;cancelAnimationFrame(raf)}
-  const onVis=()=>{if(!wanted)return;if(document.hidden)halt();else run()};
-  document.addEventListener('visibilitychange',onVis);
-  let ro=null;
-  if(o.parent&&window.ResizeObserver){ro=new ResizeObserver(resize);ro.observe(cv.parentElement)}
-  else addEventListener('resize',resize);
-  resize();
-  return{
-    start(){wanted=true;draw();if(!document.hidden)run()},
-    stop(){wanted=false;halt()},
-    ensure(){if(!painted)draw()},          /* one picture if there has never been one, and nothing more */
-    destroy(){
-      wanted=false;halt();document.removeEventListener('visibilitychange',onVis);removeEventListener('resize',resize);if(ro)ro.disconnect();
-      const lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();
-    }
+/* ---------- random game ---------- */
+const rou=$('#rou'),rouCard=$('#rouCard'),rouTitle=$('#rouTitle');
+let rouTimer=0,rouOn=false;
+function closeRoulette(){clearTimeout(rouTimer);rouOn=false;rou.classList.remove('on','lock');rou.setAttribute('aria-hidden','true')}
+function roulette(){
+  if(rouOn||launching)return;
+  const list=GAMES.filter(matches),pool=list.length?list:GAMES;
+  const pick=pool[(Math.random()*pool.length)|0];
+  if(reduce){location.href=pick.url;return}
+  rouOn=true;rou.classList.remove('lock');rou.classList.add('on');rou.setAttribute('aria-hidden','false');
+  const steps=14+((Math.random()*6)|0);
+  let i=0;
+  const show=g=>{
+    rouCard.style.backgroundImage=g.thumb?'url("'+g.thumb+'")':'none';
+    rouTitle.textContent=g.title;
+    rouCard.classList.remove('tick');void rouCard.offsetWidth;rouCard.classList.add('tick');
   };
+  (function step(){
+    if(!rouOn)return;
+    const last=i===steps;
+    show(last?pick:pool[(Math.random()*pool.length)|0]);
+    if(last){
+      rou.classList.add('lock');
+      rouTimer=setTimeout(()=>{if(rouOn)launch(rouCard,pick,pick.thumb)},800);
+      return;
+    }
+    i++;
+    rouTimer=setTimeout(step,46*Math.pow(1.14,i));
+  })();
 }
-function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,(o&&o.gl)||{})):createContours2D(cv,o)}
+$('#rnd').addEventListener('click',roulette);
+rou.addEventListener('click',e=>{if(e.target===rou&&!rou.classList.contains('lock'))closeRoulette()});
+addEventListener('keydown',e=>{
+  const inp=$('#search'),typing=document.activeElement===inp;
+  if(root.classList.contains('menu-open'))return;
+  if(e.key==='Escape'){
+    if(rouOn&&!rou.classList.contains('lock')){closeRoulette();return}
+    if(typing){if(inp.value){inp.value='';inp.dispatchEvent(new Event('input',{bubbles:true}))}else inp.blur()}
+    return;
+  }
+  if(e.key==='/'&&!typing&&!e.ctrlKey&&!e.metaKey){e.preventDefault();inp.focus();inp.select()}
+});
 
-/* ---------- start menu, then the sidebar background ---------- */
+renderCats();
+renderGames(false);
+
+/* ---------- the name in chunky pixels: the usual typeface drawn tiny on a canvas, hard-edged, then scaled up ---------- */
+function pixelWord(host,text,block){
+  const fs=parseFloat(getComputedStyle(host).fontSize)||60,f=Math.max(9,Math.round(fs/block));
+  const tmp=document.createElement('canvas'),c=tmp.getContext('2d',{willReadFrequently:true});
+  const font='800 '+f+'px Montserrat, system-ui, sans-serif';
+  c.font=font;
+  const w=Math.ceil(c.measureText(text).width)+12,h=Math.ceil(f*1.6);
+  tmp.width=w;tmp.height=h;c.font=font;c.fillStyle='#fff';c.textBaseline='alphabetic';
+  const img=c.createImageData(w,h),o=img.data;
+  const other=new Uint8Array(w*h),isY=new Uint8Array(w*h);
+  let x=5,x0=w,y0=h,x1=-1,y1=-1;
+  for(const ch of text){
+    c.clearRect(0,0,w,h);c.fillText(ch,x,Math.round(f*1.1));x+=c.measureText(ch).width-f*.055;
+    const a=c.getImageData(0,0,w,h).data,m=ch==='y'?isY:other;
+    for(let i=0;i<w*h;i++)if(a[i*4+3]>115)m[i]=1;
+  }
+  /* the y wears the reaper's robe, and keeps a small clear gap from the letters beside it instead of running into them */
+  const GAP=Math.max(1,Math.round(f*.035));
+  for(let i=0;i<w*h;i++){
+    let col=null;
+    if(other[i])col=[246,242,238];
+    else if(isY[i]){
+      const X=i%w,Y=(i/w)|0;let near=false;
+      for(let dy=-GAP;dy<=GAP&&!near;dy++)for(let dx=-GAP;dx<=GAP;dx++){
+        const xx=X+dx,yy=Y+dy;
+        if(xx>=0&&yy>=0&&xx<w&&yy<h&&other[yy*w+xx]&&dx*dx+dy*dy<=GAP*GAP){near=true;break}
+      }
+      if(!near)col=[158,154,151];
+    }
+    if(!col)continue;
+    o[i*4]=col[0];o[i*4+1]=col[1];o[i*4+2]=col[2];o[i*4+3]=255;
+    const X=i%w,Y=(i/w)|0;if(X<x0)x0=X;if(X>x1)x1=X;if(Y<y0)y0=Y;if(Y>y1)y1=Y;
+  }
+  const d=img;
+  if(x1<0)return null;
+  c.putImageData(d,0,0);
+  const out=document.createElement('canvas');out.className='pxw';
+  out.width=x1-x0+1;out.height=y1-y0+1;
+  out.getContext('2d').drawImage(tmp,x0,y0,out.width,out.height,0,0,out.width,out.height);
+  out.style.width=(out.width*block)+'px';out.style.height=(out.height*block)+'px';
+  out.setAttribute('aria-hidden','true');
+  /* where the top of the y's right arm ends up, for the little man who stands on it */
+  let top=-1;for(let Y=0;Y<h&&top<0;Y++)for(let X=0;X<w;X++)if(isY[Y*w+X]){top=Y;break}
+  if(top>=0){
+    const row=Math.min(h-1,top+1);let b=-1,a2=-1;
+    for(let X=w-1;X>=0;X--){if(isY[row*w+X]){if(b<0)b=X;a2=X}else if(b>=0)break}
+    if(b>=0)out._perch={x:((a2+b+1)/2-x0)*block,xl:(a2-x0)*block,y:(top-y0)*block};
+  }
+  return out;
+}
+/* a little stick man stands on the y of the start screen's title; he waves, and winks now and then */
+let perchOn=null,stickTimer=0;
+const MAN=[
+  '...###...',
+  '..#...#..',
+  '..#L.R#..',
+  '..#...#..',
+  '...###...',
+  '....#....',
+  '...###...',
+  '..#.#.#..',
+  '..#.#.#..',
+  '..###....'];                                               /* the last row is his lap: he sits on the edge, facing into the y */
+function stickMan(){
+  clearInterval(stickTimer);
+  if(!perchOn)return;
+  const S=Math.max(2,Math.round(perchOn.fs/100)),W=9,H=15;
+  const cv=document.createElement('canvas');cv.className='stick';cv.width=W;cv.height=H;
+  cv.style.width=W*S+'px';cv.style.height=H*S+'px';
+  cv.style.left=Math.round(perchOn.at.xl-3*S)+'px';         /* his shins hang just past the inner edge of the y's arm */
+  cv.style.top=Math.round(perchOn.at.y-10*S)+'px';
+  cv.setAttribute('aria-hidden','true');
+  perchOn.host.append(cv);
+  const g=cv.getContext('2d');
+  let wink=false,swing=0,n=0;
+  const LEGS=[[[2,10],[2,11],[2,12],[1,13],[2,13]],            /* legs hanging straight down */
+              [[2,10],[1,11],[1,12],[0,13],[1,13]],            /* swung forwards */
+              [[2,10],[3,11],[3,12],[3,13],[2,13]]];           /* swung back */
+  const draw=()=>{
+    g.clearRect(0,0,W,H);g.fillStyle='#f6f2ee';
+    MAN.forEach((row,y)=>[...row].forEach((ch,x)=>{if(ch==='#'||ch==='L'||(ch==='R'&&!wink))g.fillRect(x,y,1,1)}));
+    LEGS[swing].forEach(q=>g.fillRect(q[0],q[1],1,1));
+  };
+  draw();
+  if(reduce)return;
+  stickTimer=setInterval(()=>{
+    n=(n+1)%24;
+    wink=n%6<2;                                                /* he never stops winking: one eye shuts about once a second */
+    swing=[0,1,1,0,2,2][Math.floor(n/2)%6];                    /* and his legs swing lazily */
+    draw();
+  },170);
+}
+function pixelNames(){
+  const title=$('.m-title');
+  if(title){
+    const fs=parseFloat(getComputedStyle(title).fontSize)||160,cv=pixelWord(title,'slyr',Math.max(1.5,fs/125));
+    if(cv){const l=mk('span',{className:'l'}),sp=mk('span');sp.style.setProperty('--i',0);sp.append(cv);l.append(sp);title.replaceChildren(l);perchOn=cv._perch?{host:sp,at:cv._perch,fs}:null}
+  }
+  $$('.brand').forEach(b=>{const cv=pixelWord(b,'slyr',1.5);if(cv)b.replaceChildren(cv)});
+  stickMan();
+}
+(document.fonts&&document.fonts.load?document.fonts.load('800 40px Montserrat').catch(()=>{}):Promise.resolve()).then(pixelNames);
+let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelNames,200)});
+
+/* ---------- start menu, then the page ---------- */
 (function(){
-  const side=createContours($('#sideBg'),{parent:true,fps:30,dim:0.7,major:1.4,minor:0.7,zoom:1.9,gl:{dim:0.26,zoom:0.8,scale:.6}});
-  const main=createContours($('#mainBg'),{fps:24,dim:0.6,major:1.4,minor:0.7,zoom:1.2,gl:{dim:0.2,zoom:0.8,scale:.6}});
-  const menu=$('#menu'),app=$('#app'),play=$('#play');
-  if(!menu||!document.documentElement.classList.contains('menu-open')){if(menu)menu.remove();side.start();main.start();return}
+  const main=createSnow($('#snow'));
+  const menu=$('#menu'),app=$('#app'),play=$('#play'),stage=$('#stage');
+  $$('.m-link,.m-gh',menu||document).forEach(el=>el.classList.add('ct'));
+  if(!menu||!root.classList.contains('menu-open')){if(menu)menu.remove();main.start();return}
   app.inert=true;
   tiles.slice(0,18).forEach(tl=>{const im=tl.querySelector('img');if(im){im.loading='eager';if(im.decode)im.decode().catch(()=>{})}});
-  const BGOPT={dim:0.6,gl:{dim:0.55,zoom:0.45,scale:.5}};
-  let bg=createContours($('#bg'),BGOPT);
+  const bg=createSnow($('#bg'),{parent:true});
   bg.start();
   play.focus({preventScroll:true});
 
   let left=false,busy=false;
-  const root=document.documentElement;
-  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* Page transition: a zoom. Both screens stay completely alive underneath, so the moving backgrounds never pause.
+  const calm=reduce;
+  /* Page transition: a zoom. Both screens stay completely alive underneath.
      Ports: the start screen rushes towards you and fades while the page settles in behind it, as if you flew into the button.
      Home: the start screen comes back from the front and the page shrinks away behind it. Only transform and opacity move. */
   const ZOOM_MS=950,ZOOM_EASE='cubic-bezier(.28,.62,.16,1)';
@@ -957,17 +1092,17 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
       const add=(el,kf,origin)=>{els.push(el);el.style.transformOrigin=origin;anims.push(el.animate(kf,{duration:ZOOM_MS,easing:ZOOM_EASE,fill:'both'}))};
       root.classList.add('zt');
       start();
-      const grid=$('#grid'),gr=grid.getBoundingClientRect();   /* only the games grid zooms: a scrolled sidebar and the background stay put */
-      const fg=[$('.m-inner',menu),$('#mReaper')].filter(Boolean);   /* the blurred background only fades: scaling it would redraw the blur every frame */
+      const gr=stage.getBoundingClientRect();
+      const fg=[$('.m-inner',menu),$('#mReaper')].filter(Boolean);
       const aim=(el,x,y)=>{const r=el.getBoundingClientRect();return (x-r.left)+'px '+(y-r.top)+'px'};
       if(into){
         add(menu,[{opacity:1},{opacity:0}],'50% 50%');
         fg.forEach(el=>add(el,[{transform:'scale(1)'},{transform:'scale(1.6)'}],aim(el,ox,oy)));
-        add(grid,[{transform:'scale(.88)'},{transform:'scale(1)'}],(ox-gr.left)+'px '+(oy-gr.top)+'px');
+        add(stage,[{transform:'scale(.88)'},{transform:'scale(1)'}],(ox-gr.left)+'px '+(oy-gr.top)+'px');
       }else{
         add(menu,[{opacity:0},{opacity:1}],'50% 50%');
         fg.forEach(el=>add(el,[{transform:'scale(1.5)'},{transform:'scale(1)'}],aim(el,W/2,H/2)));
-        add(grid,[{transform:'scale(1)'},{transform:'scale(.9)'}],(W/2-gr.left)+'px '+(H/2-gr.top)+'px');
+        add(stage,[{transform:'scale(1)'},{transform:'scale(.9)'}],(W/2-gr.left)+'px '+(H/2-gr.top)+'px');
       }
       let ended=false;
       const finish=()=>{if(ended)return;ended=true;end();root.classList.remove('zt');anims.forEach(a=>a.cancel());els.forEach(el=>{el.style.transformOrigin=''});done()};
@@ -976,8 +1111,6 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
       setTimeout(finish,ZOOM_MS+900);                        /* safety net for a tab that is not painting */
     });
   }
-
-  const mainBg=$('#mainBg');
   function origin(e,el){
     if(e&&e.clientX&&e.clientY)return[e.clientX,e.clientY];
     const r=(el||document.body).getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];
@@ -985,14 +1118,8 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
   function enter(e){
     if(left||busy)return;left=true;busy=true;
     root.classList.add('entered');
-    const start=()=>{
-      app.inert=false;                                       /* the page is already there, underneath the start screen, which keeps running on top */
-      scrollTo(0,0);
-    };
-    const later=()=>{
-      side.ensure();main.ensure();
-      side.start();setTimeout(()=>main.start(),200);
-    };
+    const start=()=>{app.inert=false;scrollTo(0,0)};         /* the page is already there, underneath the start screen, which keeps running on top */
+    const later=()=>{main.start()};
     const end=()=>{
       menu.inert=true;
       root.classList.remove('menu-open');                    /* the start screen is gone; it comes back from the Home button */
@@ -1009,30 +1136,21 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
       root.classList.add('menu-open');                       /* the start screen appears on top; the page keeps moving underneath */
     };
     const later=()=>{bg.start()};
-    const end=()=>{
-      app.inert=true;
-      scrollTo(0,0);
-      side.stop();main.stop();
-      left=false;
-    };
+    const end=()=>{app.inert=true;scrollTo(0,0);main.stop();left=false};
     if(calm){start();later();end();play.focus({preventScroll:true});busy=false;return}
     transit(false,start,later,end,0,0).then(()=>{play.focus({preventScroll:true});setTimeout(()=>{busy=false},250)});
   }
-  const homeBtn=$('#home');
-  if(homeBtn)homeBtn.addEventListener('click',e=>{
+  $$('[data-home]').forEach(b=>b.addEventListener('click',e=>{
     if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;   /* new-tab clicks work normally */
     e.preventDefault();goHome(e);
-  });
-  /* draw the page's topo once, early and out of sight, so starting it later costs nothing; the picture stays on the canvas */
-  if(!calm)setTimeout(()=>{if(left)return;side.start();main.start();requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!left){side.stop();main.stop()}}))},1600);
+  }));
   play.addEventListener('click',enter);
-  addEventListener('keydown',()=>document.documentElement.classList.add('kb'),{once:true});
+  addEventListener('keydown',()=>root.classList.add('kb'),{once:true});
   if(!calm){
-    const glow=$('#mGlow'),rea=$('#mReaper')&&$('#mReaper').querySelector('.par');
+    const rea=$('#mReaper')&&$('#mReaper').querySelector('.par');
     let raf=0,ex=0,ey=0;
     const move=e=>{ex=e.clientX;ey=e.clientY;if(!raf)raf=requestAnimationFrame(()=>{
       raf=0;const w=innerWidth,h=innerHeight;
-      glow.style.setProperty('--mx',ex+'px');glow.style.setProperty('--my',ey+'px');
       if(rea){rea.style.setProperty('--px',((ex/w-.5)*-22).toFixed(1)+'px');rea.style.setProperty('--py',((ey/h-.5)*-12).toFixed(1)+'px')}
     })};
     menu.addEventListener('pointermove',move,{passive:true});
@@ -1045,9 +1163,6 @@ function createContours(cv,o){return TOPO_GL?createTopoGL(cv,Object.assign({},o,
     else{a.setAttribute('aria-disabled','true');a.addEventListener('click',e=>e.preventDefault())}
   });
 })();
-
-renderCats();
-renderGames(false);
 })();
 </script>
 </body>
