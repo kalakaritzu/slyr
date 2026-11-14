@@ -115,17 +115,60 @@ html.cur-on .cur.live{opacity:1}
 .cur em{position:absolute;left:0;top:0;color:#fff;font:500 12px/1 var(--font);font-style:normal;white-space:nowrap;opacity:0;transition:opacity .2s;will-change:transform;text-shadow:0 0 4px #000,0 0 2px #000}
 .cur.lab em{opacity:1}
 
-/* random game: a glass box that flicks through the list, then launches the pick */
-.rou{position:fixed;inset:0;z-index:900;display:grid;place-items:center;padding:24px;background:#0009;-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);opacity:0;pointer-events:none;transition:opacity .3s ease}
+/* random game, opened like a case: a strip of games races past a marker, slows down, and the one under the marker wins */
+.rou{position:fixed;inset:0;z-index:900;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;padding:24px;background:#000c;-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);opacity:0;pointer-events:none;transition:opacity .3s ease}
 .rou.on{opacity:1;pointer-events:all}
-.rou-box{width:min(620px,100%);padding:18px;border:1px solid #ffffff38;border-radius:16px;background:#121212df;box-shadow:0 24px 90px #000b,inset 0 1px #ffffff20;transform:translateY(16px) scale(.97);transition:transform .45s var(--ease)}
+.rou-box{width:min(1040px,100%);transform:translateY(16px) scale(.97);transition:transform .45s var(--ease)}
 .rou.on .rou-box{transform:none}
-.rou-card{aspect-ratio:16/9;border:1px solid #ffffff26;border-radius:9px;background:#000 center/cover no-repeat}
-.rou-card.tick{animation:tick .12s ease-out}
-@keyframes tick{0%{transform:translateY(8px);filter:brightness(1.4)}100%{transform:none;filter:none}}
-.rou.lock .rou-card{animation:lock .5s var(--ease);border-color:#fff}
-@keyframes lock{0%{transform:scale(1.04);filter:brightness(1.8)}100%{transform:none;filter:none}}
-.rou-title{margin:14px 2px 2px;font-size:clamp(17px,3vw,23px);font-weight:700;text-align:left}
+.rou-win{position:relative;overflow:hidden;padding:14px 0;border:1px solid #ffffff38;border-radius:12px;background:#0b0b0bf0;box-shadow:0 24px 90px #000b,inset 0 1px #ffffff20;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.rou-strip{display:flex;gap:10px;width:max-content;will-change:transform}
+.rou-item{position:relative;flex:none;width:212px;border:1px solid #333;border-radius:8px;overflow:hidden;background:#141414;transition:border-color .3s ease,box-shadow .3s ease,transform .5s var(--ease),opacity .4s ease}
+.rou-item i{display:block;aspect-ratio:16/9;background:#000 center/cover no-repeat}
+.rou-item b{display:block;padding:8px 10px 9px;font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-top:3px solid #555}
+.rou-item:nth-child(5n) b{border-top-color:#fff}             /* the odd bright one, like a rare drop */
+.rou-item:nth-child(7n+3) b{border-top-color:#9e9a97}
+.rou-mark{position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 12px #fff;z-index:2;pointer-events:none}
+.rou-mark::before,.rou-mark::after{content:"";position:absolute;left:-6px;border:7px solid transparent}
+.rou-mark::before{top:0;border-top-color:#fff}
+.rou-mark::after{bottom:0;border-bottom-color:#fff}
+.rou.lock .rou-item{opacity:.3}
+.rou.lock .rou-item.won{opacity:1;border-color:#fff;box-shadow:0 0 30px #fff5;transform:scale(1.06);z-index:1}
+.rou.lock .rou-mark{opacity:0;transition:opacity .3s}
+.rou-title{margin:18px 2px 0;min-height:1.3em;text-align:center;font-size:clamp(18px,3vw,26px);font-weight:700;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .5s var(--ease)}
+.rou.lock .rou-title{opacity:1;transform:none}
+
+/* credits: a button in the corner of the start screen, and a page of the people behind the site */
+/* the same plain text link as github on the start screen: it brightens and gets an underline that draws in */
+.tl{appearance:none;border:0;background:none;position:relative;display:inline-block;padding:4px 0;font:600 clamp(15px,1.5vw,19px)/1 var(--font);text-transform:lowercase;color:rgba(246,242,238,.72);transition:color .3s ease;outline:none}
+.tl::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.tl:hover,.tl:focus-visible{color:#fff}
+.tl:hover::after,.tl:focus-visible::after{transform:scaleX(1)}
+.m-credits{position:absolute;right:clamp(20px,3vw,44px);bottom:clamp(18px,3vh,34px);z-index:3}
+.credits{position:fixed;inset:0;z-index:300;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;padding:28px;overflow-y:auto;background:#000;
+  opacity:0;pointer-events:none;transition:opacity .35s ease}
+.credits.on{opacity:1;pointer-events:all}
+.cr-list{display:flex;flex-direction:column;gap:clamp(34px,7vh,70px);padding:40px 0}
+.cr{display:flex;align-items:center;gap:clamp(22px,4.4vw,64px);opacity:0;transform:translateY(26px);transition:opacity .6s ease var(--d,0s),transform .8s var(--ease) var(--d,0s)}
+.credits.on .cr{opacity:1;transform:none}
+.cr-pic{position:relative;flex:none;width:clamp(110px,15vw,200px);aspect-ratio:1}
+.cr-pic{animation:cr-float 5.5s ease-in-out infinite}                 /* each picture drifts up and down a little, out of step with the others */
+.cr:nth-child(2n) .cr-pic{animation-name:cr-float2;animation-duration:7.3s;animation-delay:-3.4s}   /* a different path, a different pace */
+.cr:nth-child(3n) .cr-pic{animation-name:cr-float3;animation-duration:8.6s;animation-delay:-1.2s}
+.cr-pic img{position:relative;display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;background:#141414;
+  box-shadow:0 0 34px 4px rgba(255,255,255,.22),0 0 90px 14px rgba(255,255,255,.1);animation:cr-glow 3.6s ease-in-out infinite;transition:transform .5s var(--ease)}
+.cr:hover .cr-pic img{transform:scale(1.05)}
+@keyframes cr-float{0%,100%{transform:translateY(-7px) rotate(-1.5deg)}50%{transform:translateY(7px) rotate(1.5deg)}}
+@keyframes cr-float2{0%,100%{transform:translate(6px,4px) rotate(2deg)}33%{transform:translate(-5px,-6px) rotate(-1deg)}66%{transform:translate(-2px,6px) rotate(1deg)}}
+@keyframes cr-float3{0%,100%{transform:translate(-6px,0) rotate(1deg)}50%{transform:translate(6px,-5px) rotate(-2deg)}}
+@keyframes cr-glow{0%,100%{box-shadow:0 0 34px 4px rgba(255,255,255,.22),0 0 90px 14px rgba(255,255,255,.1)}50%{box-shadow:0 0 46px 8px rgba(255,255,255,.32),0 0 120px 22px rgba(255,255,255,.14)}}
+.credits canvas{position:fixed;left:0;top:0;width:100%;height:100%;display:block;pointer-events:none;image-rendering:pixelated}
+.cr-list,.cr-x{position:relative;z-index:1}
+.cr-x{position:fixed}
+.cr h3{margin:0 0 16px;font:800 clamp(34px,6vw,84px)/1 var(--font);letter-spacing:-.05em;color:#f6f2ee}
+.cr-links{display:flex;flex-wrap:wrap;gap:22px}
+.cr-x{right:clamp(20px,3vw,44px);bottom:clamp(18px,3vh,34px)}
+@media(max-width:640px){.cr{flex-direction:column;text-align:center}.cr-links{justify-content:center}}
 
 /* launch: the thumbnail grows to fill the screen, then the game loads */
 html.launching,html.launching body{overflow:hidden}
@@ -268,6 +311,7 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
 }
 /* touch screens have no pointer to hide */
 @media(prefers-reduced-motion:reduce){
+  .cr-pic,.cr-pic img{animation:none}
   *,*::before,*::after{transition:none!important}
   .tile{opacity:1;translate:none}
 }
@@ -280,6 +324,7 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
   <div class="m-glow" id="mGlow" aria-hidden="true"></div>
   <div class="m-embers" aria-hidden="true"><i style="--x:6%;--s:3px;--d:14s;--w:-3s;--dx:40px"></i><i style="--x:14%;--s:2px;--d:18s;--w:-9s;--dx:-30px"></i><i style="--x:22%;--s:4px;--d:16s;--w:-5s;--dx:60px"></i><i style="--x:31%;--s:2px;--d:20s;--w:-12s;--dx:-50px"></i><i style="--x:40%;--s:3px;--d:15s;--w:-7s;--dx:30px"></i><i style="--x:49%;--s:2px;--d:19s;--w:-2s;--dx:-40px"></i><i style="--x:57%;--s:4px;--d:17s;--w:-10s;--dx:50px"></i><i style="--x:66%;--s:2px;--d:21s;--w:-6s;--dx:-20px"></i><i style="--x:74%;--s:3px;--d:16s;--w:-13s;--dx:45px"></i><i style="--x:83%;--s:2px;--d:18s;--w:-4s;--dx:-55px"></i><i style="--x:91%;--s:3px;--d:20s;--w:-8s;--dx:25px"></i><i style="--x:97%;--s:2px;--d:15s;--w:-11s;--dx:-35px"></i></div>
   <div class="m-reaper" id="mReaper" aria-hidden="true"><div class="par"><div class="back"></div><div class="floor"></div><img src="reaper-pixel.png" alt="" onerror="this.remove()"></div></div>
+  <button class="tl ct m-credits" id="creditsBtn" type="button">credits</button>
   <div class="m-inner">
     <h2 class="m-title" aria-label="slyr"><span class="l"><span style="--i:0">s</span></span><span class="l"><span style="--i:1">l</span></span><span class="l"><span style="--i:2">y</span></span><span class="l"><span style="--i:3">r</span></span></h2>
     <a class="m-gh" href="https://github.com/kalakaritzu/slyr" target="_blank" rel="noopener">github</a>
@@ -288,6 +333,14 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
       <a class="m-link" id="apps" href="#" data-url="" style="--n:1"><span class="t">Apps</span></a>
       <a class="m-link" id="discord" href="https://discord.gg/m3xdMUfa4Z" data-url="https://discord.gg/m3xdMUfa4Z" rel="noopener" style="--n:2"><span class="t">Discord</span></a>
     </nav>
+  </div>
+</div>
+<div class="credits" id="credits" role="dialog" aria-label="Credits" aria-hidden="true">
+  <canvas id="creditsSky" aria-hidden="true"></canvas>
+  <button class="tl ct cr-x" id="creditsX" type="button">close</button>
+  <div class="cr-list">
+    <article class="cr" style="--d:.05s"><div class="cr-pic"><img src="https://github.com/kalakaritzu.png?size=400" alt="" loading="lazy" referrerpolicy="no-referrer"></div><div><h3>kalakaritzu</h3><div class="cr-links"><a class="tl ct" href="https://github.com/kalakaritzu" target="_blank" rel="noopener">github</a></div></div></article>
+    <article class="cr" style="--d:.15s"><div class="cr-pic"><img src="https://github.com/Down1oads.png?size=400" alt="" loading="lazy" referrerpolicy="no-referrer"></div><div><h3>Down1oads</h3><div class="cr-links"><a class="tl ct" href="https://github.com/Down1oads" target="_blank" rel="noopener">github</a></div></div></article>
   </div>
 </div>
 <canvas id="snow" aria-hidden="true"></canvas>
@@ -305,7 +358,7 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
     </footer>
   </div>
 </div>
-<div class="rou" id="rou" role="dialog" aria-label="Random game" aria-hidden="true"><div class="rou-box"><div class="rou-card" id="rouCard"></div><h3 class="rou-title" id="rouTitle"></h3></div></div>
+<div class="rou" id="rou" role="dialog" aria-label="Random game" aria-hidden="true"><div class="rou-box"><div class="rou-win"><div class="rou-strip" id="rouStrip"></div><div class="rou-mark"></div></div><h3 class="rou-title" id="rouTitle"></h3></div></div>
 <div class="cur" id="cur" aria-hidden="true"><i></i><i></i><i></i><i></i><em></em></div>
 
 <script>
@@ -772,7 +825,7 @@ function createSnow(cv,o){
   let W=1,H=1,flakes=[],raf=0,running=false,wanted=false,painted=false,last=0,t=Math.random()*100;
   const make=(anywhere)=>{
     const z=Math.random();                                   /* depth: far flakes are small, slow and faint */
-    return{x:Math.random()*W,y:anywhere?Math.random()*H:-12,z,vx:0,vy:0,ph:Math.random()*6.28,plus:z>.8&&Math.random()<.5,tw:Math.random()*6.28,ts:.5+Math.random()*2.2};
+    return{x:Math.random()*W,y:anywhere?Math.random()*H:-12,z,vx:0,vy:0,ox:0,oy:0,ph:Math.random()*6.28,plus:z>.8&&Math.random()<.5,tw:Math.random()*6.28,ts:.5+Math.random()*2.2};
   };
   function resize(){
     const w=o.parent?cv.parentElement.clientWidth:innerWidth,h=o.parent?cv.parentElement.clientHeight:innerHeight;
@@ -788,13 +841,17 @@ function createSnow(cv,o){
     for(let i=0;i<flakes.length;i++){
       const f=flakes[i];
       const fall=(18+70*f.z)*o.speed,drift=o.wind*40*(.4+f.z);   /* stars: they barely drift */
-      const dx=f.x-mx,dy=f.y-my,d2=dx*dx+dy*dy;
+      /* every star has its own place, which only drifts; the pointer pushes it off that place and it floats back
+         afterwards, so no part of the sky is ever left empty */
+      const dx=f.x+f.ox-mx,dy=f.y+f.oy-my,d2=dx*dx+dy*dy;
       if(d2<40000){                                            /* within 200px of the pointer: it runs away, harder the closer it is */
         const d=Math.sqrt(d2)||1,near=1-d/200,p=near*near*4200;
         f.vx+=dx/d*p*dt;f.vy+=dy/d*p*dt;
       }
+      f.vx+=-f.ox*2.2*dt;f.vy+=-f.oy*2.2*dt;                   /* the pull back home */
       f.vx*=Math.exp(-dt*3.2);f.vy*=Math.exp(-dt*3.2);
-      f.x+=(drift+f.vx)*dt;f.y+=(fall+f.vy)*dt;
+      f.ox+=f.vx*dt;f.oy+=f.vy*dt;
+      f.x+=drift*dt;f.y+=fall*dt;
       if(f.y>H+c*3){Object.assign(f,make(false));f.x=Math.random()*W}
       if(f.x>W+c*3)f.x-=W+c*6;else if(f.x<-c*3)f.x+=W+c*6;
     }
@@ -806,7 +863,7 @@ function createSnow(cv,o){
     ctx.fillStyle='#fff';
     for(let i=0;i<flakes.length;i++){
       const f=flakes[i];
-      const x=Math.round(f.x/c)*c,y=Math.round(f.y/c)*c;
+      const x=Math.round((f.x+f.ox)/c)*c,y=Math.round((f.y+f.oy)/c)*c;
       ctx.globalAlpha=(.2+.8*f.z)*(.5+.5*Math.sin(t*f.ts+f.tw));    /* each one twinkles at its own pace */
       if(f.plus){ctx.fillRect(x-c,y,c*3,c);ctx.fillRect(x,y-c,c,c*3)}   /* the brightest ones are small crosses */
       else{const s=f.z>.45?c:c/2;ctx.fillRect(x,y,s,s)}
@@ -853,7 +910,7 @@ function createSnow(cv,o){
     }
     el.style.backgroundImage='url('+cv.toDataURL()+')';
   });
-  const c=[0,1,2,3].map(()=>({x:0,y:0,vx:0,vy:0}));
+  const c=[0,1,2,3].map(()=>({x:0,y:0,vx:0,vy:0,dx:0,dy:0,held:false}));
   let target=null,lastEl=null,scrollSeen=-1,inside=true,last=0,placed=false,sc=.5,cx=0,cy=0,hw=13,hh=13,ang=0,settle=0;
   root.addEventListener('mouseleave',()=>{inside=false;box.classList.remove('live')});
   root.addEventListener('mouseenter',()=>{inside=true});
@@ -903,13 +960,20 @@ function createSnow(cv,o){
     if(!placed){placed=true;c.forEach((q,i)=>{q.x=goal[i][0];q.y=goal[i][1]})}
     /* a soft spring carries each corner: it overshoots a touch and settles, which gives the little bounce */
     const h=Math.min(.034,dt/1000),K=opening?1400:target?230:900,D=opening?75:target?17:60;
-    if(target)settle=260;else if(settle>0)settle-=dt;       /* after leaving a button it gets a moment to spring back before locking up again */
+    const fade=Math.exp(-dt/80);
     for(let i=0;i<4;i++){
       const q=c[i];
-      if(target||settle>0){                                    /* the spring only works on and just after a button */
+      if(target){                                              /* the spring only works while it is on a button */
         q.vx+=((goal[i][0]-q.x)*K-q.vx*D)*h;q.vy+=((goal[i][1]-q.y)*K-q.vy*D)*h;
         q.x+=q.vx*h;q.y+=q.vy*h;
-      }else{q.x=goal[i][0];q.y=goal[i][1];q.vx=q.vy=0}          /* at rest the four corners are locked together, so the little square never comes apart */
+        q.dx=q.x;q.dy=q.y;q.held=true;
+      }else{
+        /* leaving a button: each corner remembers how far it is from its place in the little square and closes that
+           distance smoothly, with no spring and no sudden jump at the end. Once closed, the four stay locked together */
+        if(q.held){q.held=false;q.dx=q.x-goal[i][0];q.dy=q.y-goal[i][1]}
+        q.dx*=fade;q.dy*=fade;if(Math.abs(q.dx)<.05)q.dx=0;if(Math.abs(q.dy)<.05)q.dy=0;
+        q.x=goal[i][0]+q.dx;q.y=goal[i][1]+q.dy;q.vx=q.vy=0;
+      }
       cs[i].style.transform='translate3d('+(q.x-13).toFixed(2)+'px,'+(q.y-13).toFixed(2)+'px,0) rotate('+ang.toFixed(1)+'deg) scale('+sc.toFixed(3)+')';
     }
     const text=target?(target.dataset.cursor||''):'';
@@ -918,35 +982,40 @@ function createSnow(cv,o){
   })(0);
 })();
 
-/* ---------- random game ---------- */
-const rou=$('#rou'),rouCard=$('#rouCard'),rouTitle=$('#rouTitle');
-let rouTimer=0,rouOn=false;
-function closeRoulette(){clearTimeout(rouTimer);rouOn=false;rou.classList.remove('on','lock');rou.setAttribute('aria-hidden','true')}
+/* ---------- random game, opened like a case ---------- */
+const rou=$('#rou'),rouStrip=$('#rouStrip'),rouTitle=$('#rouTitle');
+let rouTimer=0,rouOn=false,rouAnim=null;
+function closeRoulette(){clearTimeout(rouTimer);if(rouAnim){rouAnim.cancel();rouAnim=null}rouOn=false;rou.classList.remove('on','lock');rou.setAttribute('aria-hidden','true')}
 function roulette(){
   if(rouOn||launching)return;
   const list=GAMES.filter(matches),pool=list.length?list:GAMES;
   const pick=pool[(Math.random()*pool.length)|0];
   if(reduce){location.href=pick.url;return}
   rouOn=true;rou.classList.remove('lock');rou.classList.add('on');rou.setAttribute('aria-hidden','false');
-  const steps=14+((Math.random()*6)|0);
-  let i=0;
-  const show=g=>{
-    rouCard.style.backgroundImage=g.thumb?'url("'+g.thumb+'")':'none';
-    rouTitle.textContent=g.title;
-    rouCard.classList.remove('tick');void rouCard.offsetWidth;rouCard.classList.add('tick');
-  };
-  (function step(){
+  /* the strip: a long row of random games with the winner placed near the end */
+  const COUNT=56,WIN=49;
+  rouStrip.replaceChildren();rouTitle.textContent=pick.title;
+  let wonEl=null;
+  for(let i=0;i<COUNT;i++){
+    const g=i===WIN?pick:pool[(Math.random()*pool.length)|0];
+    const el=mk('div',{className:'rou-item'}),pic=mk('i');
+    if(g.thumb)pic.style.backgroundImage='url("'+g.thumb+'")';
+    el.append(pic,mk('b',{textContent:g.title}));
+    if(i===WIN)wonEl=el;
+    rouStrip.append(el);
+  }
+  const win=rouStrip.parentElement,step=wonEl.offsetWidth+10;
+  const centre=win.clientWidth/2;
+  const land=(Math.random()*.7-.35)*wonEl.offsetWidth;          /* it stops somewhere on the winning card, not always dead centre */
+  const from=centre-step*1.5,to=centre-(WIN*step+wonEl.offsetWidth/2)-land;
+  rouStrip.style.transform='translate3d('+to+'px,0,0)';
+  rouAnim=rouStrip.animate([{transform:'translate3d('+from+'px,0,0)'},{transform:'translate3d('+to+'px,0,0)'}],
+    {duration:5600,easing:'cubic-bezier(.09,.62,.08,1)',fill:'both'});   /* a hard launch, then a long slow crawl to the stop */
+  rouAnim.onfinish=()=>{
     if(!rouOn)return;
-    const last=i===steps;
-    show(last?pick:pool[(Math.random()*pool.length)|0]);
-    if(last){
-      rou.classList.add('lock');
-      rouTimer=setTimeout(()=>{if(rouOn)launch(rouCard,pick,pick.thumb)},800);
-      return;
-    }
-    i++;
-    rouTimer=setTimeout(step,46*Math.pow(1.14,i));
-  })();
+    wonEl.classList.add('won');rou.classList.add('lock');
+    rouTimer=setTimeout(()=>{if(rouOn)launch(wonEl,pick,pick.thumb)},1300);
+  };
 }
 $('#rnd').addEventListener('click',roulette);
 rou.addEventListener('click',e=>{if(e.target===rou&&!rou.classList.contains('lock'))closeRoulette()});
@@ -960,6 +1029,21 @@ addEventListener('keydown',e=>{
   }
   if(e.key==='/'&&!typing&&!e.ctrlKey&&!e.metaKey){e.preventDefault();inp.focus();inp.select()}
 });
+
+/* ---------- credits ---------- */
+(function(){
+  const page=$('#credits'),open=$('#creditsBtn'),shut=$('#creditsX');
+  if(!page||!open)return;
+  let sky=null;                                              /* its own patch of stars, running only while the page is open */
+  const set=on=>{
+    page.classList.toggle('on',on);page.setAttribute('aria-hidden',String(!on));
+    if(on){if(!sky)sky=createSnow($('#creditsSky'));sky.start();shut.focus({preventScroll:true})}
+    else{if(sky)setTimeout(()=>{if(!page.classList.contains('on'))sky.stop()},400);open.focus({preventScroll:true})}
+  };
+  open.addEventListener('click',()=>set(true));
+  shut.addEventListener('click',()=>set(false));
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&page.classList.contains('on'))set(false)});
+})();
 
 renderCats();
 renderGames(false);
