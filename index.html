@@ -411,7 +411,7 @@ html.px-open .px-frame{position:fixed;left:0;right:0;top:56px;bottom:0;height:au
         <div class="px-quick">
           <button class="tl ct" type="button" data-u="https://en.wikipedia.org/">wikipedia</button>
           <button class="tl ct" type="button" data-u="https://archive.org/">internet archive</button>
-          <button class="tl ct" type="button" data-u="https://news.ycombinator.com/">hacker news</button>
+          <button class="tl ct" type="button" data-u="https://github.com/">github</button>
           <button class="tl ct" type="button" data-u="https://www.bing.com/">bing</button>
         </div>
         <p class="px-note">big sites with logins, video or heavy apps may not work through it</p>
@@ -1288,16 +1288,26 @@ let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelN
   document.addEventListener('slyr-mode',e=>{                       /* leaving the proxy puts the page back to normal; coming back reopens it */
     root.classList.toggle('px-open',e.detail==='Proxy'&&pv.classList.contains('open'));measure();
   });
+  const viaProxy=u=>{const a=new URL(u);return '/p/'+a.protocol.slice(0,-1)+'/'+a.host+a.pathname+a.search+a.hash};
+  const fromProxy=h=>{try{const a=new URL(h);if(a.pathname.indexOf('/p/')!==0)return null;const m=a.pathname.slice(3).match(/^(https?)\/([^\/]+)(\/.*)?$/);return m?m[1]+'://'+m[2]+(m[3]||'/')+a.search+a.hash:null}catch(e){return null}};
+  /* the service worker that sends everything a proxied page asks for through the proxy; the first page waits for it */
+  let swReady=null;
+  const sw=()=>swReady||(swReady=!('serviceWorker' in navigator)?Promise.resolve():navigator.serviceWorker.register('/p/__sw.js',{scope:'/p/'}).then(reg=>{
+    if(reg.active)return;
+    const w=reg.installing||reg.waiting;if(!w)return;
+    return new Promise(res=>{w.addEventListener('statechange',()=>{if(w.state==='activated')res()});setTimeout(res,4000)});
+  }).catch(()=>{}));
+  document.addEventListener('slyr-mode',e=>{if(e.detail==='Proxy')sw()});
   let live=false;
   function go(t){
     const u=toUrl(t);if(!u)return;
     live=true;pv.classList.add('busy');pv.classList.remove('done');full(true);show(u);
-    fr.src='/proxy?u='+encodeURIComponent(u);
+    sw().then(()=>{if(live)fr.src=viaProxy(u)});
   }
   fr.addEventListener('load',()=>{
     if(!live)return;
     pv.classList.remove('busy');pv.classList.add('done');
-    try{const u=new URL(fr.contentWindow.location.href).searchParams.get('u');if(u)show(u)}catch(e){}   /* where the page really is after its links are followed */
+    try{const u=fromProxy(fr.contentWindow.location.href);if(u)show(u)}catch(e){}   /* where the page really is after its links are followed */
   });
   inp.addEventListener('keydown',e=>{if(cat==='Proxy'&&e.key==='Enter'){e.preventDefault();go(inp.value);inp.blur()}});
   $('#pxGo').addEventListener('click',()=>go(inp.value));
@@ -1306,7 +1316,7 @@ let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelN
   $('#pxReload').addEventListener('click',()=>{pv.classList.add('busy');pv.classList.remove('done');try{fr.contentWindow.location.reload()}catch(e){fr.src=fr.src}});
   $('#pxFull').addEventListener('click',()=>{
     if(!now)return;
-    const src=location.origin+'/proxy?u='+encodeURIComponent(now);
+    const src=location.origin+viaProxy(now);
     const w=window.open('about:blank','_blank');
     if(!w){const el=fr.parentElement;(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);return}   /* pop-ups blocked: fill the screen here instead */
     w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>slyr</title><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}iframe{display:block;width:100%;height:100%;border:0}</style></head><body><iframe src="'+src+'" allow="fullscreen; autoplay; clipboard-write; gamepad" allowfullscreen></iframe></body></html>');
