@@ -104,9 +104,9 @@ function rewriteSetCookie(line, host, secure) {
 function helper(base, origin) {
   const code = "(function(){var B=" + JSON.stringify(base) + ",O=" + JSON.stringify(origin) + ";" +
     "function P(u){if(u==null||u==='')return u;try{var s=String(u);if(/^(data|blob|javascript|about|mailto|tel):/i.test(s))return u;var a=new URL(s,B);" +
-    "if(a.origin===O&&(a.pathname.indexOf('/p/')===0||a.pathname==='/proxy'))return s;if(!/^https?:$/.test(a.protocol))return u;" +
+    "if(a.origin===O){if(a.pathname.indexOf('/p/')===0||a.pathname==='/proxy')return s;a=new URL(a.pathname+a.search+a.hash,B)}if(!/^https?:$/.test(a.protocol))return u;" +
     "return O+'/p/'+a.protocol.slice(0,-1)+'/'+a.host+a.pathname+a.search+a.hash}catch(e){return u}}" +
-    "window.__slyrP=P;" +
+    "window.__slyrP=P;try{var fe=window.frameElement;if(fe&&fe.getAttribute('data-slyr-px')!==null)sessionStorage.setItem('slyr-px-site',new URL(B).origin)}catch(e){}" +
     "var f=window.fetch;if(f)window.fetch=function(i,n){try{if(typeof i==='string'||i instanceof URL)i=P(String(i));else if(i&&i.url)i=new Request(P(i.url),i)}catch(e){}return f.call(this,i,n)};" +
     "var x=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){arguments[1]=P(u);return x.apply(this,arguments)};" +
     "var w=window.open;window.open=function(u,n,s){return w.call(window,u?P(u):u,n,s)};" +
@@ -216,6 +216,12 @@ export async function onRequest(context) {
   if (!raw) return new Response("Missing address.", { status: 400 });
   let target;
   try { target = new URL(raw); } catch (e) { return new Response("That is not a valid address.", { status: 400 }); }
+  if (target.host === here.host) {                                  // the page built the address from its location: it meant its own site
+    const r = ref && targetOf(ref, origin);
+    if (!r) return new Response("That address is not allowed.", { status: 403 });
+    target = new URL(target.pathname + target.search, r);
+    if (target.host === here.host) return new Response("That address is not allowed.", { status: 403 });
+  }
   if (!allowedTarget(target)) return new Response("That address is not allowed.", { status: 403 });
   if (TRACKERS.test(target.hostname)) return new Response("", { status: 204, headers: { "cache-control": "public, max-age=86400" } });   // ads and trackers: nothing to fetch
 

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>(function(){try{var f=window.frameElement;if(f&&f.getAttribute('data-slyr-px')!==null){var s=sessionStorage.getItem('slyr-px-site');if(s&&/^https?:\/\/[^\/]+$/.test(s)){document.documentElement.style.background='#fff';location.replace('/p/'+s.replace('://','/')+location.pathname+location.search+location.hash)}}}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>slyr</title>
@@ -410,9 +411,9 @@ html.px-open .px-frame{position:fixed;left:0;right:0;top:56px;bottom:0;height:au
         <p class="px-lead">browse the web from inside slyr</p>
         <div class="px-quick">
           <button class="tl ct" type="button" data-u="https://en.wikipedia.org/">wikipedia</button>
-          <button class="tl ct" type="button" data-u="https://archive.org/">internet archive</button>
+          <button class="tl ct" type="button" data-u="https://scratch.mit.edu/">scratch</button>
           <button class="tl ct" type="button" data-u="https://github.com/">github</button>
-          <button class="tl ct" type="button" data-u="https://www.bing.com/">bing</button>
+          <button class="tl ct" type="button" data-u="https://search.brave.com/">brave</button>
         </div>
         <p class="px-note">big sites with logins, video or heavy apps may not work through it</p>
       </div>
@@ -423,7 +424,7 @@ html.px-open .px-frame{position:fixed;left:0;right:0;top:56px;bottom:0;height:au
         <button class="tl ct" id="pxClose" type="button">close</button>
         <span class="px-url" id="pxUrl"></span>
       </div>
-      <div class="px-frame"><iframe id="pxFrame" title="Proxied page" allow="fullscreen; autoplay; clipboard-write" allowfullscreen></iframe><i class="px-load"></i></div>
+      <div class="px-frame"><iframe id="pxFrame" data-slyr-px title="Proxied page" allow="fullscreen; autoplay; clipboard-write" allowfullscreen></iframe><i class="px-load"></i></div>
     </section>
   </div>
 </div>
@@ -1250,7 +1251,7 @@ let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelN
     t=t.trim();if(!t)return'';
     if(/^[a-z]+:\/\//i.test(t))return t;
     if(/^[\w-]+(\.[\w-]+)+(:\d+)?(\/|$|\?)/.test(t)&&!/\s/.test(t))return'https://'+t;
-    return'https://www.bing.com/search?q='+encodeURIComponent(t);
+    return'https://search.brave.com/search?q='+encodeURIComponent(t);
   };
   /* the address goes into the search bar, through its typing animation */
   let now='';
@@ -1319,7 +1320,7 @@ let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelN
     const src=location.origin+viaProxy(now);
     const w=window.open('about:blank','_blank');
     if(!w){const el=fr.parentElement;(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);return}   /* pop-ups blocked: fill the screen here instead */
-    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>slyr</title><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}iframe{display:block;width:100%;height:100%;border:0}</style></head><body><iframe src="'+src+'" allow="fullscreen; autoplay; clipboard-write; gamepad" allowfullscreen></iframe></body></html>');
+    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>slyr</title><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}iframe{display:block;width:100%;height:100%;border:0}</style></head><body><iframe data-slyr-px src="'+src+'" allow="fullscreen; autoplay; clipboard-write; gamepad" allowfullscreen></iframe></body></html>');
     w.document.close();
   });
   $('#pxClose').addEventListener('click',()=>{live=false;pv.classList.remove('busy','done');full(false);fr.src='about:blank';url.textContent='';inp.value='';inp.dispatchEvent(new Event('input'))});
