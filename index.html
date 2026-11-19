@@ -1191,45 +1191,56 @@ function pixelWord(host,text,block){
   }
   return out;
 }
-/* a little stick man stands on the y of the start screen's title; he waves, and winks now and then */
+/* a little pixel man sits on the top of the y on the start screen, legs dangling over its front. He kicks his legs,
+   blinks now and then, and every so often waves. Drawn on a small grid and scaled up, like the name. */
 let perchOn=null,stickTimer=0;
-const MAN=[
-  '...###...',
-  '..#...#..',
-  '..#L.R#..',
-  '..#...#..',
-  '...###...',
-  '....#....',
-  '...###...',
-  '..#.#.#..',
-  '..#.#.#..',
-  '..###....'];                                               /* the last row is his lap: he sits on the edge, facing into the y */
+const MAN=[                                                    /* # body, e eyes; the arms and legs are added per frame */
+  '...#####...',
+  '..#######..',
+  '..##e#e##..',
+  '..#######..',
+  '...#####...',
+  '.....#.....',
+  '...#####...',
+  '....###....',
+  '....###....',
+  '...#####...'];                                              /* row 9 is his seat: it rests on the top of the y */
+const ARMS={down:[[2,7],[1,8],[8,7],[9,8]],                    /* both arms down at his sides */
+            wave1:[[2,7],[1,8],[8,6],[9,5],[9,4]],             /* right arm up */
+            wave2:[[2,7],[1,8],[8,6],[9,5],[10,4]]};           /* and waving out */
+const LEGS=[[[3,10],[2,11],[2,12],[2,13],[1,14],[2,14],[7,10],[8,11],[8,12],[8,13],[8,14],[9,14]],   /* sitting: knees apart, shins hanging down the y */
+            [[3,10],[2,11],[1,11],[0,11],[7,10],[8,11],[8,12],[8,13],[8,14],[9,14]],                  /* left foot kicked up */
+            [[3,10],[2,11],[2,12],[2,13],[1,14],[2,14],[7,10],[8,11],[9,11],[10,11]]];                /* right foot kicked up */
 function stickMan(){
   clearInterval(stickTimer);
   if(!perchOn)return;
-  const S=Math.max(2,Math.round(perchOn.fs/100)),W=9,H=15;
-  const cv=document.createElement('canvas');cv.className='stick';cv.width=W;cv.height=H;
-  cv.style.width=W*S+'px';cv.style.height=H*S+'px';
-  cv.style.left=Math.round(perchOn.at.xl-3*S)+'px';         /* his shins hang just past the inner edge of the y's arm */
-  cv.style.top=Math.round(perchOn.at.y-10*S)+'px';
+  const S=Math.max(2,Math.round(perchOn.fs/80)),W=11,H=15,SEAT=9,B=1;   /* B: room for his dark outline */
+  const cv=document.createElement('canvas');cv.className='stick';cv.width=W+2*B;cv.height=H+2*B;
+  cv.style.width=(W+2*B)*S+'px';cv.style.height=(H+2*B)*S+'px';
+  cv.style.left=Math.round(perchOn.at.x-(W/2+B)*S)+'px';        /* in the middle of the y's right arm */
+  cv.style.top=Math.round(perchOn.at.y-(SEAT+B)*S)+'px';         /* his seat on its top, his legs down its front */
   cv.setAttribute('aria-hidden','true');
   perchOn.host.append(cv);
   const g=cv.getContext('2d');
-  let wink=false,swing=0,n=0;
-  const LEGS=[[[2,10],[2,11],[2,12],[1,13],[2,13]],            /* legs hanging straight down */
-              [[2,10],[1,11],[1,12],[0,13],[1,13]],            /* swung forwards */
-              [[2,10],[3,11],[3,12],[3,13],[2,13]]];           /* swung back */
+  let blink=false,arms='down',legs=0,n=0;
   const draw=()=>{
-    g.clearRect(0,0,W,H);g.fillStyle='#f6f2ee';
-    MAN.forEach((row,y)=>[...row].forEach((ch,x)=>{if(ch==='#'||ch==='L'||(ch==='R'&&!wink))g.fillRect(x,y,1,1)}));
-    LEGS[swing].forEach(q=>g.fillRect(q[0],q[1],1,1));
+    const on=new Set(),dark=new Set(),k=(x,y)=>x+','+y;
+    MAN.forEach((row,y)=>[...row].forEach((ch,x)=>{if(ch==='#')on.add(k(x,y));else if(ch==='e')(blink?on:dark).add(k(x,y))}));
+    ARMS[arms].concat(LEGS[legs]).forEach(q=>on.add(k(q[0],q[1])));
+    g.clearRect(0,0,W+2*B,H+2*B);
+    g.fillStyle='#0b0b0b';                                       /* a one-pixel dark edge, so he stands out on the grey y */
+    on.forEach(p=>{const[x,y]=p.split(',').map(Number);for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]])if(!on.has(k(x+dx,y+dy)))g.fillRect(x+dx+B,y+dy+B,1,1)});
+    dark.forEach(p=>{const[x,y]=p.split(',').map(Number);g.fillRect(x+B,y+B,1,1)});
+    g.fillStyle='#f6f2ee';
+    on.forEach(p=>{const[x,y]=p.split(',').map(Number);g.fillRect(x+B,y+B,1,1)});
   };
   draw();
   if(reduce)return;
   stickTimer=setInterval(()=>{
-    n=(n+1)%24;
-    wink=n%6<2;                                                /* he never stops winking: one eye shuts about once a second */
-    swing=[0,1,1,0,2,2][Math.floor(n/2)%6];                    /* and his legs swing lazily */
+    n=(n+1)%60;
+    blink=n%20===0||n%20===1&&n%40<20;                         /* a blink every few seconds, sometimes a double one */
+    legs=[0,1,0,2][Math.floor(n/3)%4];                         /* his legs kick, one then the other */
+    arms=n>=44&&n<56?(n%4<2?'wave1':'wave2'):'down';           /* and once in a while he waves */
     draw();
   },170);
 }
