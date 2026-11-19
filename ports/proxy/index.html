@@ -17,7 +17,7 @@ iframe{flex:1;border:0;background:#fff}
 const f=document.getElementById('f'),q=document.getElementById('q'),v=document.getElementById('v'),m=document.getElementById('msg');
 function go(t){
   t=t.trim();if(!t)return;
-  let u=/^[a-z]+:\/\//i.test(t)?t:(/^[\w-]+(\.[\w-]+)+(\/|$|\?)/.test(t)?'https://'+t:'https://duckduckgo.com/html/?q='+encodeURIComponent(t));
+  let u=/^[a-z]+:\/\//i.test(t)?t:(/^[\w-]+(\.[\w-]+)+(\/|$|\?)/.test(t)?'https://'+t:'https://www.bing.com/search?q='+encodeURIComponent(t));
   m.hidden=true;v.hidden=false;v.src='/proxy?u='+encodeURIComponent(u);
 }
 f.addEventListener('submit',e=>{e.preventDefault();go(q.value)});
