@@ -67,6 +67,19 @@ export async function onRequest({ request }) {
 
   const method = (request.headers.get("x-px-method") || "GET").toUpperCase();
   const given = parseHeaders(request.headers.get("x-px-headers"));
+
+  // A page asked for slyr itself: it built an address from slyr's domain instead of its own. Send it to the right place:
+  // "/px/go/<address>" is that address, anything else belongs to the site the page is on (its referer).
+  if (target.host === here.host) {
+    let real = null;
+    if (target.pathname.startsWith("/px/go/")) { try { real = new URL(decodeURIComponent(target.pathname.slice(7)) + target.search); } catch (e) {} }
+    else {
+      const ref = given.referer || given.Referer;
+      try { const r = new URL(ref); if (r.host !== here.host) real = new URL(target.pathname + target.search + target.hash, r.origin); } catch (e) {}
+    }
+    if (!real || real.host === here.host || !allowedTarget(real)) return reply(404, { "content-type": "text/plain" }, "Not found.", "Not Found");
+    return reply(307, { location: real.href }, null, "Temporary Redirect");
+  }
   const headers = new Headers();
   for (const k in given) if (!SKIP_REQUEST.has(k.toLowerCase())) { try { headers.set(k, given[k]); } catch (e) {} }
   const cacheable = method === "GET" && !headers.has("cookie") && !headers.has("authorization") && ASSET.test(target.pathname);
