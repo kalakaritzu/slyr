@@ -1209,8 +1209,8 @@ const ARMS={down:[[2,7],[1,8],[8,7],[9,8]],                    /* both arms down
             wave1:[[2,7],[1,8],[8,6],[9,5],[9,4]],             /* right arm up */
             wave2:[[2,7],[1,8],[8,6],[9,5],[10,4]]};           /* and waving out */
 const LEGS=[[[3,10],[2,11],[2,12],[2,13],[1,14],[2,14],[7,10],[8,11],[8,12],[8,13],[8,14],[9,14]],   /* sitting: knees apart, shins hanging down the y */
-            [[3,10],[2,11],[1,11],[0,11],[7,10],[8,11],[8,12],[8,13],[8,14],[9,14]],                  /* left foot kicked up */
-            [[3,10],[2,11],[2,12],[2,13],[1,14],[2,14],[7,10],[8,11],[9,11],[10,11]]];                /* right foot kicked up */
+            [[3,10],[2,11],[2,12],[1,13],[2,13],[7,10],[8,11],[8,12],[8,13],[8,14],[9,14]],          /* left leg swung forward: its foot comes up a little */
+            [[3,10],[2,11],[2,12],[2,13],[1,14],[2,14],[7,10],[8,11],[8,12],[8,13],[9,13]]];         /* then the right */
 function stickMan(){
   clearInterval(stickTimer);
   if(!perchOn)return;
@@ -1239,7 +1239,7 @@ function stickMan(){
   stickTimer=setInterval(()=>{
     n=(n+1)%60;
     blink=n%20===0||n%20===1&&n%40<20;                         /* a blink every few seconds, sometimes a double one */
-    legs=[0,1,0,2][Math.floor(n/3)%4];                         /* his legs kick, one then the other */
+    legs=[0,1,1,0,2,2][Math.floor(n/2)%6];                     /* his legs swing gently, one then the other */
     arms=n>=44&&n<56?(n%4<2?'wave1':'wave2'):'down';           /* and once in a while he waves */
     draw();
   },170);
