@@ -1,25 +1,6 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Proxy</title>
-<style>
-html,body{height:100%;margin:0;background:#0b0b0b;color:#eee;font:15px system-ui,sans-serif}
-body{display:flex;flex-direction:column}
-form{display:flex;gap:8px;padding:10px;background:#141414;border-bottom:1px solid #333}
-a.back{align-self:center;color:#aaa;text-decoration:none;padding:0 6px}
-input{flex:1;min-width:0;padding:9px 14px;border-radius:999px;border:1px solid #444;background:#0b0b0b;color:#fff;font:inherit}
-button{padding:9px 20px;border-radius:999px;border:0;background:#eee;color:#000;font:inherit;cursor:pointer}
-iframe{flex:1;border:0;background:#fff}
-#msg{margin:auto;color:#888;text-align:center;padding:20px}
-</style></head><body>
-<form id="f"><a class="back" href="../../">slyr</a><input id="q" placeholder="Enter a web address or search" autocomplete="off" autofocus><button>Go</button></form>
-<div id="msg">Type an address above. Some big sites (logins, video, heavy apps) may not work through a simple proxy.</div>
-<iframe id="v" hidden></iframe>
-<script>
-const f=document.getElementById('f'),q=document.getElementById('q'),v=document.getElementById('v'),m=document.getElementById('msg');
-function go(t){
-  t=t.trim();if(!t)return;
-  let u=/^[a-z]+:\/\//i.test(t)?t:(/^[\w-]+(\.[\w-]+)+(\/|$|\?)/.test(t)?'https://'+t:'https://www.bing.com/search?q='+encodeURIComponent(t));
-  m.hidden=true;v.hidden=false;v.src='/proxy?u='+encodeURIComponent(u);
-}
-f.addEventListener('submit',e=>{e.preventDefault();go(q.value)});
-const p=new URLSearchParams(location.search).get('u');if(p){q.value=p;go(p)}
-</script></body></html>
+<html lang="en"><head><meta charset="utf-8"><title>Proxy - slyr</title>
+<meta http-equiv="refresh" content="0; url=../../">
+<script>location.replace('../../')</script>
+<style>html{background:#000}</style>
+</head><body></body></html>

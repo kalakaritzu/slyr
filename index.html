@@ -317,6 +317,55 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
   *,*::before,*::after{transition:none!important}
   .tile{opacity:1;translate:none}
 }
+/* polish: the sticky search bar stays readable over the art it floats above */
+.top .gl,.top .sw{background:#0c0c0c;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 0 1px #ffffff18,0 10px 28px #000a}   /* solid, no blur: blurring the moving snow every frame made the cursor lag */
+/* phones: the github link sits under the name instead of over it, and the games come two to a row with a proper margin */
+@media(max-width:760px){.m-gh{margin-top:.7em}}
+@media(max-width:520px){
+  .top,.grid{width:auto;margin-left:16px;margin-right:16px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .tile{border-radius:8px}
+  .t-title{padding:24px 9px 8px;font-size:12px}
+}
+/* proxy: a screen of slyr, the search bar is its address bar and the page opens in a framed window below it */
+.pxv,.px-go{display:none}
+html.proxy-mode .pxv{display:block}
+html.proxy-mode .px-go{display:inline-flex;padding:6px 20px}
+html.proxy-mode #grid,html.proxy-mode #rnd{display:none}
+.pxv{width:min(1180px,94vw);margin:26px auto 0;padding:0 0 40px}
+.px-start{display:flex;flex-direction:column;align-items:center;gap:20px;padding:9vh 0 6vh;text-align:center}
+.px-lead{margin:0;font:800 clamp(26px,4vw,46px)/1.05 var(--font);letter-spacing:-.045em;color:#f6f2ee}
+.px-quick{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 28px}
+.px-note{margin:0;color:var(--mute);font-size:12.5px;opacity:.7}
+.px-tools{display:none;align-items:center;gap:24px;margin:0 2px 12px}
+.px-url{flex:1;min-width:0;text-align:right;color:var(--mute);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.px-frame{display:none;position:relative;height:max(360px,calc(100vh - 250px));border:1px solid #444;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 18px 60px #000a}
+.px-frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+.px-load{position:absolute;left:0;top:0;height:2px;width:0;background:#fff;opacity:0;pointer-events:none}
+.pxv.busy .px-load{width:85%;opacity:1;transition:width 8s cubic-bezier(.1,.7,.1,1)}
+.pxv.done .px-load{width:100%;opacity:0;transition:width .25s ease,opacity .4s ease .25s}
+.pxv.open .px-start{display:none}
+.pxv.open .px-tools{display:flex}
+.pxv.open .px-frame{display:block}
+@media(max-width:520px){.pxv{width:auto;margin-left:16px;margin-right:16px}.px-tools{gap:16px}.px-url{display:none}.px-frame{height:calc(100vh - 210px)}}
+/* proxy, a page open: it fills the window, and the reaper, name and search bar glide up into one slim bar along the top */
+html.px-open{overflow:hidden;scrollbar-gutter:auto}   /* no empty strip on the right where the scrollbar was */
+html.px-open .head{position:fixed;left:16px;top:0;z-index:41;height:56px;padding:0;align-items:center;gap:8px}
+html.px-open .head-reaper{height:40px;margin:0}
+html.px-open .brand canvas{height:26px!important;width:auto!important}
+html.px-open .top .gl,html.px-open .top .sw{box-shadow:inset 0 1px #ffffff18}
+html.px-open .top{position:fixed;top:8px;left:var(--pxl,200px);right:var(--pxr,380px);width:auto;margin:0;z-index:41}
+html.px-open .px-tools{position:fixed;top:0;right:16px;z-index:41;height:56px;margin:0;gap:20px}
+html.px-open .px-tools .tl{font-size:15px}
+html.px-open .px-url{display:none}
+html.px-open .px-frame{position:fixed;left:0;right:0;top:56px;bottom:0;height:auto;border:0;border-top:1px solid #ffffff26;border-radius:0;box-shadow:none;z-index:40}
+@media(max-width:700px){
+  html.px-open .head-reaper{display:none}
+  html.px-open .top{right:16px}
+  html.px-open .px-tools{top:54px;left:16px;right:16px;height:34px;gap:18px}
+  html.px-open .px-tools .tl{font-size:13px}
+  html.px-open .px-frame{top:92px}
+}
 </style>
 </head>
 <body>
@@ -352,9 +401,30 @@ html.bgin .side canvas,html.bgin #mainBg{animation:m-wipe 1.8s cubic-bezier(.22,
     <header class="head"><img class="head-reaper" src="reaper-pixel.png" alt=""><a class="brand ct" data-home href="./" aria-label="Back to the start screen">slyr</a></header>
     <div class="top" id="bar">
       <input class="search" id="search" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
+      <button class="gl ct px-go" id="pxGo" type="button">go</button>
       <button class="gl ico ct" id="rnd" type="button" data-pad="5" aria-label="Play a random game"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 3.5A1.5 1.5 0 1 0 8 9.5 1.5 1.5 0 0 0 8 6.500zm8 0a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3zm-4 4a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3zm-4 4a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3zm8 0a1.500 1.500 0 1 0 0 3 1.500 1.500 0 0 0 0-3z" fill-rule="evenodd"/></svg></button>
     </div>
     <main class="grid" id="grid"><h1 class="sr-only">slyr - free browser games, play instantly</h1><noscript><p class="empty">slyr needs JavaScript to show its games as tiles. Here is the full list of free browser games you can play:</p><ul class="empty"><li><a href="https://smackabooble.github.io/oad" rel="nofollow noopener">0 A.D.</a></li><li><a href="ports/adifficultgameaboutclimbing/" rel="nofollow noopener">A Difficult Game About Climbing</a></li><li><a href="ports/agameaboutfeedingablackhole/" rel="nofollow noopener">A Game About Feeding a Black Hole</a></li><li><a href="https://down1oads.github.io/sausageweb/" rel="nofollow noopener">A Weird Game About Sausage</a></li><li><a href="ports/amongusold/" rel="nofollow noopener">Among Us (Legacy)</a></li><li><a href="ports/balatro/" rel="nofollow noopener">Balatro</a></li><li><a href="ports/baldisbasics/" rel="nofollow noopener">Baldi's Basics</a></li><li><a href="ports/bendyandtheinkmachine/" rel="nofollow noopener">Bendy and the Ink Machine</a></li><li><a href="ports/boilnoodlesatnight/" rel="nofollow noopener">Boil Noodles at Night</a></li><li><a href="https://down1oads.github.io/BonerWeb/" rel="nofollow noopener">Bonerooms</a></li><li><a href="ports/brainrotonline/" rel="nofollow noopener">Brainrot Online</a></li><li><a href="ports/brotato/" rel="nofollow noopener">Brotato</a></li><li><a href="ports/cheeserolling.html" rel="nofollow noopener">Cheese Rolling</a></li><li><a href="ports/cloverpit.html" rel="nofollow noopener">CloverPit</a></li><li><a href="ports/clustertruck/" rel="nofollow noopener">Clustertruck</a></li><li><a href="ports/crashoutcrew/" rel="nofollow noopener">Crashout Crew</a></li><li><a href="https://surfd.net/" rel="nofollow noopener">CS Surf</a></li><li><a href="ports/cuphead.html" rel="nofollow noopener">Cuphead</a></li><li><a href="ports/diablo/" rel="nofollow noopener">Diablo</a></li><li><a href="ports/feedthepit.html" rel="nofollow noopener">Feed The Pit</a></li><li><a href="https://kalakaritzu.github.io/eaglercraft/" rel="nofollow noopener">Minecraft</a></li><li><a href="ports/gartenofbanban/index.html" rel="nofollow noopener">Garten of Banban</a></li><li><a href="ports/findtheneedle/index.html" rel="nofollow noopener">Find The Needle</a></li><li><a href="ports/gambonanza.html" rel="nofollow noopener">Gambonanza</a></li><li><a href="ports/gamblewithyourfriends/index.html" rel="nofollow noopener">Gamble With Your Friends</a></li><li><a href="ports/granny.html" rel="nofollow noopener">Granny</a></li><li><a href="ports/granny2.html" rel="nofollow noopener">Granny 2</a></li><li><a href="ports/granny3/" rel="nofollow noopener">Granny 3</a></li><li><a href="https://v2.fiveplay.lol/" rel="nofollow noopener">GTA V</a></li><li><a href="https://joncodeofficial.github.io/gta-vice-city-wasm" rel="nofollow noopener">GTA Vice City</a></li><li><a href="https://down1oads.github.io/gutsweb/" rel="nofollow noopener">Guts and Glory</a></li><li><a href="ports/halflife/" rel="nofollow noopener">Half Life</a></li><li><a href="ports/halflife2/" rel="nofollow noopener">Half-Life 2</a></li><li><a href="ports/halflifeazuresheep/" rel="nofollow noopener">Half-Life: Azure Sheep</a></li><li><a href="ports/halflifeblueshift/" rel="nofollow noopener">Half-Life: Blue Shift</a></li><li><a href="ports/halflifedeltaparticles/" rel="nofollow noopener">Half-Life: Delta Particles</a></li><li><a href="ports/halflifeopposingforce/" rel="nofollow noopener">Half-Life: Opposing Force</a></li><li><a href="ports/fnash2.html" rel="nofollow noopener">Five Nights at Shrek's Hotel 2</a></li><li><a href="ports/sunshine/" rel="nofollow noopener">Super Mario Sunshine</a></li><li><a href="ports/luigimansion/" rel="nofollow noopener">Luigi's Mansion</a></li><li><a href="ports/melee/" rel="nofollow noopener">Super Smash Bros. Melee</a></li><li><a href="ports/bloodhockey/" rel="nofollow noopener">Super Blood Hockey</a></li><li><a href="ports/spongebobps2/" rel="nofollow noopener">The SpongeBob SquarePants Movie</a></li><li><a href="ports/fallout2/" rel="nofollow noopener">Fallout 2</a></li><li><a href="ports/absw2/" rel="nofollow noopener">Angry Birds Star Wars II</a></li><li><a href="ports/happyhills/index.html" rel="nofollow noopener">The Happyhills Homicide</a></li><li><a href="ports/deadseat/index.html" rel="nofollow noopener">The Deadseat</a></li><li><a href="ports/beforeclose/index.html" rel="nofollow noopener">Before Close</a></li><li><a href="ports/apesvshelium.html" rel="nofollow noopener">Apes vs Helium</a></li><li><a href="ports/vrgds/index.html" rel="nofollow noopener">Very Realistic Game Dev Simulator</a></li><li><a href="ports/spore.html" rel="nofollow noopener">Spore</a></li><li><a href="ports/cod4/" rel="nofollow noopener">Call of Duty 4: Modern Warfare</a></li><li><a href="ports/horizon/" rel="nofollow noopener">Horizon: Minecraft Rust Edition</a></li><li><a href="https://vel.gg/bsz" rel="nofollow noopener">Call of Duty: Black Ops</a></li><li><a href="ports/ggc2.html" rel="nofollow noopener">Guns, Gore and Cannoli 2</a></li><li><a href="https://down1oads.github.io/SH2WEB/" rel="nofollow noopener">Silent Hill 2</a></li><li><a href="https://down1oads.github.io/LSWWEB/" rel="nofollow noopener">LEGO Star Wars: The Video Game</a></li><li><a href="ports/cof.html" rel="nofollow noopener">Cry of Fear</a></li><li><a href="ports/fish/" rel="nofollow noopener">FISH</a></li><li><a href="ports/fnafpit.html" rel="nofollow noopener">Five Nights at Freddy's: Into the Pit</a></li><li><a href="ports/btd6/" rel="nofollow noopener">Bloons TD 6</a></li><li><a href="https://down1oads.github.io/LBWEB/" rel="nofollow noopener">LEGO Batman: The Videogame</a></li><li><a href="https://down1oads.github.io/SHREK2WEB/" rel="nofollow noopener">Shrek 2</a></li><li><a href="https://down1oads.github.io/MSCWEB/" rel="nofollow noopener">My Summer Car</a></li><li><a href="ports/stanleyparable.html" rel="nofollow noopener">The Stanley Parable: Ultra Deluxe</a></li><li><a href="ports/pdta3d.html" rel="nofollow noopener">Please, Don't Touch Anything 3D</a></li><li><a href="ports/crueltysquad.html" rel="nofollow noopener">Cruelty Squad</a></li><li><a href="ports/ninah.html" rel="nofollow noopener">No, I'm Not a Human</a></li><li><a href="https://down1oads.github.io/OACWEB/" rel="nofollow noopener">One-armed Cook</a></li><li><a href="https://down1oads.github.io/dexna/" rel="nofollow noopener">Dexna</a></li><li><a href="https://down1oads.github.io/mrport/" rel="nofollow noopener">Mr. President!</a></li><li><a href="ports/suicideguy/" rel="nofollow noopener">Suicide Guy Deluxe</a></li><li><a href="ports/aground/" rel="nofollow noopener">Aground</a></li><li><a href="ports/tyrone/" rel="nofollow noopener">Tyrone vs Cops</a></li><li><a href="ports/alternatewatch/" rel="nofollow noopener">Alternate Watch</a></li><li><a href="ports/turbodismount/" rel="nofollow noopener">Turbo Dismount</a></li><li><a href="https://nintendoplsdntsuemeforportingmaker2.t4ctica1yt.workers.dev/" rel="nofollow noopener">Super Mario Maker 2</a></li><li><a href="https://nintendoplsdntsue.t4ctica1yt.workers.dev/" rel="nofollow noopener">Super Mario Odyssey</a></li><li><a href="ports/horseygame/index.html" rel="nofollow noopener">Horsey Game</a></li><li><a href="ports/hillclimbracing.html" rel="nofollow noopener">Hill Climb Racing</a></li><li><a href="ports/hollowknight/" rel="nofollow noopener">Hollow Knight</a></li><li><a href="ports/hollowknightsilksong/" rel="nofollow noopener">Hollow Knight: Silksong</a></li><li><a href="ports/hotlinemiami/" rel="nofollow noopener">Hotline Miami</a></li><li><a href="ports/howtofish.html" rel="nofollow noopener">How to Fish</a></li><li><a href="ports/ironlung.html" rel="nofollow noopener">Iron Lung</a></li><li><a href="ports/inscryption/" rel="nofollow noopener">Inscryption</a></li><li><a href="ports/karlson/" rel="nofollow noopener">Karlson</a></li><li><a href="ports/kerbal.html" rel="nofollow noopener">Kerbal Space Program</a></li><li><a href="ports/leafblower.html" rel="nofollow noopener">Leaf Blower Revolution</a></li><li><a href="ports/kindergarten/" rel="nofollow noopener">Kindergarten</a></li><li><a href="ports/kindergarten2/" rel="nofollow noopener">Kindergarten 2</a></li><li><a href="ports/lamadriguera.html" rel="nofollow noopener">La Madriguera</a></li><li><a href="ports/kindergarten3/" rel="nofollow noopener">Kindergarten 3</a></li><li><a href="ports/mechachameleon/index.html" rel="nofollow noopener">Meccha Chameleon</a></li><li><a href="ports/miside.html" rel="nofollow noopener">MiSide</a></li><li><a href="https://nfsmw-port-2-web.netlify.app/nfsmw/" rel="nofollow noopener">Need for Speed: Most Wanted</a></li><li><a href="ports/nodebuster/" rel="nofollow noopener">Nodebuster</a></li><li><a href="ports/peak/" rel="nofollow noopener">PEAK</a></li><li><a href="ports/peopleplayground/" rel="nofollow noopener">People Playground</a></li><li><a href="ports/zomboid.html" rel="nofollow noopener">Project Zomboid (Tech Demo)</a></li><li><a href="ports/postal.html" rel="nofollow noopener">POSTAL</a></li><li><a href="ports/portal/" rel="nofollow noopener">Portal</a></li><li><a href="https://q1.pieter.com/" rel="nofollow noopener">Quake 1</a></li><li><a href="https://q2.pieter.com/" rel="nofollow noopener">Quake 2</a></li><li><a href="https://q3.pieter.com/" rel="nofollow noopener">Quake 3</a></li><li><a href="ports/ravenfield/" rel="nofollow noopener">Ravenfield</a></li><li><a href="ports/repo/" rel="nofollow noopener">R.E.P.O.</a></li><li><a href="ports/rerun/" rel="nofollow noopener">ReRun</a></li><li><a href="https://rtcw.pieter.com/" rel="nofollow noopener">Return to Castle Wolfenstein</a></li><li><a href="https://down1oads.github.io/rorweb/" rel="nofollow noopener">Rigs of Rods</a></li><li><a href="ports/rounds/" rel="nofollow noopener">ROUNDS</a></li><li><a href="ports/schoolboyrunaway/" rel="nofollow noopener">Schoolboy Runaway</a></li><li><a href="https://down1oads.github.io/SWYFWEB/" rel="nofollow noopener">Scam With Your Friends</a></li><li><a href="ports/scpcontainmentbreach/" rel="nofollow noopener">SCP: Containment Breach</a></li><li><a href="ports/shiftatmidnight/" rel="nofollow noopener">Shift at Midnight</a></li><li><a href="https://skate.aaddpp.lol/" rel="nofollow noopener">Skate 3</a></li><li><a href="ports/slime/" rel="nofollow noopener">Slime Rancher</a></li><li><a href="ports/spongeglocksquarepants/" rel="nofollow noopener">SpongeGlock SquarePants</a></li><li><a href="ports/snaptic/index.html" rel="nofollow noopener">SNAPTIC</a></li><li><a href="ports/stardewvalley/" rel="nofollow noopener">Stardew Valley</a></li><li><a href="ports/thatsnotmyneighbor/" rel="nofollow noopener">That's Not My Neighbor</a></li><li><a href="https://shar-wasm.cjoseph.workers.dev/?skipmovie" rel="nofollow noopener">The Simpsons: Hit &amp; Run</a></li><li><a href="https://down1oads.github.io/TheForestWeb/" rel="nofollow noopener">The Forest</a></li><li><a href="ports/tabs/" rel="nofollow noopener">Totally Accurate Battle Simulator</a></li><li><a href="ports/ultrakill/" rel="nofollow noopener">ULTRAKILL</a></li><li><a href="ports/undertale/" rel="nofollow noopener">Undertale</a></li><li><a href="https://ut.pieter.com/" rel="nofollow noopener">Unreal Tournament</a></li><li><a href="ports/untitledgoosegame/" rel="nofollow noopener">Untitled Goose Game</a></li><li><a href="ports/webecomewhatwebehold/" rel="nofollow noopener">We Become What We Behold</a></li><li><a href="ports/webfishing/" rel="nofollow noopener">WEBFISHING</a></li><li><a href="ports/whosyourdaddy/" rel="nofollow noopener">Who's Your Daddy</a></li></ul></noscript></main>
+    <section class="pxv" id="pxv" aria-label="Proxy">
+      <div class="px-start">
+        <p class="px-lead">browse the web from inside slyr</p>
+        <div class="px-quick">
+          <button class="tl ct" type="button" data-u="https://en.wikipedia.org/">wikipedia</button>
+          <button class="tl ct" type="button" data-u="https://archive.org/">internet archive</button>
+          <button class="tl ct" type="button" data-u="https://news.ycombinator.com/">hacker news</button>
+          <button class="tl ct" type="button" data-u="https://www.bing.com/">bing</button>
+        </div>
+        <p class="px-note">big sites with logins, video or heavy apps may not work through it</p>
+      </div>
+      <div class="px-tools">
+        <button class="tl ct" id="pxBack" type="button">back</button>
+        <button class="tl ct" id="pxReload" type="button">reload</button>
+        <button class="tl ct" id="pxFull" type="button">fullscreen</button>
+        <button class="tl ct" id="pxClose" type="button">close</button>
+        <span class="px-url" id="pxUrl"></span>
+      </div>
+      <div class="px-frame"><iframe id="pxFrame" title="Proxied page" allow="fullscreen; autoplay; clipboard-write" allowfullscreen></iframe><i class="px-load"></i></div>
+    </section>
   </div>
 </div>
 <div class="rou" id="rou" role="dialog" aria-label="Random game" aria-hidden="true"><div class="rou-box"><div class="rou-win"><div class="rou-strip" id="rouStrip"></div><div class="rou-mark"></div></div><h3 class="rou-title" id="rouTitle"></h3></div></div>
@@ -708,7 +778,7 @@ function renderGames(animate){
   });
   if(!empty.hidden)empty.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:500,easing:EASE,fill:'backwards'});
 }
-$('#search').addEventListener('input',e=>{setQuery(e.target.value);renderGames(true)});
+let muteSearch=false;$('#search').addEventListener('input',e=>{if(cat==='Proxy'||muteSearch)return;setQuery(e.target.value);renderGames(true)});   /* in the proxy it is an address bar */
 
 /* typing animation for the search box: new letters pop in, deleted ones fade out and the gap closes, the caret glides.
    The real <input> still holds the text, so search, focus and the clear button work as before. */
@@ -897,7 +967,15 @@ function createSnow(cv,o){
   return{
     start(){wanted=true;draw();if(!document.hidden)run()},
     stop(){wanted=false;halt()},
-    ensure(){if(!painted)draw()}
+    ensure(){if(!painted)draw()},
+    /* the flakes as they are now, so the next page can carry on with the same sky */
+    dump(){return{t:+t.toFixed(2),W,H,f:flakes.map(f=>[f.x,f.y,f.z,f.ox,f.oy,f.plus?1:0,f.tw,f.ts].map(v=>+(+v).toFixed(2)))}},
+    load(st){
+      if(!st||!st.f||!st.f.length)return;
+      const sx=W/(st.W||W),sy=H/(st.H||H);
+      t=st.t||t;flakes=st.f.map(a=>({x:a[0]*sx,y:a[1]*sy,z:a[2],ox:a[3],oy:a[4],vx:0,vy:0,plus:!!a[5],tw:a[6],ts:a[7]}));
+      draw();
+    }
   };
 }
 
@@ -924,6 +1002,8 @@ function createSnow(cv,o){
   let target=null,lastEl=null,scrollSeen=-1,inside=true,last=0,placed=false,sc=.5,cx=0,cy=0,hw=13,hh=13,ang=0,settle=0;
   root.addEventListener('mouseleave',()=>{inside=false;box.classList.remove('live')});
   root.addEventListener('mouseenter',()=>{inside=true});
+  addEventListener('pointermove',()=>{inside=true},{passive:true});   /* back from a frame (the proxy's page), where no events reach us: any move here shows it again */
+  const pxf=$('#pxFrame');if(pxf)pxf.addEventListener('pointerenter',()=>{inside=false;box.classList.remove('live')});   /* it cannot follow into the page, so it steps aside */
   const searchInput=$('#search');
   ['focus','blur'].forEach(t=>searchInput.addEventListener(t,()=>{lastEl=null;moved=true}));   /* clicking in or out is checked straight away */
   (function loop(ts){
@@ -1162,6 +1242,79 @@ function pixelNames(){
 (document.fonts&&document.fonts.load?document.fonts.load('800 40px Montserrat').catch(()=>{}):Promise.resolve()).then(pixelNames);
 let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelNames,200)});
 
+/* ---------- proxy: pages go through /proxy (functions/proxy.js on Cloudflare) and open in the frame ---------- */
+(function(){
+  const pv=$('#pxv'),fr=$('#pxFrame'),inp=$('#search'),url=$('#pxUrl');
+  if(!pv||!fr)return;
+  const toUrl=t=>{
+    t=t.trim();if(!t)return'';
+    if(/^[a-z]+:\/\//i.test(t))return t;
+    if(/^[\w-]+(\.[\w-]+)+(:\d+)?(\/|$|\?)/.test(t)&&!/\s/.test(t))return'https://'+t;
+    return'https://www.bing.com/search?q='+encodeURIComponent(t);
+  };
+  /* the address goes into the search bar, through its typing animation */
+  let now='';
+  const show=u=>{now=u;url.textContent=u.replace(/^https?:\/\//,'');if(document.activeElement!==inp){inp.value=u;inp.dispatchEvent(new Event('input'))}};
+  const head=$('.head'),tools=$('.px-tools');
+  const measure=()=>{if(!root.classList.contains('px-open'))return;
+    root.style.setProperty('--pxl',Math.round(head.getBoundingClientRect().right+14)+'px');
+    root.style.setProperty('--pxr',Math.round(innerWidth-tools.getBoundingClientRect().left+28)+'px')};
+  addEventListener('resize',measure);
+  /* open or close the full-window page. The reaper and name, and the search bar, glide from where they were to where they
+     go in one continuous move (measured before and after, then played back with transform and width only) */
+  const bar=$('#bar'),frameBox=fr.parentElement,EASE='cubic-bezier(.16,1,.3,1)',MS=650;
+  let moving=[];
+  function full(on){
+    if(root.classList.contains('px-open')===on&&pv.classList.contains('open')===on)return;
+    moving.forEach(a=>a.cancel());moving=[];
+    const h0=head.getBoundingClientRect(),b0=bar.getBoundingClientRect();
+    pv.classList.toggle('open',on);root.classList.toggle('px-open',on);measure();
+    if(!on)scrollTo(0,0);
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches||root.classList.contains('menu-open'))return;
+    const h1=head.getBoundingClientRect(),b1=bar.getBoundingClientRect();
+    const k=h0.height/h1.height;
+    head.style.transformOrigin='0 0';
+    moving.push(head.animate([{transform:'translate('+(h0.left-h1.left)+'px,'+(h0.top-h1.top)+'px) scale('+k+')'},{transform:'none'}],{duration:MS,easing:EASE}));
+    /* open, the bar is pinned by its left edge; closed, it is centred: either way, width and position move together so it never jumps */
+    const dx=on?b0.left-b1.left:(b0.left+b0.width/2)-(b1.left+b1.width/2);
+    moving.push(bar.animate([{width:b0.width+'px',transform:'translate('+dx+'px,'+(b0.top-b1.top)+'px)'},{width:b1.width+'px',transform:'none'}],{duration:MS,easing:EASE}));
+    if(on){
+      moving.push(frameBox.animate([{opacity:0,transform:'translateY(36px)'},{opacity:1,transform:'none'}],{duration:MS,delay:90,easing:EASE,fill:'backwards'}));
+      moving.push(tools.animate([{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'none'}],{duration:450,delay:220,easing:EASE,fill:'backwards'}));
+    }else{
+      moving.push($('.px-start').animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:MS,delay:120,easing:EASE,fill:'backwards'}));
+    }
+  }
+  document.addEventListener('slyr-mode',e=>{                       /* leaving the proxy puts the page back to normal; coming back reopens it */
+    root.classList.toggle('px-open',e.detail==='Proxy'&&pv.classList.contains('open'));measure();
+  });
+  let live=false;
+  function go(t){
+    const u=toUrl(t);if(!u)return;
+    live=true;pv.classList.add('busy');pv.classList.remove('done');full(true);show(u);
+    fr.src='/proxy?u='+encodeURIComponent(u);
+  }
+  fr.addEventListener('load',()=>{
+    if(!live)return;
+    pv.classList.remove('busy');pv.classList.add('done');
+    try{const u=new URL(fr.contentWindow.location.href).searchParams.get('u');if(u)show(u)}catch(e){}   /* where the page really is after its links are followed */
+  });
+  inp.addEventListener('keydown',e=>{if(cat==='Proxy'&&e.key==='Enter'){e.preventDefault();go(inp.value);inp.blur()}});
+  $('#pxGo').addEventListener('click',()=>go(inp.value));
+  $$('.px-quick [data-u]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.u)));
+  $('#pxBack').addEventListener('click',()=>{try{fr.contentWindow.history.back()}catch(e){}});
+  $('#pxReload').addEventListener('click',()=>{pv.classList.add('busy');pv.classList.remove('done');try{fr.contentWindow.location.reload()}catch(e){fr.src=fr.src}});
+  $('#pxFull').addEventListener('click',()=>{
+    if(!now)return;
+    const src=location.origin+'/proxy?u='+encodeURIComponent(now);
+    const w=window.open('about:blank','_blank');
+    if(!w){const el=fr.parentElement;(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);return}   /* pop-ups blocked: fill the screen here instead */
+    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>slyr</title><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}iframe{display:block;width:100%;height:100%;border:0}</style></head><body><iframe src="'+src+'" allow="fullscreen; autoplay; clipboard-write; gamepad" allowfullscreen></iframe></body></html>');
+    w.document.close();
+  });
+  $('#pxClose').addEventListener('click',()=>{live=false;pv.classList.remove('busy','done');full(false);fr.src='about:blank';url.textContent='';inp.value='';inp.dispatchEvent(new Event('input'))});
+})();
+
 /* ---------- start menu, then the page ---------- */
 (function(){
   const main=createSnow($('#snow'));
@@ -1238,10 +1391,16 @@ let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelN
     if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;   /* new-tab clicks work normally */
     e.preventDefault();goHome(e);
   }));
-  const mode=c=>{cat=c;root.classList.toggle('apps-mode',c==='Apps');$('#search').placeholder=c==='Apps'?'Search apps':'Search games';$('#search').value='';setQuery('');tiles.forEach(t=>t.classList.add('in'));renderGames(false)};   /* switch between the games list and the apps list straight away, with no animation, so the other list never flashes by */
+  const mode=c=>{cat=c;document.dispatchEvent(new CustomEvent('slyr-mode',{detail:c}));root.classList.toggle('apps-mode',c==='Apps');root.classList.toggle('proxy-mode',c==='Proxy');$('#search').placeholder=c==='Apps'?'Search apps':c==='Proxy'?'Search or type an address':'Search games';$('#search').value='';muteSearch=true;$('#search').dispatchEvent(new Event('input'));muteSearch=false;setQuery('');tiles.forEach(t=>t.classList.add('in'));renderGames(false)};   /* switch between the games list and the apps list straight away, with no animation, so the other list never flashes by */
   play.addEventListener('click',e=>{if(cat!=='All')mode('All');enter(e)});
   const appsBtn=$('#apps');
   if(appsBtn)appsBtn.addEventListener('click',e=>{e.preventDefault();if(cat!=='Apps')mode('Apps');enter(e)});
+  /* Proxy: a screen of slyr like Ports and Apps, reached with the same zoom; the search bar becomes the address bar */
+  const proxyBtn=$('#proxy');
+  if(proxyBtn)proxyBtn.addEventListener('click',e=>{
+    if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    e.preventDefault();if(cat!=='Proxy')mode('Proxy');enter(e);
+  });
   addEventListener('keydown',()=>root.classList.add('kb'),{once:true});
   if(!calm){
     const rea=$('#mReaper')&&$('#mReaper').querySelector('.par');
