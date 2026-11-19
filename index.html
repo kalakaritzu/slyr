@@ -1243,7 +1243,7 @@ function pixelNames(){
 (document.fonts&&document.fonts.load?document.fonts.load('800 40px Montserrat').catch(()=>{}):Promise.resolve()).then(pixelNames);
 let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelNames,200)});
 
-/* ---------- proxy: pages go through /proxy (functions/proxy.js on Cloudflare) and open in the frame ---------- */
+/* ---------- proxy: pages run under Scramjet (px/) and open in the frame; slyr's relay (functions/f.js) fetches them ---------- */
 (function(){
   const pv=$('#pxv'),fr=$('#pxFrame'),inp=$('#search'),url=$('#pxUrl');
   if(!pv||!fr)return;
@@ -1291,33 +1291,39 @@ let pxT=0;addEventListener('resize',()=>{clearTimeout(pxT);pxT=setTimeout(pixelN
   });
   const viaProxy=u=>{const a=new URL(u);return '/p/'+a.protocol.slice(0,-1)+'/'+a.host+a.pathname+a.search+a.hash};
   const fromProxy=h=>{try{const a=new URL(h);if(a.pathname.indexOf('/p/')!==0)return null;const m=a.pathname.slice(3).match(/^(https?)\/([^\/]+)(\/.*)?$/);return m?m[1]+'://'+m[2]+(m[3]||'/')+a.search+a.hash:null}catch(e){return null}};
-  /* the service worker that sends everything a proxied page asks for through the proxy; the first page waits for it */
-  let swReady=null;
-  const sw=()=>swReady||(swReady=!('serviceWorker' in navigator)?Promise.resolve():navigator.serviceWorker.register('/p/__sw.js',{scope:'/p/'}).then(reg=>{
-    if(reg.active)return;
-    const w=reg.installing||reg.waiting;if(!w)return;
-    return new Promise(res=>{w.addEventListener('statechange',()=>{if(w.state==='activated')res()});setTimeout(res,4000)});
-  }).catch(()=>{}));
-  document.addEventListener('slyr-mode',e=>{if(e.detail==='Proxy')sw()});
-  let live=false;
+  /* the engine: Scramjet (px/scram/, AGPL-3.0, source at github.com/MercuryWorkshop/scramjet) runs each page in the browser and
+     sends what it loads through slyr's relay (px/transport.mjs -> functions/f.js). It loads the first time the proxy is opened.
+     Without service workers, the simpler proxy under /p/ is used instead. */
+  const load=src=>new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.append(s)});
+  let engine=null,sj=null,sf=null,live=false;
+  const start=()=>engine||(engine=(async()=>{
+    if(!('serviceWorker' in navigator))throw new Error('no service workers');
+    await Promise.all([load('/px/baremux/index.js'),load('/px/scram/scramjet.all.js')]);
+    const {ScramjetController}=$scramjetLoadController();
+    sj=new ScramjetController({prefix:'/px/go/',files:{wasm:'/px/scram/scramjet.wasm.wasm',all:'/px/scram/scramjet.all.js',sync:'/px/scram/scramjet.sync.js'}});
+    await sj.init();
+    const reg=await navigator.serviceWorker.register('/px/sw.js',{scope:'/px/go/'});
+    if(!reg.active){const w=reg.installing||reg.waiting;if(w)await new Promise(r=>{w.addEventListener('statechange',()=>{if(w.state==='activated')r()});setTimeout(r,5000)})}
+    const conn=new BareMux.BareMuxConnection('/px/baremux/worker.js');
+    await conn.setTransport('/px/transport.mjs',[{base:location.origin}]);
+    sf=sj.createFrame(fr);
+    sf.addEventListener('urlchange',e=>{if(live&&e.url)show(String(e.url))});   /* where the page really is after its links are followed */
+  })().catch(err=>{engine=null;throw err}));
+  document.addEventListener('slyr-mode',e=>{if(e.detail==='Proxy')start().catch(()=>{})});
   function go(t){
     const u=toUrl(t);if(!u)return;
     live=true;pv.classList.add('busy');pv.classList.remove('done');full(true);show(u);
-    sw().then(()=>{if(live)fr.src=viaProxy(u)});
+    start().then(()=>{if(live)sf.go(u)},()=>{if(live)fr.src=viaProxy(u)});
   }
-  fr.addEventListener('load',()=>{
-    if(!live)return;
-    pv.classList.remove('busy');pv.classList.add('done');
-    try{const u=fromProxy(fr.contentWindow.location.href);if(u)show(u)}catch(e){}   /* where the page really is after its links are followed */
-  });
+  fr.addEventListener('load',()=>{if(live){pv.classList.remove('busy');pv.classList.add('done')}});
   inp.addEventListener('keydown',e=>{if(cat==='Proxy'&&e.key==='Enter'){e.preventDefault();go(inp.value);inp.blur()}});
   $('#pxGo').addEventListener('click',()=>go(inp.value));
   $$('.px-quick [data-u]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.u)));
-  $('#pxBack').addEventListener('click',()=>{try{fr.contentWindow.history.back()}catch(e){}});
-  $('#pxReload').addEventListener('click',()=>{pv.classList.add('busy');pv.classList.remove('done');try{fr.contentWindow.location.reload()}catch(e){fr.src=fr.src}});
+  $('#pxBack').addEventListener('click',()=>{try{sf?sf.back():fr.contentWindow.history.back()}catch(e){}});
+  $('#pxReload').addEventListener('click',()=>{pv.classList.add('busy');pv.classList.remove('done');try{sf?sf.reload():fr.contentWindow.location.reload()}catch(e){fr.src=fr.src}});
   $('#pxFull').addEventListener('click',()=>{
     if(!now)return;
-    const src=location.origin+viaProxy(now);
+    const src=location.origin+(sj?sj.encodeUrl(now):viaProxy(now));
     const w=window.open('about:blank','_blank');
     if(!w){const el=fr.parentElement;(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);return}   /* pop-ups blocked: fill the screen here instead */
     w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>slyr</title><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}iframe{display:block;width:100%;height:100%;border:0}</style></head><body><iframe data-slyr-px src="'+src+'" allow="fullscreen; autoplay; clipboard-write; gamepad" allowfullscreen></iframe></body></html>');
