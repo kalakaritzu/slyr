@@ -23,9 +23,18 @@ async function serve(req, rel) {
   let cache = null;
   try { cache = await caches.open("proxy2-" + SCOPE_PATH); } catch (e) {}
   if (cache && !range) { const hit = await cache.match(url); if (hit) return wants(rel) ? rewritten(hit, rel) : finish(hit, rel, true); }
-  let res;
-  try { res = await fetch(url, range ? { headers: { Range: range } } : undefined); } catch (err) { return new Response("Could not load " + rel, { status: 502 }); }
-  const len = +res.headers.get("content-length") || 0;
+  let res, len = 0, buf = null;
+  for (let attempt = 0; attempt < 5; attempt++) {              /* a dropped connection is retried, and files under 64 MB are read in full before they are handed over, so a reset halfway never reaches the game */
+    try {
+      res = await fetch(url, range ? { headers: { Range: range } } : undefined);
+      len = +res.headers.get("content-length") || 0;
+      if (!res.ok && res.status !== 206) { if (res.status === 404 || attempt === 4) break; await new Promise((r) => setTimeout(r, 400 * (attempt + 1))); continue; }
+      if (len && len < 64 * 1048576) buf = await res.arrayBuffer();
+      break;
+    } catch (err) { res = null; buf = null; if (attempt === 4) return new Response("Could not load " + rel, { status: 502 }); await new Promise((r) => setTimeout(r, 500 * (attempt + 1))); }
+  }
+  if (!res) return new Response("Could not load " + rel, { status: 502 });
+  if (buf) res = new Response(buf, { status: res.status, headers: res.headers });
   if (cache && !range && res.status === 200 && len && len < 6 * 1048576) { try { await cache.put(url, res.clone()); } catch (e) {} }
   if (res.status === 200 && wants(rel) && len < 8 * 1048576) return rewritten(res, rel);
   return finish(res, rel, false);
